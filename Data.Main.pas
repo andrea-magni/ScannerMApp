@@ -58,6 +58,7 @@ type
 
     FLastScan: TDateTime;
     FScanning: Boolean;
+    FWaitingResult: Boolean;
 
     function CropBitmap(const ABitmap: TBitmap): TBitmap;
     procedure ScanFrames(const AReducedBuffer: TBitmap);
@@ -182,7 +183,7 @@ begin
         TMessageManager.DefaultManager.SendMessage(Sender,
           TCameraBufferMessage.Create(LReducedBuffer));
 
-        if (MilliSecondsBetween(FLastScan, Now) >= SCAN_EACH_MS) then
+        if FWaitingResult and (MilliSecondsBetween(FLastScan, Now) >= SCAN_EACH_MS) then
           ScanFrames(LReducedBuffer);
 
       finally
@@ -215,6 +216,7 @@ procedure TMainDM.DataModuleCreate(Sender: TObject);
 begin
   FLastScan := Now;
   FScanning := False;
+  FWaitingResult := False;
 
   TMessageManager.DefaultManager.SubscribeToMessage(TScanResultMessage,
     procedure(const Sender: TObject; const M: TMessage)
@@ -311,6 +313,7 @@ begin
     end;
   end;
 
+  FWaitingResult := True;
   ScanFrames(LReducedBuffer);
 end;
 
@@ -340,6 +343,9 @@ begin
       LReadResult: TReadResult;
       LScanManager: TScanManager;
     begin
+      if not FWaitingResult then // already found
+        Exit;
+
       LScanManager := TScanManager.Create(TBarcodeFormat.Auto, nil);
       try
         LScanManager.OnResultPoint := OnResultPointHandler;
@@ -351,7 +357,7 @@ begin
           LReadResult := nil;
         end;
 
-        if (LReadResult <> nil) then
+        if (LReadResult <> nil) and FWaitingResult then
         begin
           TThread.Synchronize(nil,
             procedure
@@ -401,11 +407,13 @@ begin
 
   CameraComponent1.Active := True;
   FScanning := True;
+  FWaitingResult := True;
   TMessageManager.DefaultManager.SendMessage(Self, TScanningMessage.Create(True));
 end;
 
 procedure TMainDM.StopScanning;
 begin
+  FWaitingResult := False;
   FScanning := False;
   if CameraComponent1.TorchMode = TTorchMode.ModeOn then
     CameraComponent1.TorchMode := TTorchMode.ModeOff;
