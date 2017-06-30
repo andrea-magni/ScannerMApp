@@ -1,0 +1,120 @@
+object DataFrame: TDataFrame
+  Align = Client
+  Size.Width = 411.000000000000000000
+  Size.Height = 490.000000000000000000
+  Size.PlatformDefault = False
+  object DataListView: TListView
+    ItemAppearanceClassName = 'TDynamicAppearance'
+    ItemEditAppearanceClassName = 'TDynamicAppearance'
+    HeaderAppearanceClassName = 'TListHeaderObjects'
+    FooterAppearanceClassName = 'TListHeaderObjects'
+    Align = Client
+    Size.Width = 411.000000000000000000
+    Size.Height = 490.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    ItemAppearance.ItemHeight = 120
+    ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
+      item
+        AppearanceObjectName = 'Value'
+        AppearanceClassName = 'TTextObjectAppearance'
+        Appearance.TextAlign = Leading
+        Appearance.Trimming = Character
+        Appearance.Width = 350.000000000000000000
+        Appearance.Height = 90.000000000000000000
+        Appearance.PlaceOffset.X = 85.000000000000000000
+        Appearance.PlaceOffset.Y = 3.000000000000000000
+      end
+      item
+        AppearanceObjectName = 'Thumb'
+        AppearanceClassName = 'TImageObjectAppearance'
+        Appearance.Width = 80.000000000000000000
+      end
+      item
+        AppearanceObjectName = 'Kind'
+        AppearanceClassName = 'TTextObjectAppearance'
+        Appearance.Font.Size = 10.000000000000000000
+        Appearance.TextAlign = Leading
+        Appearance.TextVertAlign = Trailing
+        Appearance.TextColor = claGray
+        Appearance.Trimming = Character
+        Appearance.Width = 125.000000000000000000
+        Appearance.Height = 25.000000000000000000
+        Appearance.VertAlign = Trailing
+        Appearance.PlaceOffset.X = 85.000000000000000000
+        Appearance.PlaceOffset.Y = -5.000000000000000000
+      end
+      item
+        AppearanceObjectName = 'ScannedAt'
+        AppearanceClassName = 'TTextObjectAppearance'
+        Appearance.Font.Size = 10.000000000000000000
+        Appearance.TextAlign = Leading
+        Appearance.TextVertAlign = Trailing
+        Appearance.TextColor = claGray
+        Appearance.Trimming = Character
+        Appearance.Width = 200.000000000000000000
+        Appearance.Height = 25.000000000000000000
+        Appearance.VertAlign = Trailing
+        Appearance.PlaceOffset.X = 215.000000000000000000
+        Appearance.PlaceOffset.Y = -5.000000000000000000
+      end
+      item
+        AppearanceObjectName = 'ScanCount'
+        AppearanceClassName = 'TTextObjectAppearance'
+        Appearance.TextAlign = Trailing
+        Appearance.TextVertAlign = Leading
+        Appearance.TextColor = claSteelblue
+        Appearance.Width = 100.000000000000000000
+        Appearance.Height = 25.000000000000000000
+        Appearance.Align = Trailing
+        Appearance.PlaceOffset.Y = 3.000000000000000000
+      end>
+    ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
+      item
+        AppearanceObjectName = 'Text1'
+        AppearanceClassName = 'TTextObjectAppearance'
+      end>
+    CanSwipeDelete = False
+    OnItemClick = DataListViewItemClick
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = MainDM.DataTable
+    ScopeMappings = <>
+    Left = 192
+    Top = 232
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 20
+    Top = 5
+    object LinkListControlToField1: TLinkListControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      Control = DataListView
+      FillExpressions = <
+        item
+          SourceMemberName = 'Value'
+          ControlMemberName = 'Value'
+        end
+        item
+          SourceMemberName = 'Kind'
+          ControlMemberName = 'Kind'
+        end
+        item
+          SourceMemberName = 'Thumb'
+          ControlMemberName = 'Thumb'
+        end
+        item
+          SourceMemberName = 'ScannedAt'
+          ControlMemberName = 'ScannedAt'
+        end
+        item
+          SourceMemberName = 'ScanCount'
+          ControlMemberName = 'ScanCount'
+        end>
+      FillHeaderExpressions = <>
+      FillBreakGroups = <>
+    end
+  end
+end

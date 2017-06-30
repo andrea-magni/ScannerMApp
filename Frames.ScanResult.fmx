@@ -1,0 +1,215 @@
+object ScanResultFrame: TScanResultFrame
+  Align = Client
+  Size.Width = 358.000000000000000000
+  Size.Height = 508.000000000000000000
+  Size.PlatformDefault = False
+  OnClick = FrameClick
+  object ResultLayout: TLayout
+    Align = Bottom
+    Position.Y = 308.000000000000000000
+    Size.Width = 358.000000000000000000
+    Size.Height = 200.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object BackgroundRectangle: TRectangle
+      Align = Contents
+      HitTest = False
+      Size.Width = 358.000000000000000000
+      Size.Height = 200.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Thickness = 3.000000000000000000
+    end
+    object InfoBottomLayout: TLayout
+      Align = Bottom
+      Margins.Left = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 170.000000000000000000
+      Size.Width = 348.000000000000000000
+      Size.Height = 25.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object KindLabel: TLabel
+        Align = Left
+        StyledSettings = [Family, Style]
+        Size.Width = 100.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 10.000000000000000000
+        TextSettings.FontColor = claGray
+        TextSettings.HorzAlign = Trailing
+        TabOrder = 1
+      end
+      object TimeStampLabel: TLabel
+        Align = Client
+        StyledSettings = [Family, Style]
+        Size.Width = 248.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 10.000000000000000000
+        TextSettings.FontColor = claGray
+        TextSettings.HorzAlign = Center
+        TabOrder = 0
+      end
+    end
+    object InfoTopLayout: TLayout
+      Align = Top
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 5.000000000000000000
+      Size.Width = 348.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object Label1: TLabel
+        Align = Left
+        StyledSettings = [Family, Style]
+        Size.Width = 100.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 10.000000000000000000
+        TextSettings.FontColor = claGray
+        TextSettings.HorzAlign = Trailing
+        TabOrder = 1
+      end
+      object ScanCountLabel: TLabel
+        Align = Right
+        StyledSettings = [Family, Style]
+        Position.X = 248.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 30.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.FontColor = claCadetblue
+        TextSettings.HorzAlign = Trailing
+        TabOrder = 0
+      end
+    end
+    object ResultLabel: TLabel
+      Align = Contents
+      Margins.Left = 45.000000000000000000
+      Margins.Top = 25.000000000000000000
+      Margins.Right = 5.000000000000000000
+      Margins.Bottom = 25.000000000000000000
+      Size.Width = 308.000000000000000000
+      Size.Height = 150.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      TabOrder = 2
+    end
+    object ActionsLayout: TGridLayout
+      Align = Left
+      ItemHeight = 64.000000000000000000
+      ItemWidth = 64.000000000000000000
+      Orientation = Vertical
+      Position.Y = 35.000000000000000000
+      Size.Width = 64.000000000000000000
+      Size.Height = 135.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      object ShareButton: TButton
+        Action = ShareAction
+        Align = Left
+        Enabled = True
+        ImageIndex = -1
+        Size.Width = 64.000000000000000000
+        Size.Height = 64.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'actiontoolbutton'
+        TabOrder = 1
+      end
+      object DeleteButton: TButton
+        Action = DeleteAction
+        Align = Left
+        Enabled = True
+        ImageIndex = -1
+        Position.Y = 64.000000000000000000
+        Size.Width = 64.000000000000000000
+        Size.Height = 64.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'deleteitembutton'
+        TabOrder = 0
+      end
+    end
+  end
+  object FrameLayout: TLayout
+    Align = Client
+    Size.Width = 358.000000000000000000
+    Size.Height = 308.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    object FrameImage: TImage
+      MultiResBitmap = <
+        item
+        end>
+      Align = Client
+      HitTest = False
+      Margins.Bottom = 10.000000000000000000
+      Size.Width = 358.000000000000000000
+      Size.Height = 298.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = MainDM.DataTable
+    ScopeMappings = <>
+    Left = 32
+    Top = 72
+  end
+  object BindingsList1: TBindingsList
+    Methods = <>
+    OutputConverters = <>
+    Left = 36
+    Top = 21
+    object LinkPropertyToFieldText: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'ScannedAt'
+      Component = TimeStampLabel
+      ComponentProperty = 'Text'
+    end
+    object LinkPropertyToFieldText2: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'Kind'
+      Component = KindLabel
+      ComponentProperty = 'Text'
+    end
+    object LinkPropertyToFieldText3: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'Value'
+      Component = ResultLabel
+      ComponentProperty = 'Text'
+    end
+    object LinkPropertyToFieldText4: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'ScanCount'
+      Component = ScanCountLabel
+      ComponentProperty = 'Text'
+    end
+    object LinkPropertyToFieldBitmap: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'Bitmap'
+      Component = FrameImage
+      ComponentProperty = 'Bitmap'
+    end
+  end
+  object ActionList1: TActionList
+    Left = 152
+    Top = 112
+    object ShareAction: TShowShareSheetAction
+      Category = 'Media Library'
+      OnBeforeExecute = ShareActionBeforeExecute
+    end
+    object DeleteAction: TAction
+      Text = 'Delete'
+      OnExecute = DeleteActionExecute
+    end
+  end
+end
