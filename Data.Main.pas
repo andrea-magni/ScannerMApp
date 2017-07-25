@@ -32,13 +32,13 @@ type
       write SetProcessingTime;
   end;
 
-  TScanningMessage = TMessage<Boolean>;
-  TScanResultMessage = TObjectMessage<TScanResult>;
-  TScanPointMessage = TMessage<TPointF>;
-  TScanSettingMessage = TMessage<TVideoCaptureSetting>;
-  TTorchModeMessage = TMessage<Boolean>;
-  TCameraBufferMessage = TMessage<TBitmap>;
-  THardwareBackMessage = TMessage<Integer>;
+  TScanningMessage = Class(TMessage<Boolean>);
+  TScanResultMessage = Class(TObjectMessage<TScanResult>);
+  TScanPointMessage = Class(TMessage<TPointF>);
+  TScanSettingMessage = Class(TMessage<TVideoCaptureSetting>);
+  TTorchModeMessage = Class(TMessage<Boolean>);
+  TCameraBufferMessage = Class(TMessage<TBitmap>);
+  THardwareBackMessage = Class(TMessage<Integer>);
 
   TMainDM = class(TDataModule)
     CameraComponent1: TCameraComponent;
