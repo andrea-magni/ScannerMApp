@@ -231,6 +231,7 @@ begin
   else
   begin
     MainDM.StartScanning;
+    ScanningFrameFI.Frame.PrepareToShow;
     ScanningFrameFI.Show()
   end;
 

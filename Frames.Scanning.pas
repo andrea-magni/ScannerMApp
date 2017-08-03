@@ -27,7 +27,7 @@ type
   public
     { Public declarations }
     procedure AfterConstruction; override;
-
+    procedure PrepareToShow;
   end;
 
 implementation
@@ -58,9 +58,10 @@ begin
     var
       LValue: TPointF;
     begin
+{$IFNDEF IOS}
       LValue := (M as TScanPointMessage).Value;
-
       DrawScanPoint(LValue, TAlphaColorRec.Lightblue);
+{$ENDIF IOS}
     end
   );
 
@@ -117,6 +118,11 @@ begin
       );
     end
   );
+end;
+
+procedure TScanningFrame.PrepareToShow;
+begin
+  FrameRectangle.Fill.Bitmap.Bitmap := nil;
 end;
 
 procedure TScanningFrame.TorchImageClick(Sender: TObject);

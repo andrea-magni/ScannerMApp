@@ -3,11 +3,6 @@ object MainDM: TMainDM
   OnCreate = DataModuleCreate
   Height = 275
   Width = 307
-  object CameraComponent1: TCameraComponent
-    OnSampleBufferReady = CameraComponent1SampleBufferReady
-    Left = 48
-    Top = 40
-  end
   object DataTable: TFDMemTable
     Active = True
     FieldDefs = <

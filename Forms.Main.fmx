@@ -35,6 +35,7 @@ object MainForm: TMainForm
       Size.PlatformDefault = False
       StyleLookup = 'cameratoolbutton'
       TabOrder = 0
+      Visible = True
     end
     object LibraryButton: TButton
       Action = TakePhotoFromLibraryAction
@@ -47,6 +48,7 @@ object MainForm: TMainForm
       Size.PlatformDefault = False
       StyleLookup = 'additembutton'
       TabOrder = 1
+      Visible = True
     end
     object OpenButton: TButton
       Action = LoadFromFileAction
@@ -58,6 +60,7 @@ object MainForm: TMainForm
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
+      Visible = True
     end
     object InfoButton: TButton
       Align = Left
