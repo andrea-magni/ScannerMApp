@@ -167,25 +167,32 @@ end;
 
 procedure TMainDM.CameraComponent1SampleBufferReady(Sender: TObject;
   const ATime: TMediaTime);
+var
+  LBuffer, LReducedBuffer: TBitmap;
 begin
   if Sender is TCameraComponent then
   begin
-    TThread.Synchronize(TThread.CurrentThread,
-      procedure
-      var
-        LBuffer, LReducedBuffer: TBitmap;
-      begin
-        LBuffer := TBitmap.Create;
-        // TBitmaps are interfaced objects, no need to free them!
-        TCameraComponent(Sender).SampleBufferToBitmap(LBuffer, True);
-        LReducedBuffer := CropBitmap(LBuffer);
-        TMessageManager.DefaultManager.SendMessage(Sender,
-          TCameraBufferMessage.Create(LReducedBuffer));
+    LBuffer := TBitmap.Create;
+    try
+      TCameraComponent(Sender).SampleBufferToBitmap(LBuffer, True);
+      LReducedBuffer := CropBitmap(LBuffer);
+      try
+        TThread.Synchronize(nil,
+          procedure
+          begin
+            TMessageManager.DefaultManager.SendMessage(Sender,
+              TCameraBufferMessage.Create(LReducedBuffer));
 
-        if FWaitingResult and (MilliSecondsBetween(FLastScan, Now) >=
-          SCAN_EACH_MS) then
-          ScanFrames(LReducedBuffer);
-      end);
+            if FWaitingResult and (MilliSecondsBetween(FLastScan, Now) >=
+              SCAN_EACH_MS) then
+              ScanFrames(LReducedBuffer);
+          end);
+      finally
+        FreeAndNil(LReducedBuffer);
+      end;
+    finally
+      LBuffer.Free;
+    end;
   end;
 end;
 
@@ -283,12 +290,16 @@ end;
 
 procedure TMainDM.OnResultPointHandler(const APoint: IResultPoint);
 begin
-  TThread.Queue(nil,
-    procedure
-    begin
-      TMessageManager.DefaultManager.SendMessage(Self,
-        TScanPointMessage.Create(PointF(APoint.x, APoint.y)));
-    end);
+  if (TThread.CurrentThread.ThreadID = MainThreadID) then
+    TMessageManager.DefaultManager.SendMessage(Self,
+      TScanPointMessage.Create(PointF(APoint.x, APoint.y)))
+  else
+    TThread.Queue(nil,
+      procedure
+      begin
+        TMessageManager.DefaultManager.SendMessage(Self,
+          TScanPointMessage.Create(PointF(APoint.x, APoint.y)));
+      end);
 end;
 
 procedure TMainDM.Scan(const ABitmap: TBitmap;
@@ -414,6 +425,9 @@ begin
   if Assigned(FCameraComponent) then
   begin
     FCameraComponent.OnSampleBufferReady := nil;
+{$IFDEF MSWINDOWS}
+    FCameraComponent.Active := False;
+{$ENDIF}
     FreeAndNil(FCameraComponent);
   end;
 
