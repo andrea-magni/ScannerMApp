@@ -374,7 +374,6 @@ begin
             LReadResult)));
         end);
 
-      FreeAndNil(LReadResult);
     end;
   finally
     FreeAndNil(LScanManager);
@@ -465,11 +464,12 @@ begin
     FFrame := nil;
   end;
 
-  if Assigned(FResult) then
-  begin
-    FResult.DisposeOf;
-    FResult := nil;
-  end;
+  // FResult is a reference injected and disposed of elsewhere
+  // if Assigned(FResult) then
+  // begin
+  // FResult.DisposeOf;
+  // FResult := nil;
+  // end;
 
   inherited;
 end;
