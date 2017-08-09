@@ -167,32 +167,32 @@ end;
 
 procedure TMainDM.CameraComponent1SampleBufferReady(Sender: TObject;
   const ATime: TMediaTime);
-var
-  LBuffer, LReducedBuffer: TBitmap;
 begin
   if Sender is TCameraComponent then
   begin
-    LBuffer := TBitmap.Create;
-    try
-      TCameraComponent(Sender).SampleBufferToBitmap(LBuffer, True);
-      LReducedBuffer := CropBitmap(LBuffer);
-      try
-        TThread.Synchronize(nil,
-          procedure
-          begin
+    TThread.Synchronize(nil,
+      procedure
+      var
+        LBuffer, LReducedBuffer: TBitmap;
+      begin
+        LBuffer := TBitmap.Create;
+        try
+          TCameraComponent(Sender).SampleBufferToBitmap(LBuffer, True);
+          LReducedBuffer := CropBitmap(LBuffer);
+          try
             TMessageManager.DefaultManager.SendMessage(Sender,
               TCameraBufferMessage.Create(LReducedBuffer));
-
             if FWaitingResult and (MilliSecondsBetween(FLastScan, Now) >=
               SCAN_EACH_MS) then
               ScanFrames(LReducedBuffer);
-          end);
-      finally
-        FreeAndNil(LReducedBuffer);
-      end;
-    finally
-      LBuffer.Free;
-    end;
+          finally
+            if Assigned(LReducedBuffer) then
+              FreeAndnil(LReducedBuffer);
+          end;
+        finally
+          LBuffer.Free;
+        end;
+      end);
   end;
 end;
 
@@ -425,7 +425,7 @@ begin
   begin
     FCameraComponent.OnSampleBufferReady := nil;
 {$IFDEF MSWINDOWS}
-    FCameraComponent.Active := False;
+    //FCameraComponent.Active := False;
 {$ENDIF}
     FreeAndNil(FCameraComponent);
   end;
