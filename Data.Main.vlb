@@ -1,7 +1,4 @@
-﻿[CameraComponent1]
-Coordinates=0,0,115,33
-
-[DataTable]
+﻿[DataTable]
 Coordinates=10,10,63,141
 
 [DataTableBitmap]
@@ -18,4 +15,7 @@ Coordinates=370,1,117,33
 
 [DataTableValue]
 Coordinates=235,105,91,33
+
+[]
+Coordinates=0,0,115,33
 

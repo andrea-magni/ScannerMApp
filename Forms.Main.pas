@@ -35,6 +35,7 @@ type
       Shift: TShiftState);
     procedure InfoButtonClick(Sender: TObject);
     function AppEventHandler(AAppEvent: TApplicationEvent; AContext: TObject): Boolean;
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     FScanningFrameFI: TFrameInfo<TScanningFrame>;
@@ -87,6 +88,9 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
   LAppEventService: IFMXApplicationEventService;
 begin
+{$IFDEF MSWINDOWS}
+  ReportMemoryLeaksOnShutdown := True;
+{$ENDIF}
   FScanningFrameFI := nil;
   FInfoFrameFI := nil;
 
@@ -165,6 +169,11 @@ begin
   UpdateGUI;
 end;
 
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  FrameStand1.FrameInfos.Clear;
+end;
+
 procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 begin
@@ -231,6 +240,7 @@ begin
   else
   begin
     MainDM.StartScanning;
+    ScanningFrameFI.Frame.PrepareToShow;
     ScanningFrameFI.Show()
   end;
 
