@@ -13,8 +13,9 @@ uses
 {$R *.res}
 
 begin
-{$IFDEF MSWINDOWS}
+{$IFDEF MSWINDOWS} {$WARNINGS OFF}
   ReportMemoryLeaksOnShutdown := DebugHook > 0;
+{$WARNINGS ON}
 {$ENDIF}
   Application.Initialize;
   Application.FormFactor.Orientations := [TFormOrientation.Portrait, TFormOrientation.InvertedPortrait];

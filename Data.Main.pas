@@ -290,16 +290,14 @@ end;
 
 procedure TMainDM.OnResultPointHandler(const APoint: IResultPoint);
 begin
-  if (TThread.CurrentThread.ThreadID = MainThreadID) then
-    TMessageManager.DefaultManager.SendMessage(Self,
-      TScanPointMessage.Create(PointF(APoint.x, APoint.y)))
-  else
-    TThread.Queue(nil,
-      procedure
-      begin
-        TMessageManager.DefaultManager.SendMessage(Self,
-          TScanPointMessage.Create(PointF(APoint.x, APoint.y)));
-      end);
+  TThread.ForceQueue(
+    nil
+  , procedure
+    begin
+      TMessageManager.DefaultManager.SendMessage(Self,
+        TScanPointMessage.Create(PointF(APoint.x, APoint.y)));
+    end
+  );
 end;
 
 procedure TMainDM.Scan(const ABitmap: TBitmap;
@@ -404,9 +402,9 @@ end;
 
 procedure TMainDM.StartScanning;
 begin
-  if Not Assigned(FCameraComponent) then
+  if not Assigned(FCameraComponent) then
   begin
-    FCameraComponent := TCameraComponent.Create(Self);
+    FCameraComponent := TCameraComponent.Create(nil);
     SetCameraSettings(FCameraComponent);
     FCameraComponent.OnSampleBufferReady := CameraComponent1SampleBufferReady;
     FCameraComponent.Active := True;
@@ -458,18 +456,7 @@ end;
 
 destructor TScanResult.Destroy;
 begin
-  if Assigned(FFrame) then
-  begin
-    FFrame.DisposeOf;
-    FFrame := nil;
-  end;
-
-  // FResult is a reference injected and disposed of elsewhere
-  // if Assigned(FResult) then
-  // begin
-  // FResult.DisposeOf;
-  // FResult := nil;
-  // end;
+  FreeAndNil(FFrame);
 
   inherited;
 end;

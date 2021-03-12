@@ -36,7 +36,6 @@ object MainForm: TMainForm
       Size.PlatformDefault = False
       StyleLookup = 'cameratoolbutton'
       TabOrder = 0
-      Visible = True
     end
     object LibraryButton: TButton
       Action = TakePhotoFromLibraryAction
@@ -49,7 +48,6 @@ object MainForm: TMainForm
       Size.PlatformDefault = False
       StyleLookup = 'additembutton'
       TabOrder = 1
-      Visible = True
     end
     object OpenButton: TButton
       Action = LoadFromFileAction
@@ -61,7 +59,6 @@ object MainForm: TMainForm
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 2
-      Visible = True
     end
     object InfoButton: TButton
       Align = Left
@@ -144,8 +141,11 @@ object MainForm: TMainForm
     AnimationShow = 'OnShow*'
     AnimationHide = 'OnHide*'
     CommonActionPrefix = 'ca_'
+    DefaultHideAndCloseDeferTimeMS = 100
     DefaultStyleName = 'framestand'
+    DefaultStandName = 'framestand'
     StyleBook = Stands
+    StandBook = Stands
     Left = 48
     Top = 104
   end

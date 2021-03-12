@@ -4,10 +4,10 @@
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
     <PropertyGroup>
-        <DeviceId Condition="'$(Platform)'=='Android'"/>
-        <DeviceId Condition="'$(Platform)'=='iOSDevice32'">155f3595e46a4c775a80725306eb8c4dfb692de7</DeviceId>
-        <DeviceId Condition="'$(Platform)'=='iOSDevice64'">155f3595e46a4c775a80725306eb8c4dfb692de7</DeviceId>
-        <DeviceId Condition="'$(Platform)'=='iOSSimulator'">535E1E67-528D-4DF2-B8ED-64C80293124C</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android'">01cace91dbe53a17</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android64'">01cace91dbe53a17</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
+        <DeviceId Condition="'$(Platform)'=='iOSSimulator'">iPhone5</DeviceId>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='iOSDevice64'">
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_640x1136.png" Condition="'$(Config)'=='Debug'">
@@ -33,15 +33,6 @@
             <RemoteName>FM_ApplicationIcon_144x144.png</RemoteName>
             <DeployClass>iPad_AppIcon144</DeployClass>
             <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp.entitlements" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\..\</RemoteDir>
-            <RemoteName>ScannerMapp.entitlements</RemoteName>
-            <DeployClass>ProjectiOSEntitlements</DeployClass>
-            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -83,23 +74,13 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_120x120.png</RemoteName>
             <DeployClass>iPhone_AppIcon120</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
-            <RemoteName>ScannerMapp</RemoteName>
-            <DeployClass>ProjectOutput</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
-            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImagePortrait_768x1004.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\</RemoteDir>
@@ -129,10 +110,10 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
             <DeployClass>iPad_SpotLight80</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -155,6 +136,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ResourceRules.plist" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteName>ResourceRules.plist</RemoteName>
+            <DeployClass>ProjectiOSDeviceResourceRules</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_40x40.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\</RemoteDir>
             <RemoteName>FM_SpotlightSearchIcon_40x40.png</RemoteName>
@@ -164,20 +154,11 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp.dSYM" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
-            <RemoteName>ScannerMapp</RemoteName>
-            <DeployClass>ProjectiOSDeviceDebug</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_180x180.png</RemoteName>
             <DeployClass>iPhone_AppIcon180</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -201,10 +182,10 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SettingIcon_58x58.png</RemoteName>
             <DeployClass>iPad_Setting58</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -254,15 +235,6 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp.info.plist" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
-            <RemoteName>Info.plist</RemoteName>
-            <DeployClass>ProjectiOSInfoPList</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImagePortrait_768x1024.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\</RemoteDir>
             <RemoteName>Default-Portrait~ipad.png</RemoteName>
@@ -271,6 +243,16 @@
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteName>ScannerMapp</RemoteName>
+            <DeployClass>ProjectOutput</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+            <Required>True</Required>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_114x114.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\</RemoteDir>
@@ -281,11 +263,29 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp.entitlements" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp.app\..\</RemoteDir>
+            <RemoteName>ScannerMapp.entitlements</RemoteName>
+            <DeployClass>ProjectiOSEntitlements</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp.dSYM" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF\</RemoteDir>
+            <RemoteName>ScannerMapp</RemoteName>
+            <DeployClass>ProjectiOSDeviceDebug</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
             <DeployClass>iPhone_Spotlight80</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -295,6 +295,15 @@
             <RemoteName>Default-Landscape-736h@3x.png</RemoteName>
             <DeployClass>iPhone_Launch2208</DeployClass>
             <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ScannerMapp.info.plist" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteName>Info.plist</RemoteName>
+            <DeployClass>ProjectiOSInfoPList</DeployClass>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -309,10 +318,10 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_152x152.png</RemoteName>
             <DeployClass>iPad_AppIcon152</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -331,15 +340,6 @@
             <RemoteName>FM_SpotlightSearchIcon_29x29.png</RemoteName>
             <DeployClass>iPhone_Spotlight29</DeployClass>
             <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="C:\Temp\iOSDevice64\Debug\ScannerMapp\ResourceRules.plist" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
-            <RemoteName>ResourceRules.plist</RemoteName>
-            <DeployClass>ProjectiOSDeviceResourceRules</DeployClass>
-            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -364,7 +364,6 @@
         </DeployFile>
     </ItemGroup>
     <ItemGroup Condition="'$(Platform)'=='Win64'"/>
-    <ItemGroup Condition="'$(Platform)'=='iOSDevice32'"/>
     <ItemGroup Condition="'$(Platform)'=='Win32'">
         <DeployFile Include="Win32\Debug\ScannerMapp.exe" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp\</RemoteDir>
@@ -377,26 +376,8 @@
             <Required>True</Required>
         </DeployFile>
     </ItemGroup>
-    <ItemGroup Condition="'$(Platform)'=='OSX32'">
-        <DeployFile Include="$(BDS)\Redist\osx32\libcgsqlite3.dylib">
-            <RemoteDir>ScannerMapp.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libcgsqlite3.dylib</RemoteName>
-            <DeployClass>DependencyModule</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib">
-            <RemoteDir>ScannerMapp.app\Contents\MacOS\</RemoteDir>
-            <RemoteName>libcgunwind.1.0.dylib</RemoteName>
-            <DeployClass>DependencyModule</DeployClass>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-    </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Linux64'"/>
+    <ItemGroup Condition="'$(Platform)'=='OSX64'"/>
     <ItemGroup Condition="'$(Platform)'=='Android'">
         <DeployFile Include="beep.mp3" Condition="'$(Config)'=='Release'">
             <RemoteDir>ScannerMapp\</RemoteDir>
@@ -434,6 +415,24 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_36x36.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\drawable-hdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon36</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_96x96.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\drawable-xxxhdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon96</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="C:\Android\Debug\ScannerMapp\splash_image_def.xml" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp\res\drawable\</RemoteDir>
             <RemoteName>splash_image_def.xml</RemoteName>
@@ -456,6 +455,42 @@
             <RemoteDir>ScannerMapp\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon48</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\drawable-mdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon24</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_48x48.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\drawable-xhdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon48</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\drawable-xxxhdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <DeployClass>Android_LauncherIcon192</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="C:\Android\Debug\ScannerMapp\styles-v21.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\values-v21\</RemoteDir>
+            <RemoteName>styles.xml</RemoteName>
+            <DeployClass>AndroidSplashStylesV21</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -501,6 +536,15 @@
             <RemoteDir>ScannerMapp\</RemoteDir>
             <RemoteName>AndroidManifest.xml</RemoteName>
             <DeployClass>ProjectAndroidManifest</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_NotificationIcon_72x72.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteName>ic_notification.png</RemoteName>
+            <DeployClass>Android_NotificationIcon72</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -651,6 +695,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="C:\Android\Debug\ScannerMapp\strings.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\values\</RemoteDir>
+            <RemoteName>strings.xml</RemoteName>
+            <DeployClass>Android_Strings</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\lib\android\debug\armeabi\libnative-activity.so" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp\library\lib\armeabi\</RemoteDir>
             <RemoteName>libZXingProject.so</RemoteName>
@@ -678,6 +731,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
             <Required>True</Required>
+        </DeployFile>
+        <DeployFile Include="C:\Android\Debug\ScannerMapp\colors.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\res\values\</RemoteDir>
+            <RemoteName>colors.xml</RemoteName>
+            <DeployClass>Android_Colors</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="Android\Release\classes.dex" Condition="'$(Config)'=='Release'">
             <RemoteDir>ScannerMapp\classes\</RemoteDir>
@@ -763,19 +825,19 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_120x120.png</RemoteName>
             <DeployClass>iPhone_AppIcon120</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
             <DeployClass>iPad_SpotLight80</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -872,10 +934,10 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_180x180.png</RemoteName>
             <DeployClass>iPhone_AppIcon180</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -962,10 +1024,10 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_152x152.png</RemoteName>
             <DeployClass>iPad_AppIcon152</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -980,10 +1042,10 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SettingIcon_58x58.png</RemoteName>
             <DeployClass>iPad_Setting58</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -1025,10 +1087,10 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>FM_SpotlightSearchIcon_80x80.png</RemoteName>
             <DeployClass>iPhone_Spotlight80</DeployClass>
-            <Operation>0</Operation>
+            <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -1069,6 +1131,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(BDS)\Redist\iossimulator\libpcre.dylib">
+            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteName>libpcre.dylib</RemoteName>
+            <DeployClass>DependencyModule</DeployClass>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_57x57.png" Condition="'$(Config)'=='Release'">
             <RemoteDir>ScannerMapp.app\</RemoteDir>
             <RemoteName>FM_ApplicationIcon_57x57.png</RemoteName>
@@ -1088,4 +1159,5 @@
             <Overwrite>True</Overwrite>
         </DeployFile>
     </ItemGroup>
+    <ItemGroup Condition="'$(Platform)'=='Android64'"/>
 </Project>

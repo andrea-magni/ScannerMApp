@@ -110,7 +110,7 @@ begin
     procedure
     begin
       Sleep(AFadeTime);
-      TThread.Queue(nil
+      TThread.ForceQueue(nil
       , procedure begin
           FrameRectangle.RemoveObject(LRect);
           LRect.Free;

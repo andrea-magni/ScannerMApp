@@ -7,8 +7,9 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
   FMX.Objects, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Media,
   System.Actions, FMX.ActnList, FMX.StdActns, FMX.MediaLibrary.Actions, System.Math.Vectors
+, System.Threading, System.Diagnostics, System.Messaging,  System.Permissions
 , ZXing.ScanManager, ZXing.BarcodeFormat, ZXing.ReadResult, ZXing.ResultPoint
-, FrameStand
+, FrameStand, SubjectStand
 , Frames.Scanning, Frames.Data, Frames.Info, FMX.Platform
 ;
 
@@ -41,6 +42,7 @@ type
     FScanningFrameFI: TFrameInfo<TScanningFrame>;
     FDataFrameFI: TFrameInfo<TDataFrame>;
     FInfoFrameFI: TFrameInfo<TInfoFrame>;
+
 //    FDataString: string;
     procedure UpdateGUI;
     function GetScanningFrameFI: TFrameInfo<TScanningFrame>;
@@ -49,8 +51,10 @@ type
     property ScanningFrameFI: TFrameInfo<TScanningFrame> read GetScanningFrameFI;
     property DataFrameFI: TFrameInfo<TDataFrame> read GetDataFrameFI;
     property InfoFrameFI: TFrameInfo<TInfoFrame> read GetInfoFrameFI;
+  private
+    procedure PermissionRequestResult(Sender: TObject; const APermissions: TArray<string>; const AGrantResults: TArray<TPermissionStatus>);
+    procedure DisplayRationale(Sender: TObject; const APermissions: TArray<string>; const APostRationaleProc: TProc);
   public
-    { Public declarations }
   end;
 
 var
@@ -61,17 +65,40 @@ implementation
 {$R *.fmx}
 
 uses
-  System.Threading, System.Diagnostics, System.Messaging
-, DateUtils, Rtti, TypInfo, IOUtils, Math
+  DateUtils, Rtti, TypInfo, IOUtils, Math
 {$IFDEF ANDROID}
 , Androidapi.JNI.Media, Androidapi.Helpers, Androidapi.JNI.JavaTypes
 , FMX.Platform.Android, Androidapi.JNI.GraphicsContentViewText, Androidapi.JNI.Os
 , Androidapi.JNI.Net
 {$ENDIF}
-, FMX.Ani
+, FMX.Ani, FMX.DialogService
 , Data.Main
 ;
 
+
+procedure TMainForm.PermissionRequestResult(Sender: TObject;
+  const APermissions: TArray<string>;
+  const AGrantResults: TArray<TPermissionStatus>);
+var
+  LAllGranted: Boolean;
+  LPermission: string;
+  LIndex: Integer;
+  LResult: TPermissionStatus;
+begin
+  // 1 permission involved: CAMERA
+  LAllGranted := Length(APermissions) > 0;
+  for LIndex := 0 to Length(APermissions) -1 do
+  begin
+    LPermission := APermissions[LIndex];
+    LResult := AGrantResults[LIndex];
+
+    if LResult <> TPermissionStatus.Granted then
+      LAllGranted := False;
+  end;
+
+  if not LAllGranted then
+    TDialogService.ShowMessage('Not all required permissions have been granted');
+end;
 
 function TMainForm.AppEventHandler(AAppEvent: TApplicationEvent;
   AContext: TObject): Boolean;
@@ -84,9 +111,23 @@ begin
       MainDM.StopScanning;
 end;
 
+procedure TMainForm.DisplayRationale(Sender: TObject;
+  const APermissions: TArray<string>; const APostRationaleProc: TProc);
+begin
+  // Show an explanation to the user *asynchronously* - don't block this thread waiting for the user's response!
+  // After the user sees the explanation, invoke the post-rationale routine to request the permissions
+  TDialogService.ShowMessage('The app needs to access the camera and external storage in order to work',
+    procedure(const AResult: TModalResult)
+    begin
+      APostRationaleProc;
+    end)
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   LAppEventService: IFMXApplicationEventService;
+  LPermission, LPermissionCamera, LExternalStorageR, LExternalStorageW: string;
+  LPermissions: TArray<string>;
 begin
 {$IFDEF MSWINDOWS}
   ReportMemoryLeaksOnShutdown := True;
@@ -96,6 +137,16 @@ begin
 
   if TPlatformServices.Current.SupportsPlatformService(IFMXApplicationEventService, LAppEventService) then
     LAppEventService.SetApplicationEventHandler(AppEventHandler);
+
+  LPermissionCamera := JStringToString(TJManifest_permission.JavaClass.CAMERA);
+  LExternalStorageR := JStringToString(TJManifest_permission.JavaClass.READ_EXTERNAL_STORAGE);
+  LExternalStorageW := JStringToString(TJManifest_permission.JavaClass.WRITE_EXTERNAL_STORAGE);
+
+  LPermissions := [LPermissionCamera, LExternalStorageR, LExternalStorageW];
+  for LPermission in LPermissions do
+    if not PermissionsService.IsPermissionGranted(LPermission) then
+      PermissionsService.RequestPermissions([LPermission], PermissionRequestResult, DisplayRationale);
+
 
 {  // WIP
   MainActivity.registerIntentAction(TJIntent.JavaClass.ACTION_SEND);
