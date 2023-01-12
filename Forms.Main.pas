@@ -52,8 +52,8 @@ type
     property DataFrameFI: TFrameInfo<TDataFrame> read GetDataFrameFI;
     property InfoFrameFI: TFrameInfo<TInfoFrame> read GetInfoFrameFI;
   private
-    procedure PermissionRequestResult(Sender: TObject; const APermissions: TArray<string>; const AGrantResults: TArray<TPermissionStatus>);
-    procedure DisplayRationale(Sender: TObject; const APermissions: TArray<string>; const APostRationaleProc: TProc);
+    procedure PermissionRequestResult(Sender: TObject; const APermissions: TClassicStringDynArray; const AGrantResults: TClassicPermissionStatusDynArray);
+    procedure DisplayRationale(Sender: TObject; const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
   public
   end;
 
@@ -77,8 +77,8 @@ uses
 
 
 procedure TMainForm.PermissionRequestResult(Sender: TObject;
-  const APermissions: TArray<string>;
-  const AGrantResults: TArray<TPermissionStatus>);
+  const APermissions: TClassicStringDynArray;
+  const AGrantResults: TClassicPermissionStatusDynArray);
 var
   LAllGranted: Boolean;
   LPermission: string;
@@ -112,7 +112,7 @@ begin
 end;
 
 procedure TMainForm.DisplayRationale(Sender: TObject;
-  const APermissions: TArray<string>; const APostRationaleProc: TProc);
+  const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
 begin
   // Show an explanation to the user *asynchronously* - don't block this thread waiting for the user's response!
   // After the user sees the explanation, invoke the post-rationale routine to request the permissions
