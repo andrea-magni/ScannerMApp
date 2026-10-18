@@ -39,7 +39,6 @@ type
   TScanSettingMessage = Class(TMessage<TVideoCaptureSetting>);
   TTorchModeMessage = Class(TMessage<Boolean>);
   TCameraBufferMessage = Class(TMessage<TBitmap>);
-  THardwareBackMessage = Class(TMessage<Integer>);
   TDataChangedMessage = Class(TMessage);
 
   TMainDM = class(TDataModule)
@@ -91,7 +90,6 @@ var
   MainDM: TMainDM;
 
 function BarcodeToString(const ABarcode: TBarcodeFormat): string;
-procedure Beep;
 
 implementation
 
@@ -100,9 +98,6 @@ implementation
 
 uses
   System.Threading, DateUtils, Rtti, TypInfo, IOUtils, Variants
-{$IFDEF ANDROID}
-    , Androidapi.JNI.Media, Androidapi.JNI.JavaTypes
-{$ENDIF}
     , FMX.Ani, UITypes, Math
     , UI.Theme;
 
@@ -168,29 +163,6 @@ begin
   else
     Result := 'FORMAT_' + IntToStr(Ord(ABarcode));
   end;
-end;
-
-procedure Beep;
-{$IFDEF ANDROID}
-var
-  Volume: Integer;
-  StreamType: Integer;
-  ToneType: Integer;
-  ToneGenerator: JToneGenerator;
-{$ENDIF}
-begin
-{$IFDEF ANDROID}
-  Volume := TJToneGenerator.JavaClass.MAX_VOLUME;
-
-  StreamType := TJAudioManager.JavaClass.STREAM_ALARM;
-  ToneType := TJToneGenerator.JavaClass.TONE_CDMA_EMERGENCY_RINGBACK;
-  try
-    ToneGenerator := TJToneGenerator.JavaClass.init(StreamType, Volume);
-    ToneGenerator.startTone(ToneType, 100);
-  finally
-    ToneGenerator.release;
-  end;
-{$ENDIF}
 end;
 
 procedure TMainDM.BeforeDestruction;

@@ -37,6 +37,8 @@ type
     { Public declarations }
     procedure AfterConstruction; override;
     procedure Refresh;
+    /// <summary>Hides the scan result, if shown; True when it was shown</summary>
+    function HideScanResult: Boolean;
     /// <summary>Where the scan result is shown (within the safe area of the form)</summary>
     property OverlayParent: TFmxObject read FOverlayParent write FOverlayParent;
   end;
@@ -91,6 +93,13 @@ begin
    FScanResultFI := FS.New<TScanResultFrame>(FOverlayParent, 'lightbox');
 
   FScanResultFI.Show();
+end;
+
+function TDataFrame.HideScanResult: Boolean;
+begin
+  Result := Assigned(FScanResultFI) and FScanResultFI.IsVisible;
+  if Result then
+    FScanResultFI.Hide;
 end;
 
 procedure TDataFrame.Refresh;
