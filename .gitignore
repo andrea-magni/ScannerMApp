@@ -65,3 +65,6 @@ __recovery/
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
 ScannerMapp.res
+
+# Windows Explorer thumbnail cache
+Thumbs.db
