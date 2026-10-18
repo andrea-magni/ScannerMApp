@@ -31,6 +31,10 @@ type
     { Private declarations }
 //    [FrameInfo] FI: TFrameInfo<TScanningFrame>;
     FSubscriptions: TSubscriptions;
+    FDefaultHint: string;
+    FHintTicket: Integer;
+    procedure ShowHint(const AText: string);
+    procedure RestoreHint;
     procedure UpdateTorch(const AOn: Boolean);
     procedure DrawScanPoint(const APosition: TPointF; const AColor: TAlphaColor;
       const ASize: Integer = 6; const AOpacity: Double = 0.8;
@@ -80,6 +84,13 @@ begin
     begin
       var LValue := (M as TCameraBufferMessage).Value;
       FrameRectangle.Fill.Bitmap.Bitmap.Assign(LValue);
+    end
+  );
+
+  FSubscriptions.Add(TScanHintMessage
+  , procedure(const Sender: TObject; const M: TMessage)
+    begin
+      ShowHint((M as TScanHintMessage).Value);
     end
   );
 
@@ -135,8 +146,37 @@ begin
   );
 end;
 
+procedure TScanningFrame.ShowHint(const AText: string);
+const
+  HINT_MS = 1500;
+begin
+  if FDefaultHint = '' then
+    FDefaultHint := HintLabel.Text;
+  HintLabel.Text := AText;
+  HintLabel.TextSettings.FontColor := COLOR_ACCENT;
+
+  // back to the default hint when no other one came meanwhile
+  Inc(FHintTicket);
+  var LTicket := FHintTicket;
+  TThread.ForceQueue(nil,
+    procedure
+    begin
+      if LTicket = FHintTicket then
+        RestoreHint;
+    end, HINT_MS);
+end;
+
+procedure TScanningFrame.RestoreHint;
+begin
+  if FDefaultHint <> '' then
+    HintLabel.Text := FDefaultHint;
+  HintLabel.TextSettings.FontColor := COLOR_TEXT;
+end;
+
 procedure TScanningFrame.PrepareToShow;
 begin
+  Inc(FHintTicket); // a pending restore is not needed any more
+  RestoreHint;
   FrameRectangle.Fill.Bitmap.Bitmap := nil;
   UpdateTorch(False); // a new camera starts with the torch off
 end;

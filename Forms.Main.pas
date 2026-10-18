@@ -77,6 +77,7 @@ type
     procedure UpdateGUI;
     function HandleBack: Boolean;
     procedure StartCamera;
+    procedure ScanImageFile(const AFileName: string);
     function GetScanningFrameFI: TFrameInfo<TScanningFrame>;
     function GetDataFrameFI: TFrameInfo<TDataFrame>;
     function GetInfoFrameFI: TFrameInfo<TInfoFrame>;
@@ -110,6 +111,9 @@ uses
 , FMX.Ani, FMX.DialogService
 , UI.Theme
 ;
+
+const
+  NO_CODE_FOUND = 'No code found in this image';
 
 
 {$IFDEF ANDROID}
@@ -207,6 +211,16 @@ begin
   );
 
   UpdateGUI;
+
+{$IF not (Defined(ANDROID) or Defined(IOS))}
+  // desktop: an image on the command line ("Open with") is scanned once the form is up
+  if (ParamCount > 0) and FileExists(ParamStr(1)) then
+    TThread.ForceQueue(nil,
+      procedure
+      begin
+        ScanImageFile(ParamStr(1));
+      end);
+{$ENDIF}
 end;
 
 procedure TMainForm.CameraButtonClick(Sender: TObject);
@@ -313,19 +327,24 @@ end;
 procedure TMainForm.LoadFromFileActionExecute(Sender: TObject);
 begin
   if OpenDialog1.Execute then
-  begin
-    var LBitmap := TBitmap.CreateFromFile(OpenDialog1.FileName);
-    try
-      MainDM.Scan(LBitmap, False);
-    finally
-      LBitmap.Free;
-    end;
+    ScanImageFile(OpenDialog1.FileName);
+end;
+
+procedure TMainForm.ScanImageFile(const AFileName: string);
+begin
+  var LBitmap := TBitmap.CreateFromFile(AFileName);
+  try
+    if MainDM.Scan(LBitmap, False) = 0 then
+      TDialogService.ShowMessage(NO_CODE_FOUND);
+  finally
+    LBitmap.Free;
   end;
 end;
 
 procedure TMainForm.TakePhotoFromLibraryActionDidFinishTaking(Image: TBitmap);
 begin
-  MainDM.Scan(Image, False);
+  if MainDM.Scan(Image, False) = 0 then
+    TDialogService.ShowMessage(NO_CODE_FOUND);
 end;
 
 procedure TMainForm.ToggleCameraActionExecute(Sender: TObject);
@@ -358,6 +377,9 @@ end;
 procedure TMainForm.UpdateGUI;
 begin
   EmptyLayout.Visible := MainDM.DataTable.IsEmpty and not MainDM.Scanning;
+  // the list, as soon as there are scans (also the ones saved by a previous run)
+  if not MainDM.DataTable.IsEmpty and not DataFrameFI.IsVisible then
+    DataFrameFI.Show();
 
   if MainDM.Scanning then
   begin

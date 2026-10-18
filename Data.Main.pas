@@ -9,7 +9,8 @@ uses
   FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, Data.DB, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client
+, Data.Settings;
 
 const
   SCAN_EACH_MS: Integer = 133;
@@ -40,6 +41,8 @@ type
   TTorchModeMessage = Class(TMessage<Boolean>);
   TCameraBufferMessage = Class(TMessage<TBitmap>);
   TDataChangedMessage = Class(TMessage);
+  /// <summary>A hint for the user while scanning (e.g. a code found but not read)</summary>
+  TScanHintMessage = Class(TMessage<string>);
 
   /// <summary>The message subscriptions of an object, to give them back when it
   /// goes away (the listeners capture the object).</summary>
@@ -75,10 +78,16 @@ type
     FStillScanManager: IScanManager;  // still images (library, file), TRY_HARDER
     FScanFrame: TBitmap; // the frame being decoded by FCameraScanManager
     FSubscriptions: TSubscriptions;
+    FSettings: TScanSettings;
 
     function CropBitmap(const ABitmap: TBitmap): TBitmap;
     procedure ScanCameraFrame(const AFrame: TBitmap);
-    procedure DeliverResult(const AFrame: TBitmap; const AResult: TReadResult);
+    procedure DeliverResult(const AFrame: TBitmap; const AResult: TReadResult;
+      const AStopScanning: Boolean);
+    procedure CreateScanManagers;
+    function DataFileName: string;
+    procedure LoadData;
+    procedure SaveData;
     procedure SetCameraSettings(ACameraComponent: TCameraComponent);
     procedure OnResultPointHandler(const APoint: IResultPoint);
     function GetTorchModeOn: Boolean;
@@ -87,14 +96,19 @@ type
     { Public declarations }
     procedure BeforeDestruction; override;
 
-    procedure Scan(const ABitmap: TBitmap; const ACropBitmap: Boolean = True); overload;
-    procedure Scan(const AFileName: string); overload;
+    /// <summary>Scans a still image for every code in it; the results come as
+    /// TScanResultMessage. Returns the number of codes read.</summary>
+    function Scan(const ABitmap: TBitmap; const ACropBitmap: Boolean = True): Integer; overload;
+    function Scan(const AFileName: string): Integer; overload;
+    /// <summary>Saves the settings and uses them for the next scans</summary>
+    procedure ApplySettings;
     procedure StartScanning;
     procedure StopScanning;
     procedure ToggleTorch;
 
     property Scanning: Boolean read FScanning;
     property TorchModeOn: Boolean read GetTorchModeOn;
+    property Settings: TScanSettings read FSettings;
   end;
 
 var
@@ -110,6 +124,7 @@ implementation
 uses
   System.Threading, DateUtils, Rtti, TypInfo, IOUtils, Variants
     , FMX.Ani, UITypes, Math
+    , FireDAC.Stan.StorageBin
     , UI.Theme;
 
 function BarcodeToString(const ABarcode: TBarcodeFormat): string;
@@ -196,6 +211,7 @@ begin
   FCameraScanManager := nil;
   FStillScanManager := nil;
   FreeAndNil(FScanFrame);
+  FreeAndNil(FSettings);
 
   inherited;
 end;
@@ -263,16 +279,11 @@ begin
   FWaitingResult := False;
 
   FScanFrame := TBitmap.Create;
-  FCameraScanManager := TScanManager.Create(TBarcodeFormat.Auto, nil);
-{$IFNDEF IOS}
-  FCameraScanManager.OnResultPoint := OnResultPointHandler;
-{$ENDIF IOS}
+  FSettings := TScanSettings.Create;
+  FSettings.Load;
+  CreateScanManagers;
 
-  var LHints := TDictionary<TDecodeHintType, TObject>.Create; // freed by the scan manager
-  LHints.Add(TDecodeHintType.TRY_HARDER, nil);       // slower, finds more (also rotated 1D codes)
-  LHints.Add(TDecodeHintType.ENABLE_INVERSION, nil); // also light codes on a dark background
-  FStillScanManager := TScanManager.Create(TBarcodeFormat.Auto, LHints);
-
+  LoadData;
   DataTable.AfterPost := DataTableChanged;
   DataTable.AfterDelete := DataTableChanged;
 
@@ -351,7 +362,64 @@ end;
 
 procedure TMainDM.DataTableChanged(DataSet: TDataSet);
 begin
+  SaveData;
   TMessageManager.DefaultManager.SendMessage(Self, TDataChangedMessage.Create);
+end;
+
+function TMainDM.DataFileName: string;
+begin
+  Result := TPath.Combine(AppDataFolder, 'scans.fds');
+end;
+
+procedure TMainDM.LoadData;
+begin
+  if not TFile.Exists(DataFileName) then
+    Exit;
+  try
+    DataTable.LoadFromFile(DataFileName, TFDStorageFormat.sfBinary);
+  except
+    // an unreadable file (damaged, or of another version of the app): start empty
+    DataTable.Close;
+    DataTable.CreateDataSet;
+  end;
+end;
+
+procedure TMainDM.SaveData;
+begin
+  try
+    DataTable.SaveToFile(DataFileName, TFDStorageFormat.sfBinary);
+  except
+    // not saved (e.g. no space left): the scans stay in memory
+  end;
+end;
+
+procedure TMainDM.CreateScanManagers;
+// From the settings. The managers replaced here are freed after a scan that
+// may still run in them (ScanAsync holds a reference).
+var
+  LFormat: TBarcodeFormat;
+  LHints: TDictionary<TDecodeHintType, TObject>; // freed by the scan manager
+begin
+  LHints := nil;
+  FSettings.GetScanFormat(LFormat, LHints);
+  FCameraScanManager := TScanManager.Create(LFormat, LHints);
+  // a code found but not read comes as a result with Error: tell the user to hold still
+  FCameraScanManager.ReturnErrors := True;
+{$IFNDEF IOS}
+  FCameraScanManager.OnResultPoint := OnResultPointHandler;
+{$ENDIF IOS}
+
+  LHints := TDictionary<TDecodeHintType, TObject>.Create;
+  LHints.Add(TDecodeHintType.TRY_HARDER, nil);       // slower, finds more (also rotated 1D codes)
+  LHints.Add(TDecodeHintType.ENABLE_INVERSION, nil); // also light codes on a dark background
+  FSettings.GetScanFormat(LFormat, LHints);
+  FStillScanManager := TScanManager.Create(LFormat, LHints);
+end;
+
+procedure TMainDM.ApplySettings;
+begin
+  FSettings.Save;
+  CreateScanManagers;
 end;
 
 function TMainDM.GetTorchModeOn: Boolean;
@@ -375,11 +443,12 @@ begin
   );
 end;
 
-procedure TMainDM.Scan(const ABitmap: TBitmap;
-  const ACropBitmap: Boolean = True);
+function TMainDM.Scan(const ABitmap: TBitmap;
+  const ACropBitmap: Boolean = True): Integer;
 var
   LReducedBuffer: TBitmap;
 begin
+  Result := 0;
   if ACropBitmap then
     LReducedBuffer := CropBitmap(ABitmap)
   else
@@ -394,28 +463,42 @@ begin
   end;
 
   try
-    FWaitingResult := True;
-    var LReadResult: TReadResult;
+    var LResults: TObjectList<TReadResult>;
     try
-      LReadResult := FStillScanManager.Scan(LReducedBuffer);
+      LResults := FStillScanManager.ScanAll(LReducedBuffer);
     except
-      LReadResult := nil;
+      LResults := nil;
     end;
-    if Assigned(LReadResult) then
-      DeliverResult(LReducedBuffer, LReadResult);
+    if Assigned(LResults) then
+    try
+      // every code in the image, one record each; DeliverResult takes the results
+      while LResults.Count > 0 do
+      begin
+        var LResult := LResults.ExtractAt(0);
+        if LResult.Error <> '' then
+          LResult.Free // found but not read
+        else
+        begin
+          DeliverResult(LReducedBuffer, LResult, False);
+          Inc(Result);
+        end;
+      end;
+    finally
+      LResults.Free;
+    end;
   finally
     LReducedBuffer.Free; // DeliverResult keeps a copy
   end;
 end;
 
-procedure TMainDM.Scan(const AFileName: string);
+function TMainDM.Scan(const AFileName: string): Integer;
 var
   LBitmap: TBitmap;
 begin
   LBitmap := TBitmap.Create;
   try
     LBitmap.LoadFromFile(AFileName);
-    Scan(LBitmap, False);
+    Result := Scan(LBitmap, False);
   finally
     LBitmap.Free;
   end;
@@ -436,23 +519,24 @@ begin
       // main thread; nil when nothing was read (or the frame could not be decoded)
       if not Assigned(AResult) then
         Exit;
-      if FWaitingResult then
-        DeliverResult(FScanFrame, AResult)
-      else
-        AResult.Free; // scanning stopped meanwhile, or a code was already read
+      if (AResult.Error <> '') or not FWaitingResult then
+      begin
+        // a code found but not read: ask to hold still (unless scanning stopped meanwhile)
+        if (AResult.Error <> '') and FWaitingResult then
+          TMessageManager.DefaultManager.SendMessage(Self,
+            TScanHintMessage.Create('Code found: hold the phone still, or move closer'));
+        AResult.Free;
+        Exit;
+      end;
+      FWaitingResult := False; // the first code read
+      DeliverResult(FScanFrame, AResult, True);
     end);
 end;
 
-procedure TMainDM.DeliverResult(const AFrame: TBitmap; const AResult: TReadResult);
+procedure TMainDM.DeliverResult(const AFrame: TBitmap; const AResult: TReadResult;
+  const AStopScanning: Boolean);
 // Takes ownership of AResult; AFrame is copied
 begin
-  if not FWaitingResult then
-  begin
-    AResult.Free;
-    Exit;
-  end;
-  FWaitingResult := False;
-
   // TScanResult takes ownership of both the frame (a copy) and the read result;
   // TScanResultMessage (TObjectMessage) owns and frees the TScanResult.
   var LScanResult: TScanResult;
@@ -470,7 +554,8 @@ begin
   TThread.ForceQueue(nil,
     procedure
     begin
-      StopScanning;
+      if AStopScanning then
+        StopScanning;
       TMessageManager.DefaultManager.SendMessage(Self,
         TScanResultMessage.Create(LScanResult));
     end);
