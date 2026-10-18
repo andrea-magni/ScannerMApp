@@ -1,0 +1,4 @@
+[submodule "ThirdParty/ZXing.Delphi"]
+	path = ThirdParty/ZXing.Delphi
+	url = https://github.com/Spelt/ZXing.Delphi.git
+	branch = 4.0
