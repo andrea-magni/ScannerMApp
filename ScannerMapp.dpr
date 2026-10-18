@@ -9,7 +9,9 @@ uses
   Frames.Data in 'Frames.Data.pas' {DataFrame: TFrame},
   Frames.ScanResult in 'Frames.ScanResult.pas' {ScanResultFrame: TFrame},
   Frames.Info in 'Frames.Info.pas' {InfoFrame: TFrame},
-  UI.Theme in 'UI.Theme.pas';
+  UI.Theme in 'UI.Theme.pas',
+  Data.Settings in 'Data.Settings.pas',
+  Frames.Settings in 'Frames.Settings.pas' {SettingsFrame: TFrame};
 
 {$R *.res}
 

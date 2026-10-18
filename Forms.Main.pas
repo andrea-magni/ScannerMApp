@@ -10,8 +10,9 @@ uses
 , System.Threading, System.Diagnostics, System.Messaging,  System.Permissions
 , ZXing.ScanManager, ZXing.BarcodeFormat, ZXing.ReadResult, ZXing.ResultPoint
 , FrameStand, SubjectStand
-, Frames.Scanning, Frames.Data, Frames.Info, FMX.Platform, FMX.MediaLibrary,
+, Frames.Scanning, Frames.Data, Frames.Info, Frames.Settings, FMX.Platform, FMX.MediaLibrary,
   FMX.ApplicationEvents
+, Data.Main
 ;
 
 type
@@ -29,6 +30,8 @@ type
     TitleLabel: TLabel;
     InfoButton: TRectangle;
     InfoIcon: TPath;
+    SettingsButton: TRectangle;
+    SettingsIcon: TPath;
     ContentLayout: TLayout;
     EmptyLayout: TLayout;
     EmptyCircle: TCircle;
@@ -54,6 +57,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure InfoButtonClick(Sender: TObject);
+    procedure SettingsButtonClick(Sender: TObject);
     function ApplicationEvents1StateChanged(Sender: TObject;
       const AAppEvent: TApplicationEvent; const AContext: TObject): Boolean;
     procedure FormSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
@@ -70,11 +74,14 @@ type
     FScanningFrameFI: TFrameInfo<TScanningFrame>;
     FDataFrameFI: TFrameInfo<TDataFrame>;
     FInfoFrameFI: TFrameInfo<TInfoFrame>;
+    FSettingsFrameFI: TFrameInfo<TSettingsFrame>;
+    FSubscriptions: TSubscriptions;
 
 //    FDataString: string;
     procedure UpdateGUI;
     function HandleBack: Boolean;
     procedure StartCamera;
+    procedure ScanImageFile(const AFileName: string);
     function GetScanningFrameFI: TFrameInfo<TScanningFrame>;
     function GetDataFrameFI: TFrameInfo<TDataFrame>;
     function GetInfoFrameFI: TFrameInfo<TInfoFrame>;
@@ -88,6 +95,7 @@ type
     procedure DisplayRationale(Sender: TObject; const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
 {$ENDIF}
   public
+    procedure BeforeDestruction; override;
   end;
 
 var
@@ -105,8 +113,11 @@ uses
 , Androidapi.JNI.Net
 {$ENDIF}
 , FMX.Ani, FMX.DialogService
-, Data.Main, UI.Theme
+, UI.Theme
 ;
+
+const
+  NO_CODE_FOUND = 'No code found in this image';
 
 
 {$IFDEF ANDROID}
@@ -151,6 +162,12 @@ begin
 end;
 {$ENDIF}
 
+procedure TMainForm.BeforeDestruction;
+begin
+  FSubscriptions.Clear;
+  inherited;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
 {$IFDEF MSWINDOWS}
@@ -172,7 +189,7 @@ begin
   LibraryButton.Visible := False; // no photo library on desktop
 {$ENDIF}
 
-  TMessageManager.DefaultManager.SubscribeToMessage(
+  FSubscriptions.Add(
     TDataChangedMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
@@ -180,7 +197,7 @@ begin
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(
+  FSubscriptions.Add(
     TScanningMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
@@ -188,7 +205,7 @@ begin
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(
+  FSubscriptions.Add(
     TScanResultMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
@@ -198,6 +215,16 @@ begin
   );
 
   UpdateGUI;
+
+{$IF not (Defined(ANDROID) or Defined(IOS))}
+  // desktop: an image on the command line ("Open with") is scanned once the form is up
+  if (ParamCount > 0) and FileExists(ParamStr(1)) then
+    TThread.ForceQueue(nil,
+      procedure
+      begin
+        ScanImageFile(ParamStr(1));
+      end);
+{$ENDIF}
 end;
 
 procedure TMainForm.CameraButtonClick(Sender: TObject);
@@ -250,7 +277,13 @@ end;
 
 function TMainForm.HandleBack: Boolean;
 begin
-  // the topmost first: the info lightbox, then the result card, then the camera
+  // the topmost first: the lightboxes, then the result card, then the camera
+  if Assigned(FSettingsFrameFI) and FSettingsFrameFI.IsVisible then
+  begin
+    FSettingsFrameFI.Frame.Close; // applies the changes
+    Exit(True);
+  end;
+
   if Assigned(FInfoFrameFI) and FInfoFrameFI.IsVisible then
   begin
     FInfoFrameFI.Hide;
@@ -293,6 +326,15 @@ begin
   Result := FScanningFrameFI;
 end;
 
+procedure TMainForm.SettingsButtonClick(Sender: TObject);
+begin
+  if MainDM.Scanning then
+    MainDM.StopScanning; // the new formats apply to the next scan
+  if not Assigned(FSettingsFrameFI) then
+    FSettingsFrameFI := FrameStand1.New<TSettingsFrame>(RootLayout, 'lightbox');
+  FSettingsFrameFI.Show();
+end;
+
 procedure TMainForm.InfoButtonClick(Sender: TObject);
 begin
   if InfoFrameFI.IsVisible then
@@ -304,19 +346,24 @@ end;
 procedure TMainForm.LoadFromFileActionExecute(Sender: TObject);
 begin
   if OpenDialog1.Execute then
-  begin
-    var LBitmap := TBitmap.CreateFromFile(OpenDialog1.FileName);
-    try
-      MainDM.Scan(LBitmap, False);
-    finally
-      LBitmap.Free;
-    end;
+    ScanImageFile(OpenDialog1.FileName);
+end;
+
+procedure TMainForm.ScanImageFile(const AFileName: string);
+begin
+  var LBitmap := TBitmap.CreateFromFile(AFileName);
+  try
+    if MainDM.Scan(LBitmap, False) = 0 then
+      TDialogService.ShowMessage(NO_CODE_FOUND);
+  finally
+    LBitmap.Free;
   end;
 end;
 
 procedure TMainForm.TakePhotoFromLibraryActionDidFinishTaking(Image: TBitmap);
 begin
-  MainDM.Scan(Image, False);
+  if MainDM.Scan(Image, False) = 0 then
+    TDialogService.ShowMessage(NO_CODE_FOUND);
 end;
 
 procedure TMainForm.ToggleCameraActionExecute(Sender: TObject);
@@ -349,6 +396,9 @@ end;
 procedure TMainForm.UpdateGUI;
 begin
   EmptyLayout.Visible := MainDM.DataTable.IsEmpty and not MainDM.Scanning;
+  // the list, as soon as there are scans (also the ones saved by a previous run)
+  if not MainDM.DataTable.IsEmpty and not DataFrameFI.IsVisible then
+    DataFrameFI.Show();
 
   if MainDM.Scanning then
   begin
