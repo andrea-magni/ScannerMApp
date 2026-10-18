@@ -112,7 +112,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_UnitSearchPath>ThirdParty\ZXing.Delphi\Lib\Classes;ThirdParty\ZXing.Delphi\Lib\Classes\1D Barcodes;ThirdParty\ZXing.Delphi\Lib\Classes\2D Barcodes;ThirdParty\ZXing.Delphi\Lib\Classes\Common;ThirdParty\ZXing.Delphi\Lib\Classes\Filtering;ThirdParty\ZXing.Delphi\Lib\Classes\2D Barcodes\Decoder;ThirdParty\ZXing.Delphi\Lib\Classes\2D Barcodes\Detector;ThirdParty\ZXing.Delphi\Lib\Classes\Common\Detector;ThirdParty\ZXing.Delphi\Lib\Classes\Common\ReedSolomon;..\..\Librerie\TFrameStand\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>ThirdParty\ZXing.Delphi\Lib\Classes;ThirdParty\ZXing.Delphi\Lib\Classes\1D Barcodes;ThirdParty\ZXing.Delphi\Lib\Classes\2D Barcodes;ThirdParty\ZXing.Delphi\Lib\Classes\Common;ThirdParty\ZXing.Delphi\Lib\Classes\Filtering;ThirdParty\ZXing.Delphi\Lib\Classes\2D Barcodes\Decoder;ThirdParty\ZXing.Delphi\Lib\Classes\2D Barcodes\Detector;ThirdParty\ZXing.Delphi\Lib\Classes\Common\Detector;ThirdParty\ZXing.Delphi\Lib\Classes\Common\ReedSolomon;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
         <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
         <DCC_E>false</DCC_E>

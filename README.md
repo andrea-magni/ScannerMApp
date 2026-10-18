@@ -24,7 +24,7 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 - **RAD Studio 13 Florence** (Delphi 13).
 - **Android 64-bit**: min SDK 24, target SDK 36. Win32 and Win64 build too (scanning from a file; the camera has not been tested on Windows).
 - **[ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4.0** or later, included as a git submodule in `ThirdParty\ZXing.Delphi` (branch `4.0`). Version 3.x does not build: the app uses `IScanManager` and `ScanAsync`.
-- **[TFrameStand](https://github.com/andrea-magni/TFrameStand)**, `master` or a release after v.2.3: it registers the interactive gestures of the frames ([#121](https://github.com/andrea-magni/TFrameStand/pull/121)). With v.2.3, pinch and double-tap zoom do nothing on Android.
+- **[TFrameStand](https://github.com/andrea-magni/TFrameStand)** installed in the IDE, `master` or a release after v.2.3 (see below). It is not part of this repository: the project finds it through the IDE library path.
 
 ## Building
 
@@ -36,14 +36,12 @@ git clone --recurse-submodules https://github.com/andrea-magni/ScannerMApp.git
 
 In a clone made without it, run `git submodule update --init`.
 
-TFrameStand is not a submodule: the search path expects it next to the projects folder:
+TFrameStand must be installed in RAD Studio, so that its `source` folder is in the library path of every platform you build (**Tools ▸ Options ▸ Language ▸ Delphi ▸ Library**):
 
-```
-<root>\Librerie\TFrameStand
-<root>\Progetti\ScannerMApp
-```
+- with the setup of the [latest release](https://github.com/andrea-magni/TFrameStand/releases/latest), or with TMS Smart Setup (`tms install andreamagni.tframestand`);
+- or from a clone of `master`: open `packages\13Florence\FrameStand.groupproj`, install the design-time package and add the `source` folder to the library path.
 
-Clone it there, or change the search path in **Project ▸ Options ▸ Building ▸ Delphi Compiler ▸ Search path**.
+The version matters: the app needs the interactive gestures of the frames registered with the hosting form ([#121](https://github.com/andrea-magni/TFrameStand/pull/121)), in `master` and in the releases after v.2.3. With v.2.3 the app builds and runs, but pinch and double-tap zoom on the scanned frame do nothing on Android.
 
 To move ZXing.Delphi to the latest commit of its `4.0` branch: `git submodule update --remote ThirdParty/ZXing.Delphi`, then commit the new submodule commit.
 
