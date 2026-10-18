@@ -73,6 +73,8 @@ type
     procedure ImageViewportMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; var Handled: Boolean);
     procedure ImageViewportResize(Sender: TObject);
+    procedure FrameResize(Sender: TObject);
+    procedure ResultLabelResize(Sender: TObject);
   private
     { Private declarations }
     [FrameInfo] FI: TFrameInfo<TScanResultFrame>;
@@ -84,11 +86,10 @@ type
     FDragStart: TPointF;
     FDragStartOffset: TPointF;
     FLastPinchDistance: Integer;
-    FGesturesRegistered: Boolean;
-    procedure RegisterGestures;
     procedure SetCopied(const ACopied: Boolean);
     procedure ZoomAt(const APoint: TPointF; const AZoom: Single);
     procedure ApplyZoom;
+    procedure UpdateValueHeight;
   protected
   public
     { Public declarations }
@@ -101,11 +102,14 @@ implementation
 {$R *.fmx}
 
 uses
-  System.Messaging, System.Math, FMX.Platform, FMX.Clipboard
+  System.Messaging, System.Math, FMX.Platform, FMX.Clipboard, FMX.TextLayout
 , Data.Main, UI.Theme
 ;
 
 const
+  CARD_MAX_WIDTH = 420;
+  CARD_MAX_HEIGHT = 600;
+  VALUE_MAX_HEIGHT = 120;
   MIN_ZOOM = 1.0;
   MAX_ZOOM = 6.0;
   DOUBLE_TAP_ZOOM = 2.5;
@@ -156,6 +160,49 @@ begin
   DeleteAction.Execute;
 end;
 
+procedure TScanResultFrame.FrameResize(Sender: TObject);
+begin
+  // a card, not a full screen panel (tap outside to close)
+  CardRectangle.Size.Size := TSizeF.Create(Min(Width, CARD_MAX_WIDTH), Min(Height, CARD_MAX_HEIGHT));
+  UpdateValueHeight;
+end;
+
+procedure TScanResultFrame.ResultLabelResize(Sender: TObject);
+begin
+  UpdateValueHeight;
+end;
+
+procedure TScanResultFrame.UpdateValueHeight;
+// as tall as the value (scrolling beyond VALUE_MAX_HEIGHT), the image gets the rest
+var
+  LLayout: TTextLayout;
+  LHeight: Single;
+begin
+  LLayout := TTextLayoutManager.DefaultTextLayout.Create;
+  try
+    LLayout.BeginUpdate;
+    try
+      LLayout.MaxSize := TPointF.Create(Max(ValueScrollBox.Width - 16, 1), 100000); // 16: room for the scrollbar
+      LLayout.WordWrap := True;
+      LLayout.Font.Assign(ResultLabel.ResultingTextSettings.Font);
+      LLayout.Text := ResultLabel.Text;
+    finally
+      LLayout.EndUpdate;
+    end;
+    LHeight := Min(Ceil(LLayout.Height) + 4, VALUE_MAX_HEIGHT);
+    // bottom aligned controls are stacked by position: keep the value above MetaRow
+    CardRectangle.BeginUpdate;
+    try
+      ValueScrollBox.Position.Y := MetaRow.Position.Y - LHeight - 1;
+      ValueScrollBox.Height := LHeight;
+    finally
+      CardRectangle.EndUpdate;
+    end;
+  finally
+    LLayout.Free;
+  end;
+end;
+
 procedure TScanResultFrame.FrameClick(Sender: TObject);
 begin
   FI.Hide;
@@ -185,25 +232,9 @@ begin
   ApplyZoom;
 end;
 
-procedure TScanResultFrame.RegisterGestures;
-// TCustomTouchManager.SetInteractiveGestures registers the gesture recognizers with the
-// form found walking the *Owner* chain: TFrameStand creates frames with Owner = nil, so
-// (on Android) Zoom and DoubleTap would never be recognized. Register them here, once
-// the frame is parented within a form.
-begin
-  if FGesturesRegistered or not Assigned(Root) or not (Root.GetObject is TCommonCustomForm) then
-    Exit;
-
-  var LForm := TCommonCustomForm(Root.GetObject);
-  for var LGesture in ImageViewport.Touch.InteractiveGestures do
-    if not (LGesture in LForm.GetRecognizers) then
-      LForm.AddRecognizer(LGesture);
-  FGesturesRegistered := True;
-end;
-
 procedure TScanResultFrame.ResetZoom;
 begin
-  RegisterGestures;
+  UpdateValueHeight; // the value of the current record, set by LiveBindings
   FZoom := MIN_ZOOM;
   FOffset := TPointF.Zero;
   FDragging := False;
