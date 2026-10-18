@@ -521,12 +521,15 @@ begin
   FWaitingResult := False;
   FScanning := False;
 
+  // Known FMX limitation (Android, RAD Studio 13): TAndroidVideoCaptureDevice.DoStopCapture
+  // frees the RenderScript allocations and the output buffer without waiting for the
+  // camera thread, which may be converting a frame (UpdateOutputBuffer) at that moment.
+  // It cannot be avoided from here; it is unlikely because the camera is never stopped
+  // from within its own event (see DeliverResult) and the decoding runs in background
+  // (ScanAsync), so the camera thread spends little time in each frame.
   if Assigned(FCameraComponent) then
   begin
     FCameraComponent.OnSampleBufferReady := nil;
-{$IFDEF MSWINDOWS}
-    //FCameraComponent.Active := False;
-{$ENDIF}
     FreeAndNil(FCameraComponent);
   end;
 
