@@ -396,6 +396,8 @@ object MainForm: TMainForm
       OnExecute = ToggleCameraActionExecute
     end
     object TakePhotoFromLibraryAction: TTakePhotoFromLibraryAction
+      MaxHeight = 3072
+      MaxWidth = 3072
       OnDidFinishTaking = TakePhotoFromLibraryActionDidFinishTaking
     end
     object LoadFromFileAction: TAction

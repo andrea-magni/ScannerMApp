@@ -14,6 +14,8 @@ uses
 
 const
   SCAN_EACH_MS: Integer = 133;
+  /// <summary>Largest side of the frame kept with a scan</summary>
+  STORED_FRAME_SIZE = 1024;
 
 type
   TScanResult = class
@@ -313,10 +315,21 @@ begin
       end
       else
       begin // add new record
-        LFrameWithPoints := TBitmap.Create(LValue.Frame.Width,
-          LValue.Frame.Height);
+        // the frame is kept at most STORED_FRAME_SIZE wide/high: photos can be large
+        var LScale: Single := Min(1, STORED_FRAME_SIZE / Max(LValue.Frame.Width, LValue.Frame.Height));
+        LFrameWithPoints := TBitmap.Create(Round(LValue.Frame.Width * LScale),
+          Round(LValue.Frame.Height * LScale));
         try
-          LFrameWithPoints.CopyFromBitmap(LValue.Frame);
+          if LScale = 1 then
+            LFrameWithPoints.CopyFromBitmap(LValue.Frame)
+          else if LFrameWithPoints.Canvas.BeginScene then
+          try
+            LFrameWithPoints.Canvas.DrawBitmap(LValue.Frame,
+              RectF(0, 0, LValue.Frame.Width, LValue.Frame.Height),
+              RectF(0, 0, LFrameWithPoints.Width, LFrameWithPoints.Height), 1);
+          finally
+            LFrameWithPoints.Canvas.EndScene;
+          end;
 
           // the outline of the code: Position holds its 4 corners in the frame
           // (estimated from the result points when the reader did not set them)
@@ -325,9 +338,9 @@ begin
           begin
             var LOutline := TPathData.Create;
             try
-              LOutline.MoveTo(PointF(LCorners[0].x, LCorners[0].y));
+              LOutline.MoveTo(PointF(LCorners[0].x, LCorners[0].y) * LScale);
               for var I := 1 to High(LCorners) do
-                LOutline.LineTo(PointF(LCorners[I].x, LCorners[I].y));
+                LOutline.LineTo(PointF(LCorners[I].x, LCorners[I].y) * LScale);
               LOutline.ClosePath;
 
               LFrameWithPoints.Canvas.BeginScene();
@@ -335,7 +348,7 @@ begin
                 LFrameWithPoints.Canvas.Stroke.Kind := TBrushKind.Solid;
                 LFrameWithPoints.Canvas.Stroke.Color := COLOR_ACCENT;
                 LFrameWithPoints.Canvas.Stroke.Thickness :=
-                  Max(2, Min(LValue.Frame.Width, LValue.Frame.Height) / 100);
+                  Max(2, Min(LFrameWithPoints.Width, LFrameWithPoints.Height) / 100);
                 LFrameWithPoints.Canvas.Stroke.Join := TStrokeJoin.Round;
                 LFrameWithPoints.Canvas.DrawPath(LOutline, 0.9);
               finally
