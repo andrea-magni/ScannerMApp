@@ -75,13 +75,6 @@ uses
 procedure TInfoFrame.AfterConstruction;
 begin
   inherited;
-
-  TMessageManager.DefaultManager.SubscribeToMessage(THardwareBackMessage
-  , procedure(const Sender: TObject; const M: TMessage)
-    begin
-      FI.Hide;
-    end
-  );
 end;
 
 procedure TInfoFrame.CloseButtonClick(Sender: TObject);

@@ -118,13 +118,6 @@ procedure TScanResultFrame.AfterConstruction;
 begin
   inherited;
   FZoom := MIN_ZOOM;
-
-  TMessageManager.DefaultManager.SubscribeToMessage(THardwareBackMessage
-  , procedure(const Sender: TObject; const M: TMessage)
-    begin
-      FI.Hide;
-    end
-  );
 end;
 
 procedure TScanResultFrame.CloseButtonClick(Sender: TObject);

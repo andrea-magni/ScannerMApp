@@ -73,6 +73,7 @@ type
 
 //    FDataString: string;
     procedure UpdateGUI;
+    function HandleBack: Boolean;
     procedure StartCamera;
     function GetScanningFrameFI: TFrameInfo<TScanningFrame>;
     function GetDataFrameFI: TFrameInfo<TDataFrame>;
@@ -241,11 +242,31 @@ end;
 procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
   var KeyChar: Char; Shift: TShiftState);
 begin
-  if Key = vkHardwareBack then
-  begin
+  // Back closes what is open, one thing at a time; with nothing open it is left
+  // to Android (Key not consumed), which leaves the app
+  if (Key = vkHardwareBack) and HandleBack then
     Key := 0;
-    TMessageManager.DefaultManager.SendMessage(Self, THardwareBackMessage.Create(0));
+end;
+
+function TMainForm.HandleBack: Boolean;
+begin
+  // the topmost first: the info lightbox, then the result card, then the camera
+  if Assigned(FInfoFrameFI) and FInfoFrameFI.IsVisible then
+  begin
+    FInfoFrameFI.Hide;
+    Exit(True);
   end;
+
+  if Assigned(FDataFrameFI) and FDataFrameFI.Frame.HideScanResult then
+    Exit(True);
+
+  if MainDM.Scanning then
+  begin
+    MainDM.StopScanning; // the scanning frame is hidden by UpdateGUI (TScanningMessage)
+    Exit(True);
+  end;
+
+  Result := False;
 end;
 
 function TMainForm.GetDataFrameFI: TFrameInfo<TDataFrame>;

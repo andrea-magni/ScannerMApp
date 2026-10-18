@@ -54,14 +54,6 @@ procedure TScanningFrame.AfterConstruction;
 begin
   inherited;
 
-  TMessageManager.DefaultManager.SubscribeToMessage(THardwareBackMessage
-  , procedure(const Sender: TObject; const M: TMessage)
-    begin
-      if MainDM.Scanning then
-        MainDM.StopScanning;
-    end
-  );
-
   TMessageManager.DefaultManager.SubscribeToMessage(TScanPointMessage
   , procedure(const Sender: TObject; const M: TMessage)
     var
