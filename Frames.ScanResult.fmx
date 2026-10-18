@@ -4,8 +4,9 @@ object ScanResultFrame: TScanResultFrame
   Size.Height = 508.000000000000000000
   Size.PlatformDefault = False
   OnClick = FrameClick
+  OnResize = FrameResize
   object CardRectangle: TRectangle
-    Align = Client
+    Align = Center
     Fill.Color = xFF1A1D23
     Padding.Left = 16.000000000000000000
     Padding.Top = 16.000000000000000000
@@ -322,13 +323,14 @@ object ScanResultFrame: TScanResultFrame
       Position.X = 16.000000000000000000
       Position.Y = 276.000000000000000000
       Size.Width = 326.000000000000000000
-      Size.Height = 108.000000000000000000
+      Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
       Viewport.Width = 326.000000000000000000
-      Viewport.Height = 108.000000000000000000
+      Viewport.Height = 32.000000000000000000
       object ResultLabel: TLabel
         Align = Top
+        OnResize = ResultLabelResize
         AutoSize = True
         StyledSettings = [Family]
         Size.Width = 326.000000000000000000
