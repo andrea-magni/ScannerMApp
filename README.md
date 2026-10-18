@@ -12,9 +12,9 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 
 ## Features
 
-- Live scanning from the camera, with a square viewfinder, the points found by ZXing and a torch button.
+- Live scanning from the camera, with a square viewfinder, the points found by ZXing and a torch button. The frames are decoded in the background (`ScanAsync`), so the preview stays smooth.
 - Scanning from a picture in the photo library (Android) or from a file (Windows).
-- Every format ZXing.Delphi supports: QR code, Data Matrix, Aztec, PDF 417, Code 39/93/128, EAN, UPC, ITF, Codabar…
+- Every format ZXing.Delphi 4 reads automatically: QR code, Micro QR, Data Matrix, Aztec, PDF 417, MaxiCode, Code 39/93/128, EAN, UPC, ITF, Codabar, GS1 DataBar… The result card outlines the code in the frame.
 - A list of the scans: the same code scanned again increments its counter.
 - A result card with the scanned frame (pinch, double tap or mouse wheel to zoom, drag to pan) and **Copy**, **Share** and **Delete**.
 - Android 15+ edge-to-edge: the content stays clear of the system bars.
@@ -23,7 +23,7 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 
 - **RAD Studio 13 Florence** (Delphi 13).
 - **Android 64-bit**: min SDK 24, target SDK 36. Win32 and Win64 build too (scanning from a file; the camera has not been tested on Windows).
-- **[ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi)**.
+- **[ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4.0** or later (branch `4.0`). Version 3.x no longer builds: the app uses `IScanManager` and `ScanAsync`.
 - **[TFrameStand](https://github.com/andrea-magni/TFrameStand)**, `master` or a release after v.2.3: it registers the interactive gestures of the frames ([#121](https://github.com/andrea-magni/TFrameStand/pull/121)). With v.2.3, pinch and double-tap zoom do nothing on Android.
 
 ## Building
