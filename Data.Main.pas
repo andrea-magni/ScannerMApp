@@ -405,9 +405,7 @@ begin
   FCameraScanManager := TScanManager.Create(LFormat, LHints);
   // a code found but not read comes as a result with Error: tell the user to hold still
   FCameraScanManager.ReturnErrors := True;
-{$IFNDEF IOS}
   FCameraScanManager.OnResultPoint := OnResultPointHandler;
-{$ENDIF IOS}
 
   LHints := TDictionary<TDecodeHintType, TObject>.Create;
   LHints.Add(TDecodeHintType.TRY_HARDER, nil);       // slower, finds more (also rotated 1D codes)

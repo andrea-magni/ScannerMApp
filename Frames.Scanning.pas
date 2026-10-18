@@ -69,13 +69,8 @@ begin
 
   FSubscriptions.Add(TScanPointMessage
   , procedure(const Sender: TObject; const M: TMessage)
-    var
-      LValue: TPointF;
     begin
-{$IFNDEF IOS}
-      LValue := (M as TScanPointMessage).Value;
-      DrawScanPoint(LValue, COLOR_ACCENT);
-{$ENDIF IOS}
+      DrawScanPoint((M as TScanPointMessage).Value, COLOR_ACCENT);
     end
   );
 
