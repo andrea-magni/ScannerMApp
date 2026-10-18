@@ -8,6 +8,7 @@ uses
   FMX.Objects, FMX.Layouts, FMX.Controls.Presentation, FMX.Media
 , FrameStand
 , ZXing.ResultPoint
+, Data.Main
 ;
 
 type
@@ -29,6 +30,7 @@ type
   private
     { Private declarations }
 //    [FrameInfo] FI: TFrameInfo<TScanningFrame>;
+    FSubscriptions: TSubscriptions;
     procedure UpdateTorch(const AOn: Boolean);
     procedure DrawScanPoint(const APosition: TPointF; const AColor: TAlphaColor;
       const ASize: Integer = 6; const AOpacity: Double = 0.8;
@@ -36,6 +38,7 @@ type
   public
     { Public declarations }
     procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
     procedure PrepareToShow;
   end;
 
@@ -45,16 +48,22 @@ implementation
 
 uses
   System.Messaging, System.Threading, Math
-, Data.Main, UI.Theme
+, UI.Theme
 ;
 
 { TScanningFrame }
+
+procedure TScanningFrame.BeforeDestruction;
+begin
+  FSubscriptions.Clear;
+  inherited;
+end;
 
 procedure TScanningFrame.AfterConstruction;
 begin
   inherited;
 
-  TMessageManager.DefaultManager.SubscribeToMessage(TScanPointMessage
+  FSubscriptions.Add(TScanPointMessage
   , procedure(const Sender: TObject; const M: TMessage)
     var
       LValue: TPointF;
@@ -66,7 +75,7 @@ begin
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(TCameraBufferMessage
+  FSubscriptions.Add(TCameraBufferMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
       var LValue := (M as TCameraBufferMessage).Value;
@@ -74,14 +83,14 @@ begin
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(TTorchModeMessage
+  FSubscriptions.Add(TTorchModeMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
       UpdateTorch((M as TTorchModeMessage).Value);
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(TScanSettingMessage
+  FSubscriptions.Add(TScanSettingMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
       var LValue := (M as TScanSettingMessage).Value;

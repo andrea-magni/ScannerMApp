@@ -12,6 +12,7 @@ uses
 , FrameStand, SubjectStand
 , Frames.Scanning, Frames.Data, Frames.Info, FMX.Platform, FMX.MediaLibrary,
   FMX.ApplicationEvents
+, Data.Main
 ;
 
 type
@@ -70,6 +71,7 @@ type
     FScanningFrameFI: TFrameInfo<TScanningFrame>;
     FDataFrameFI: TFrameInfo<TDataFrame>;
     FInfoFrameFI: TFrameInfo<TInfoFrame>;
+    FSubscriptions: TSubscriptions;
 
 //    FDataString: string;
     procedure UpdateGUI;
@@ -88,6 +90,7 @@ type
     procedure DisplayRationale(Sender: TObject; const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
 {$ENDIF}
   public
+    procedure BeforeDestruction; override;
   end;
 
 var
@@ -105,7 +108,7 @@ uses
 , Androidapi.JNI.Net
 {$ENDIF}
 , FMX.Ani, FMX.DialogService
-, Data.Main, UI.Theme
+, UI.Theme
 ;
 
 
@@ -151,6 +154,12 @@ begin
 end;
 {$ENDIF}
 
+procedure TMainForm.BeforeDestruction;
+begin
+  FSubscriptions.Clear;
+  inherited;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
 {$IFDEF MSWINDOWS}
@@ -172,7 +181,7 @@ begin
   LibraryButton.Visible := False; // no photo library on desktop
 {$ENDIF}
 
-  TMessageManager.DefaultManager.SubscribeToMessage(
+  FSubscriptions.Add(
     TDataChangedMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
@@ -180,7 +189,7 @@ begin
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(
+  FSubscriptions.Add(
     TScanningMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
@@ -188,7 +197,7 @@ begin
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(
+  FSubscriptions.Add(
     TScanResultMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin

@@ -41,6 +41,16 @@ type
   TCameraBufferMessage = Class(TMessage<TBitmap>);
   TDataChangedMessage = Class(TMessage);
 
+  /// <summary>The message subscriptions of an object, to give them back when it
+  /// goes away (the listeners capture the object).</summary>
+  TSubscriptions = record
+  private
+    FItems: TArray<TPair<TClass, Integer>>;
+  public
+    procedure Add(const AMessageClass: TClass; const AListener: TMessageListener);
+    procedure Clear;
+  end;
+
   TMainDM = class(TDataModule)
     DataTable: TFDMemTable;
     DataTableScannedAt: TDateTimeField;
@@ -64,6 +74,7 @@ type
     FCameraScanManager: IScanManager; // camera frames, decoded in background (ScanAsync)
     FStillScanManager: IScanManager;  // still images (library, file), TRY_HARDER
     FScanFrame: TBitmap; // the frame being decoded by FCameraScanManager
+    FSubscriptions: TSubscriptions;
 
     function CropBitmap(const ABitmap: TBitmap): TBitmap;
     procedure ScanCameraFrame(const AFrame: TBitmap);
@@ -167,6 +178,8 @@ end;
 
 procedure TMainDM.BeforeDestruction;
 begin
+  FSubscriptions.Clear;
+
   // the camera off without StopScanning: no messages at shutdown, the
   // subscribers (forms, frames) may already be gone
   FWaitingResult := False;
@@ -263,7 +276,7 @@ begin
   DataTable.AfterPost := DataTableChanged;
   DataTable.AfterDelete := DataTableChanged;
 
-  TMessageManager.DefaultManager.SubscribeToMessage(TScanResultMessage,
+  FSubscriptions.Add(TScanResultMessage,
     procedure(const Sender: TObject; const M: TMessage)
     var
       LValue: TScanResult;
@@ -531,6 +544,21 @@ begin
   end;
 
   TMessageManager.DefaultManager.SendMessage(Self, TTorchModeMessage.Create(TorchModeOn));
+end;
+
+{ TSubscriptions }
+
+procedure TSubscriptions.Add(const AMessageClass: TClass; const AListener: TMessageListener);
+begin
+  FItems := FItems + [TPair<TClass, Integer>.Create(AMessageClass,
+    TMessageManager.DefaultManager.SubscribeToMessage(AMessageClass, AListener))];
+end;
+
+procedure TSubscriptions.Clear;
+begin
+  for var LItem in FItems do
+    TMessageManager.DefaultManager.Unsubscribe(LItem.Key, LItem.Value);
+  FItems := nil;
 end;
 
 { TScanResult }

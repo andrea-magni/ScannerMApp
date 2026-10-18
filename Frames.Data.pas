@@ -33,9 +33,11 @@ type
     [FrameStandAttribute] FS: TFrameStand;
     FScanResultFI: TFrameInfo<TScanResultFrame>;
     FOverlayParent: TFmxObject;
+    FSubscriptions: TSubscriptions;
   public
     { Public declarations }
     procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
     procedure Refresh;
     /// <summary>Hides the scan result, if shown; True when it was shown</summary>
     function HideScanResult: Boolean;
@@ -74,11 +76,17 @@ end;
 
 { TDataFrame }
 
+procedure TDataFrame.BeforeDestruction;
+begin
+  FSubscriptions.Clear;
+  inherited;
+end;
+
 procedure TDataFrame.AfterConstruction;
 begin
   inherited;
 
-  TMessageManager.DefaultManager.SubscribeToMessage(TScanResultMessage
+  FSubscriptions.Add(TScanResultMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
       Refresh;
