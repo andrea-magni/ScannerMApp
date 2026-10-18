@@ -1,0 +1,170 @@
+object SettingsFrame: TSettingsFrame
+  Align = Client
+  Size.Width = 380.000000000000000000
+  Size.Height = 640.000000000000000000
+  Size.PlatformDefault = False
+  OnClick = FrameClick
+  object CardRectangle: TRectangle
+    Align = Client
+    Fill.Color = xFF1A1D23
+    HitTest = True
+    Margins.Left = 20.000000000000000000
+    Margins.Top = 32.000000000000000000
+    Margins.Right = 20.000000000000000000
+    Margins.Bottom = 32.000000000000000000
+    Padding.Left = 20.000000000000000000
+    Padding.Top = 20.000000000000000000
+    Padding.Right = 20.000000000000000000
+    Padding.Bottom = 16.000000000000000000
+    Size.Width = 340.000000000000000000
+    Size.Height = 576.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    XRadius = 24.000000000000000000
+    YRadius = 24.000000000000000000
+    object HeaderRow: TLayout
+      Align = Top
+      Size.Width = 300.000000000000000000
+      Size.Height = 36.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object CloseButton: TCircle
+        Align = Right
+        Cursor = crHandPoint
+        Fill.Color = xFF262A33
+        Margins.Top = 2.000000000000000000
+        Margins.Bottom = 2.000000000000000000
+        Position.X = 268.000000000000000000
+        Position.Y = 2.000000000000000000
+        Size.Width = 32.000000000000000000
+        Size.Height = 32.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        OnClick = CloseButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object CloseIcon: TPath
+          Align = Center
+          Data.Data =
+            'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.4' +
+            '1 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+          Fill.Color = xFF9AA3AF
+          HitTest = False
+          Size.Width = 14.000000000000000000
+          Size.Height = 14.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+      end
+      object TitleLabel: TLabel
+        Align = Client
+        StyledSettings = [Family]
+        HitTest = False
+        Size.Width = 268.000000000000000000
+        Size.Height = 36.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 20.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = xFFF2F4F7
+        TextSettings.HorzAlign = Leading
+        TextSettings.WordWrap = False
+        Text = 'Formats to read'
+      end
+    end
+    object SubtitleLabel: TLabel
+      Align = Top
+      StyledSettings = [Family]
+      HitTest = False
+      Margins.Top = 4.000000000000000000
+      Margins.Bottom = 12.000000000000000000
+      Position.Y = 40.000000000000000000
+      Size.Width = 300.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.FontColor = xFF9AA3AF
+      TextSettings.HorzAlign = Leading
+      TextSettings.VertAlign = Leading
+      Text = 'Fewer formats: faster scanning, less battery.'
+    end
+    object FooterRow: TLayout
+      Align = Bottom
+      Margins.Top = 12.000000000000000000
+      Position.Y = 508.000000000000000000
+      Size.Width = 300.000000000000000000
+      Size.Height = 44.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      object AllButton: TRectangle
+        Align = Left
+        Cursor = crHandPoint
+        Fill.Kind = None
+        Size.Width = 120.000000000000000000
+        Size.Height = 44.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 22.000000000000000000
+        YRadius = 22.000000000000000000
+        OnClick = AllButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object AllLabel: TLabel
+          Align = Client
+          StyledSettings = [Family]
+          HitTest = False
+          Size.Width = 120.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = xFF2EE6A6
+          TextSettings.HorzAlign = Leading
+          TextSettings.WordWrap = False
+          Text = 'Select all'
+        end
+      end
+      object DoneButton: TRectangle
+        Align = Right
+        Cursor = crHandPoint
+        Fill.Color = xFF2EE6A6
+        Position.X = 180.000000000000000000
+        Size.Width = 120.000000000000000000
+        Size.Height = 44.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 22.000000000000000000
+        YRadius = 22.000000000000000000
+        OnClick = DoneButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object DoneLabel: TLabel
+          Align = Client
+          StyledSettings = [Family]
+          HitTest = False
+          Size.Width = 120.000000000000000000
+          Size.Height = 44.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 16.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = xFF062016
+          TextSettings.HorzAlign = Center
+          TextSettings.WordWrap = False
+          Text = 'Done'
+        end
+      end
+    end
+    object GroupsScrollBox: TVertScrollBox
+      Align = Client
+      Size.Width = 300.000000000000000000
+      Size.Height = 400.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Viewport.Width = 300.000000000000000000
+      Viewport.Height = 400.000000000000000000
+    end
+  end
+end

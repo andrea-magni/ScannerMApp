@@ -382,6 +382,11 @@
         </DCCReference>
         <DCCReference Include="UI.Theme.pas"/>
         <DCCReference Include="Data.Settings.pas"/>
+        <DCCReference Include="Frames.Settings.pas">
+            <Form>SettingsFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -10,7 +10,7 @@ uses
 , System.Threading, System.Diagnostics, System.Messaging,  System.Permissions
 , ZXing.ScanManager, ZXing.BarcodeFormat, ZXing.ReadResult, ZXing.ResultPoint
 , FrameStand, SubjectStand
-, Frames.Scanning, Frames.Data, Frames.Info, FMX.Platform, FMX.MediaLibrary,
+, Frames.Scanning, Frames.Data, Frames.Info, Frames.Settings, FMX.Platform, FMX.MediaLibrary,
   FMX.ApplicationEvents
 , Data.Main
 ;
@@ -30,6 +30,8 @@ type
     TitleLabel: TLabel;
     InfoButton: TRectangle;
     InfoIcon: TPath;
+    SettingsButton: TRectangle;
+    SettingsIcon: TPath;
     ContentLayout: TLayout;
     EmptyLayout: TLayout;
     EmptyCircle: TCircle;
@@ -55,6 +57,7 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure InfoButtonClick(Sender: TObject);
+    procedure SettingsButtonClick(Sender: TObject);
     function ApplicationEvents1StateChanged(Sender: TObject;
       const AAppEvent: TApplicationEvent; const AContext: TObject): Boolean;
     procedure FormSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
@@ -71,6 +74,7 @@ type
     FScanningFrameFI: TFrameInfo<TScanningFrame>;
     FDataFrameFI: TFrameInfo<TDataFrame>;
     FInfoFrameFI: TFrameInfo<TInfoFrame>;
+    FSettingsFrameFI: TFrameInfo<TSettingsFrame>;
     FSubscriptions: TSubscriptions;
 
 //    FDataString: string;
@@ -273,7 +277,13 @@ end;
 
 function TMainForm.HandleBack: Boolean;
 begin
-  // the topmost first: the info lightbox, then the result card, then the camera
+  // the topmost first: the lightboxes, then the result card, then the camera
+  if Assigned(FSettingsFrameFI) and FSettingsFrameFI.IsVisible then
+  begin
+    FSettingsFrameFI.Frame.Close; // applies the changes
+    Exit(True);
+  end;
+
   if Assigned(FInfoFrameFI) and FInfoFrameFI.IsVisible then
   begin
     FInfoFrameFI.Hide;
@@ -314,6 +324,15 @@ begin
   if not Assigned(FScanningFrameFI) then
     FScanningFrameFI := FrameStand1.New<TScanningFrame>(ContentLayout, 'lightbox');
   Result := FScanningFrameFI;
+end;
+
+procedure TMainForm.SettingsButtonClick(Sender: TObject);
+begin
+  if MainDM.Scanning then
+    MainDM.StopScanning; // the new formats apply to the next scan
+  if not Assigned(FSettingsFrameFI) then
+    FSettingsFrameFI := FrameStand1.New<TSettingsFrame>(RootLayout, 'lightbox');
+  FSettingsFrameFI.Show();
 end;
 
 procedure TMainForm.InfoButtonClick(Sender: TObject);

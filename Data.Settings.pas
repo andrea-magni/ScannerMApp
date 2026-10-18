@@ -55,7 +55,7 @@ const
   , (Key: 'itf';       Name: 'ITF';               Formats: [TBarcodeFormat.ITF])
   , (Key: 'codabar';   Name: 'Codabar';           Formats: [TBarcodeFormat.CODABAR])
   , (Key: 'databar';   Name: 'GS1 DataBar';       Formats: [TBarcodeFormat.RSS_14, TBarcodeFormat.RSS_EXPANDED, TBarcodeFormat.RSS_LIMITED])
-  , (Key: 'other';     Name: 'Other 1D and stacked codes';
+  , (Key: 'other';     Name: 'Other 1D codes';
                                                   Formats: [TBarcodeFormat.TELEPEN, TBarcodeFormat.DX_FILM_EDGE,
                                                     TBarcodeFormat.CODABLOCK_F, TBarcodeFormat.CODE_16K,
                                                     TBarcodeFormat.CODE_49, TBarcodeFormat.GS1_COMPOSITE])
