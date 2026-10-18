@@ -23,20 +23,29 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 
 - **RAD Studio 13 Florence** (Delphi 13).
 - **Android 64-bit**: min SDK 24, target SDK 36. Win32 and Win64 build too (scanning from a file; the camera has not been tested on Windows).
-- **[ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4.0** or later (branch `4.0`). Version 3.x no longer builds: the app uses `IScanManager` and `ScanAsync`.
+- **[ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4.0** or later, included as a git submodule in `ThirdParty\ZXing.Delphi` (branch `4.0`). Version 3.x does not build: the app uses `IScanManager` and `ScanAsync`.
 - **[TFrameStand](https://github.com/andrea-magni/TFrameStand)**, `master` or a release after v.2.3: it registers the interactive gestures of the frames ([#121](https://github.com/andrea-magni/TFrameStand/pull/121)). With v.2.3, pinch and double-tap zoom do nothing on Android.
 
 ## Building
 
-The search path of the project expects the libraries next to the projects folder:
+Clone with the submodules, so that ZXing.Delphi lands in `ThirdParty\ZXing.Delphi`:
+
+```
+git clone --recurse-submodules https://github.com/andrea-magni/ScannerMApp.git
+```
+
+In a clone made without it, run `git submodule update --init`.
+
+TFrameStand is not a submodule: the search path expects it next to the projects folder:
 
 ```
 <root>\Librerie\TFrameStand
-<root>\Librerie\ZXing.Delphi
 <root>\Progetti\ScannerMApp
 ```
 
-Clone them there, or change the search path in **Project ▸ Options ▸ Building ▸ Delphi Compiler ▸ Search path**.
+Clone it there, or change the search path in **Project ▸ Options ▸ Building ▸ Delphi Compiler ▸ Search path**.
+
+To move ZXing.Delphi to the latest commit of its `4.0` branch: `git submodule update --remote ThirdParty/ZXing.Delphi`, then commit the new submodule commit.
 
 Then open `ScannerMapp.dproj`, pick the platform and run.
 
