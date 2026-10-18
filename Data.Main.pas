@@ -39,6 +39,7 @@ type
   TTorchModeMessage = Class(TMessage<Boolean>);
   TCameraBufferMessage = Class(TMessage<TBitmap>);
   THardwareBackMessage = Class(TMessage<Integer>);
+  TDataChangedMessage = Class(TMessage);
 
   TMainDM = class(TDataModule)
     DataTable: TFDMemTable;
@@ -64,6 +65,7 @@ type
     procedure SetCameraSettings(ACameraComponent: TCameraComponent);
     procedure OnResultPointHandler(const APoint: IResultPoint);
     function GetTorchModeOn: Boolean;
+    procedure DataTableChanged(DataSet: TDataSet);
   public
     { Public declarations }
 
@@ -168,32 +170,33 @@ end;
 procedure TMainDM.CameraComponent1SampleBufferReady(Sender: TObject;
   const ATime: TMediaTime);
 begin
-  if Sender is TCameraComponent then
-  begin
-    TThread.Synchronize(nil,
-      procedure
-      var
-        LBuffer, LReducedBuffer: TBitmap;
-      begin
-        LBuffer := TBitmap.Create;
-        try
-          TCameraComponent(Sender).SampleBufferToBitmap(LBuffer, True);
-          LReducedBuffer := CropBitmap(LBuffer);
-          try
-            TMessageManager.DefaultManager.SendMessage(Sender,
-              TCameraBufferMessage.Create(LReducedBuffer));
-            if FWaitingResult and (MilliSecondsBetween(FLastScan, Now) >=
-              SCAN_EACH_MS) then
-              ScanFrames(LReducedBuffer);
-          finally
-            if Assigned(LReducedBuffer) then
-              FreeAndnil(LReducedBuffer);
-          end;
-        finally
-          LBuffer.Free;
-        end;
-      end);
+  // FMX (Android) already fires OnSampleBufferReady in the main thread, through a
+  // TThread.Synchronize issued by the camera thread: no further synchronization needed here.
+  // Never stop/free the camera from within this handler (see ScanFrames).
+  if not (Sender is TCameraComponent) or not FScanning then
+    Exit;
+
+  var LBuffer := TBitmap.Create;
+  try
+    TCameraComponent(Sender).SampleBufferToBitmap(LBuffer, True);
+    if LBuffer.IsEmpty then
+      Exit;
+
+    var LReducedBuffer := CropBitmap(LBuffer);
+    try
+      TMessageManager.DefaultManager.SendMessage(
+        Sender
+      , TCameraBufferMessage.Create(LReducedBuffer)
+      );
+      if FWaitingResult and (MilliSecondsBetween(FLastScan, Now) >= SCAN_EACH_MS) then
+        ScanFrames(LReducedBuffer);
+    finally
+      LReducedBuffer.Free;
+    end;
+  finally
+    LBuffer.Free;
   end;
+
 end;
 
 function TMainDM.CropBitmap(const ABitmap: TBitmap): TBitmap;
@@ -209,10 +212,12 @@ begin
     LCropH := LCropMargin;
   end;
 
-  Result := TBitmap.Create(ABitmap.Width - (2 * LCropW),
-    ABitmap.Height - (2 * LCropH));
-  Result.CopyFromBitmap(ABitmap, Rect(LCropW, LCropH, ABitmap.Width - LCropW,
-    ABitmap.Height - LCropH), 0, 0);
+  Result := TBitmap.Create(ABitmap.Width - (2 * LCropW), ABitmap.Height - (2 * LCropH));
+  Result.CopyFromBitmap(
+    ABitmap
+  , Rect(LCropW, LCropH, ABitmap.Width - LCropW, ABitmap.Height - LCropH)
+  , 0, 0
+  );
 end;
 
 procedure TMainDM.DataModuleCreate(Sender: TObject);
@@ -220,6 +225,9 @@ begin
   FLastScan := Now;
   FScanning := False;
   FWaitingResult := False;
+
+  DataTable.AfterPost := DataTableChanged;
+  DataTable.AfterDelete := DataTableChanged;
 
   TMessageManager.DefaultManager.SubscribeToMessage(TScanResultMessage,
     procedure(const Sender: TObject; const M: TMessage)
@@ -242,6 +250,7 @@ begin
         try
           DataTable.FieldByName('ScanCount').AsInteger :=
             DataTable.FieldByName('ScanCount').AsInteger + 1;
+          DataTable.Post;
         except
           DataTable.Cancel;
           raise;
@@ -283,6 +292,11 @@ begin
     end);
 end;
 
+procedure TMainDM.DataTableChanged(DataSet: TDataSet);
+begin
+  TMessageManager.DefaultManager.SendMessage(Self, TDataChangedMessage.Create);
+end;
+
 function TMainDM.GetTorchModeOn: Boolean;
 begin
   Result := Assigned(FCameraComponent) and (FCameraComponent.TorchMode = TTorchMode.ModeOn);
@@ -318,8 +332,12 @@ begin
     end;
   end;
 
-  FWaitingResult := True;
-  ScanFrames(LReducedBuffer);
+  try
+    FWaitingResult := True;
+    ScanFrames(LReducedBuffer);
+  finally
+    LReducedBuffer.Free; // ScanFrames does not take ownership
+  end;
 end;
 
 procedure TMainDM.Scan(const AFileName: string);
@@ -336,25 +354,26 @@ begin
 end;
 
 procedure TMainDM.ScanFrames(const AReducedBuffer: TBitmap);
-    var
-      LReadResult: TReadResult;
-      LScanManager: TScanManager;
+// AReducedBuffer remains owned by the caller
+var
+  LReadResult: TReadResult;
+  LScanManager: TScanManager;
 begin
   if not Assigned(AReducedBuffer) or (AReducedBuffer.Width < 2) then
     Exit;
 
   FLastScan := Now;
 
-  if (not FWaitingResult) or (not FScanning) then // already found
+  if not FWaitingResult then // already found
     Exit;
 
+  LReadResult := nil;
   LScanManager := TScanManager.Create(TBarcodeFormat.Auto, nil);
   try
 {$IFNDEF IOS}
     LScanManager.OnResultPoint := OnResultPointHandler;
 {$ENDIF IOS}
 
-    LReadResult := nil;
     try
       LReadResult := LScanManager.Scan(AReducedBuffer);
     except
@@ -363,20 +382,34 @@ begin
 
     if (LReadResult <> nil) and FWaitingResult then
     begin
-      TThread.Synchronize(nil,
+      FWaitingResult := False;
+
+      // TScanResult takes ownership of both the frame (a copy) and the read result;
+      // TScanResultMessage (TObjectMessage) owns and frees the TScanResult.
+      var LFrame := TBitmap.Create;
+      try
+        LFrame.Assign(AReducedBuffer);
+      except
+        LFrame.Free;
+        raise;
+      end;
+      var LScanResult := TScanResult.Create(LFrame, LReadResult);
+      LReadResult := nil;
+
+      // Deferred: we may be inside the camera's OnSampleBufferReady (with the camera
+      // thread blocked in TThread.Synchronize). Destroying the camera from there means
+      // freeing the Sender and the Java buffers still in use by the camera thread.
+      TThread.ForceQueue(nil,
         procedure
         begin
           StopScanning;
           TMessageManager.DefaultManager.SendMessage(Self,
-            TScanResultMessage.Create(TScanResult.Create(AReducedBuffer,
-            LReadResult)));
+            TScanResultMessage.Create(LScanResult));
         end);
-
     end;
   finally
     FreeAndNil(LScanManager);
-    if Assigned(LReadResult) then
-      FreeAndNil(LReadResult);
+    FreeAndNil(LReadResult);
   end;
 end;
 
@@ -405,9 +438,15 @@ begin
   if not Assigned(FCameraComponent) then
   begin
     FCameraComponent := TCameraComponent.Create(nil);
-    SetCameraSettings(FCameraComponent);
-    FCameraComponent.OnSampleBufferReady := CameraComponent1SampleBufferReady;
-    FCameraComponent.Active := True;
+    try
+      SetCameraSettings(FCameraComponent);
+      FCameraComponent.OnSampleBufferReady := CameraComponent1SampleBufferReady;
+      FCameraComponent.Active := True;
+    except
+      FCameraComponent.OnSampleBufferReady := nil;
+      FreeAndNil(FCameraComponent);
+      raise;
+    end;
   end;
   FScanning := True;
   FWaitingResult := True;
@@ -457,6 +496,7 @@ end;
 destructor TScanResult.Destroy;
 begin
   FreeAndNil(FFrame);
+  FreeAndNil(FResult);
 
   inherited;
 end;

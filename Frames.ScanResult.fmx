@@ -4,153 +4,383 @@ object ScanResultFrame: TScanResultFrame
   Size.Height = 508.000000000000000000
   Size.PlatformDefault = False
   OnClick = FrameClick
-  object ResultLayout: TLayout
-    Align = Bottom
-    Position.Y = 308.000000000000000000
+  object CardRectangle: TRectangle
+    Align = Client
+    Fill.Color = xFF1A1D23
+    Padding.Left = 16.000000000000000000
+    Padding.Top = 16.000000000000000000
+    Padding.Right = 16.000000000000000000
+    Padding.Bottom = 16.000000000000000000
     Size.Width = 358.000000000000000000
-    Size.Height = 200.000000000000000000
+    Size.Height = 508.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 1
-    object BackgroundRectangle: TRectangle
-      Align = Contents
-      HitTest = False
-      Size.Width = 358.000000000000000000
-      Size.Height = 200.000000000000000000
-      Size.PlatformDefault = False
-      Stroke.Thickness = 3.000000000000000000
-    end
-    object InfoBottomLayout: TLayout
-      Align = Bottom
-      Margins.Left = 5.000000000000000000
-      Margins.Right = 5.000000000000000000
-      Margins.Bottom = 5.000000000000000000
-      Position.X = 5.000000000000000000
-      Position.Y = 170.000000000000000000
-      Size.Width = 348.000000000000000000
-      Size.Height = 25.000000000000000000
+    Stroke.Kind = None
+    XRadius = 24.000000000000000000
+    YRadius = 24.000000000000000000
+    object HeaderRow: TLayout
+      Align = Top
+      Position.X = 16.000000000000000000
+      Position.Y = 16.000000000000000000
+      Size.Width = 326.000000000000000000
+      Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      object KindLabel: TLabel
-        Align = Left
-        StyledSettings = [Family, Style]
-        Size.Width = 100.000000000000000000
-        Size.Height = 25.000000000000000000
+      object CloseButton: TCircle
+        Align = Right
+        Cursor = crHandPoint
+        Fill.Color = xFF262A33
+        Position.X = 294.000000000000000000
+        Size.Width = 32.000000000000000000
+        Size.Height = 32.000000000000000000
         Size.PlatformDefault = False
-        TextSettings.Font.Size = 10.000000000000000000
-        TextSettings.FontColor = claGray
+        Stroke.Kind = None
+        OnClick = CloseButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object CloseIcon: TPath
+          Align = Center
+          Data.Path = {
+            0D0000000000000000009841B81ECD400100000052B88C410000A04001000000
+            00004041A470294101000000B81ECD400000A040010000000000A040B81ECD40
+            01000000A470294100004041010000000000A04052B88C4101000000B81ECD40
+            0000984101000000000040415C8F56410100000052B88C410000984101000000
+            0000984152B88C41010000005C8F5641000040410300000000009841B81ECD40}
+          Fill.Color = xFF9AA3AF
+          HitTest = False
+          Size.Width = 14.000000000000000000
+          Size.Height = 14.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+      end
+      object KindChip: TRectangle
+        Align = Left
+        Fill.Color = xFF16362C
+        HitTest = False
+        Margins.Top = 2.000000000000000000
+        Margins.Bottom = 2.000000000000000000
+        Position.Y = 2.000000000000000000
+        Size.Width = 132.000000000000000000
+        Size.Height = 28.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 14.000000000000000000
+        YRadius = 14.000000000000000000
+        object KindLabel: TLabel
+          Align = Client
+          StyledSettings = [Family]
+          Margins.Left = 10.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Size.Width = 112.000000000000000000
+          Size.Height = 28.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          TextSettings.FontColor = xFF2EE6A6
+          TextSettings.HorzAlign = Center
+          TextSettings.WordWrap = False
+        end
+      end
+    end
+    object ActionsLayout: TLayout
+      Align = Bottom
+      Margins.Top = 16.000000000000000000
+      Position.X = 16.000000000000000000
+      Position.Y = 432.000000000000000000
+      Size.Width = 326.000000000000000000
+      Size.Height = 60.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object CopyButton: TRectangle
+        Align = Left
+        Cursor = crHandPoint
+        Fill.Color = xFF262A33
+        Size.Width = 68.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 18.000000000000000000
+        YRadius = 18.000000000000000000
+        OnClick = CopyButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object CopyIcon: TPath
+          Align = Top
+          Data.Path = {
+            2300000000000000000080410000803F01000000000080400000803F02000000
+            9A9939400000803F02000000000000403333F33F020000000000004000004040
+            0100000000000040000088410100000000008040000088410100000000008040
+            0000404001000000000080410000404001000000000080410000803F03000000
+            000080410000803F00000000000098410000A04001000000000000410000A040
+            02000000CDCCDC400000A040020000000000C040CDCCBC40020000000000C040
+            0000E040010000000000C0400000A841020000000000C040CDCCB04102000000
+            CDCCDC400000B84102000000000000410000B84101000000000098410000B841
+            02000000CDCCA0410000B841020000000000A841CDCCB041020000000000A841
+            0000A841010000000000A8410000E040020000000000A841CDCCBC4002000000
+            CDCCA0410000A04002000000000098410000A04003000000000098410000A040
+            00000000000098410000A84101000000000000410000A8410100000000000041
+            0000E04001000000000098410000E04001000000000098410000A84103000000
+            000098410000A841}
+          Fill.Color = xFFF2F4F7
+          HitTest = False
+          Margins.Top = 9.000000000000000000
+          Position.Y = 9.000000000000000000
+          Size.Width = 68.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+        object CopyLabel: TLabel
+          Align = Top
+          StyledSettings = [Family]
+          Margins.Top = 4.000000000000000000
+          Position.Y = 35.000000000000000000
+          Size.Width = 68.000000000000000000
+          Size.Height = 18.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00050000000000000004000000}
+          TextSettings.FontColor = xFFF2F4F7
+          TextSettings.HorzAlign = Center
+          TextSettings.WordWrap = False
+          Text = 'Copy'
+        end
+      end
+      object DeleteButton: TRectangle
+        Align = Right
+        Cursor = crHandPoint
+        Fill.Color = xFF262A33
+        Position.X = 258.000000000000000000
+        Size.Width = 68.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 18.000000000000000000
+        YRadius = 18.000000000000000000
+        OnClick = DeleteButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object DeleteIcon: TPath
+          Align = Top
+          Data.Path = {
+            16000000000000000000C04000009841020000000000C040CDCCA04102000000
+            CDCCDC400000A84102000000000000410000A84101000000000080410000A841
+            02000000CDCC88410000A8410200000000009041CDCCA0410200000000009041
+            0000984101000000000090410000E040010000000000C0400000E04001000000
+            0000C04000009841030000000000C04000009841000000000000984100008040
+            0100000000007841000080400100000000006841000040400100000000001841
+            00004040010000000000084100008040010000000000A0400000804001000000
+            0000A0400000C04001000000000098410000C040010000000000984100008040
+            030000000000984100008040}
+          Fill.Color = xFFFF6B6B
+          HitTest = False
+          Margins.Top = 9.000000000000000000
+          Position.Y = 9.000000000000000000
+          Size.Width = 68.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+        object DeleteLabel: TLabel
+          Align = Top
+          StyledSettings = [Family]
+          Margins.Top = 4.000000000000000000
+          Position.Y = 35.000000000000000000
+          Size.Width = 68.000000000000000000
+          Size.Height = 18.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.StyleExt = {00050000000000000004000000}
+          TextSettings.FontColor = xFFFF6B6B
+          TextSettings.HorzAlign = Center
+          TextSettings.WordWrap = False
+          Text = 'Delete'
+        end
+      end
+      object ShareButton: TRectangle
+        Align = Client
+        Cursor = crHandPoint
+        Fill.Color = xFF2EE6A6
+        Margins.Left = 12.000000000000000000
+        Margins.Right = 12.000000000000000000
+        Size.Width = 166.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 18.000000000000000000
+        YRadius = 18.000000000000000000
+        OnClick = ShareButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object ShareContentLayout: TLayout
+          Align = Center
+          Size.Width = 96.000000000000000000
+          Size.Height = 60.000000000000000000
+          Size.PlatformDefault = False
+          object ShareIcon: TPath
+            Align = Left
+            Data.Path = {
+              360000000000000000009041D7A380410200000085EB8941D7A3804102000000
+              E17A84413D0A834102000000EC518041CDCC8641010000005C8F0E4133334B41
+              02000000295C0F411F85474102000000000010410AD743410200000000001041
+              000040410200000000001041F6283C4102000000295C0F41E17A384102000000
+              5C8F0E41CDCC344101000000295C7F417B14E64002000000000084417B14F640
+              0200000014AE89410000004102000000000090410000004102000000AE479D41
+              00000041020000000000A841B81ED540020000000000A8410000A04002000000
+              0000A84190C2554002000000AE479D4100000040020000000000904100000040
+              0200000052B8824100000040020000000000704190C255400200000000007041
+              0000A040020000000000704114AEA74002000000D7A370413D0AAF4002000000
+              A47071416666B64001000000D7A30041C3F51C41020000000000F040C3F51441
+              02000000AE47D94000001041020000000000C040000010410200000048E18A40
+              000010410200000000004040A470254102000000000040400000404102000000
+              000040405C8F5A410200000048E18A4000007041020000000000C04000007041
+              02000000AE47D94000007041020000000000F0403D0A6B4102000000D7A30041
+              3D0A6341010000005C8F7241CCCC9241020000008FC27141E07A944102000000
+              AE477141703D964102000000AE477141FFFF974102000000AE47714147E1A441
+              02000000B81E8341285CAF410200000000009041285CAF410200000048E19C41
+              285CAF4102000000295CA74147E1A44102000000295CA741FFFF974102000000
+              295CA741B71E8B410200000048E19C41D6A380410200000000009041D6A38041
+              0300000000009041D7A38041}
+            Fill.Color = xFF062016
+            HitTest = False
+            Size.Width = 22.000000000000000000
+            Size.Height = 60.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Kind = None
+            WrapMode = Fit
+          end
+          object ShareLabel: TLabel
+            Align = Client
+            StyledSettings = [Family]
+            Margins.Left = 8.000000000000000000
+            Size.Width = 66.000000000000000000
+            Size.Height = 60.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 17.000000000000000000
+            TextSettings.Font.StyleExt = {00070000000000000004000000}
+            TextSettings.FontColor = xFF062016
+            TextSettings.HorzAlign = Center
+            TextSettings.WordWrap = False
+            Text = 'Share'
+          end
+        end
+      end
+    end
+    object MetaRow: TLayout
+      Align = Bottom
+      Margins.Top = 10.000000000000000000
+      Position.X = 16.000000000000000000
+      Position.Y = 394.000000000000000000
+      Size.Width = 326.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      object ScanCountLabel: TLabel
+        Align = Right
+        StyledSettings = [Family]
+        Position.X = 294.000000000000000000
+        Size.Width = 32.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = xFF2EE6A6
         TextSettings.HorzAlign = Trailing
-        TabOrder = 1
+        TextSettings.WordWrap = False
+      end
+      object ScansCaptionLabel: TLabel
+        Align = Right
+        StyledSettings = [Family]
+        Position.X = 246.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.FontColor = xFF9AA3AF
+        TextSettings.HorzAlign = Trailing
+        TextSettings.WordWrap = False
+        Text = 'Scans:'
       end
       object TimeStampLabel: TLabel
         Align = Client
-        StyledSettings = [Family, Style]
-        Size.Width = 248.000000000000000000
-        Size.Height = 25.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.Size = 10.000000000000000000
-        TextSettings.FontColor = claGray
-        TextSettings.HorzAlign = Center
-        TabOrder = 0
-      end
-    end
-    object InfoTopLayout: TLayout
-      Align = Top
-      Margins.Left = 5.000000000000000000
-      Margins.Top = 5.000000000000000000
-      Margins.Right = 5.000000000000000000
-      Position.X = 5.000000000000000000
-      Position.Y = 5.000000000000000000
-      Size.Width = 348.000000000000000000
-      Size.Height = 30.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      object Label1: TLabel
-        Align = Left
-        StyledSettings = [Family, Style]
-        Size.Width = 100.000000000000000000
-        Size.Height = 30.000000000000000000
-        Size.PlatformDefault = False
-        TextSettings.Font.Size = 10.000000000000000000
-        TextSettings.FontColor = claGray
-        TextSettings.HorzAlign = Trailing
-        TabOrder = 1
-      end
-      object ScanCountLabel: TLabel
-        Align = Right
-        StyledSettings = [Family, Style]
-        Position.X = 248.000000000000000000
-        Size.Width = 100.000000000000000000
-        Size.Height = 30.000000000000000000
+        StyledSettings = [Family]
+        Size.Width = 246.000000000000000000
+        Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
         TextSettings.Font.Size = 14.000000000000000000
-        TextSettings.FontColor = claCadetblue
-        TextSettings.HorzAlign = Trailing
+        TextSettings.FontColor = xFF9AA3AF
+        TextSettings.WordWrap = False
+      end
+    end
+    object ValueScrollBox: TVertScrollBox
+      Align = Bottom
+      Margins.Top = 14.000000000000000000
+      Position.X = 16.000000000000000000
+      Position.Y = 276.000000000000000000
+      Size.Width = 326.000000000000000000
+      Size.Height = 108.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Viewport.Width = 326.000000000000000000
+      Viewport.Height = 108.000000000000000000
+      object ResultLabel: TLabel
+        Align = Top
+        AutoSize = True
+        StyledSettings = [Family]
+        Size.Width = 326.000000000000000000
+        Size.Height = 28.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 20.000000000000000000
+        TextSettings.Font.StyleExt = {00050000000000000004000000}
+        TextSettings.FontColor = xFFF2F4F7
+        TextSettings.VertAlign = Leading
         TabOrder = 0
       end
     end
-    object ResultLabel: TLabel
-      Align = Contents
-      Margins.Left = 45.000000000000000000
-      Margins.Top = 25.000000000000000000
-      Margins.Right = 5.000000000000000000
-      Margins.Bottom = 25.000000000000000000
-      Size.Width = 308.000000000000000000
-      Size.Height = 150.000000000000000000
-      Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      TabOrder = 2
-    end
-    object ActionsLayout: TGridLayout
-      Align = Left
-      ItemHeight = 64.000000000000000000
-      ItemWidth = 64.000000000000000000
-      Orientation = Vertical
-      Position.Y = 35.000000000000000000
-      Size.Width = 64.000000000000000000
-      Size.Height = 135.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 4
-      object ShareButton: TButton
-        Action = ShareAction
-        Align = Left
-        Enabled = True
-        ImageIndex = -1
-        Size.Width = 64.000000000000000000
-        Size.Height = 64.000000000000000000
-        Size.PlatformDefault = False
-        StyleLookup = 'actiontoolbutton'
-        TabOrder = 1
-      end
-      object DeleteButton: TButton
-        Action = DeleteAction
-        Align = Left
-        Enabled = True
-        ImageIndex = -1
-        Position.Y = 64.000000000000000000
-        Size.Width = 64.000000000000000000
-        Size.Height = 64.000000000000000000
-        Size.PlatformDefault = False
-        StyleLookup = 'deleteitembutton'
-        TabOrder = 0
-      end
-    end
-  end
-  object FrameLayout: TLayout
-    Align = Client
-    Size.Width = 358.000000000000000000
-    Size.Height = 308.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 5
-    object FrameImage: TImage
-      MultiResBitmap = <
-        item
-        end>
+    object ImageBox: TRectangle
       Align = Client
+      Fill.Color = xFF0B0D10
       HitTest = False
-      Margins.Bottom = 10.000000000000000000
-      Size.Width = 358.000000000000000000
-      Size.Height = 298.000000000000000000
+      Margins.Top = 14.000000000000000000
+      Size.Width = 326.000000000000000000
+      Size.Height = 200.000000000000000000
       Size.PlatformDefault = False
+      Stroke.Kind = None
+      XRadius = 16.000000000000000000
+      YRadius = 16.000000000000000000
+      object ImageViewport: TLayout
+        Touch.InteractiveGestures = [Zoom, DoubleTap]
+        OnGesture = ImageViewportGesture
+        Align = Client
+        ClipChildren = True
+        Cursor = crSizeAll
+        HitTest = True
+        Margins.Left = 8.000000000000000000
+        Margins.Top = 8.000000000000000000
+        Margins.Right = 8.000000000000000000
+        Margins.Bottom = 8.000000000000000000
+        Size.Width = 310.000000000000000000
+        Size.Height = 184.000000000000000000
+        Size.PlatformDefault = False
+        OnResize = ImageViewportResize
+        OnMouseDown = ImageViewportMouseDown
+        OnMouseMove = ImageViewportMouseMove
+        OnMouseUp = ImageViewportMouseUp
+        OnMouseWheel = ImageViewportMouseWheel
+        object FrameImage: TImage
+          MultiResBitmap = <
+            item
+            end>
+          HitTest = False
+          Size.Width = 310.000000000000000000
+          Size.Height = 184.000000000000000000
+          Size.PlatformDefault = False
+        end
+      end
     end
   end
   object BindSourceDB1: TBindSourceDB

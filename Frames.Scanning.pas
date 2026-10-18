@@ -12,15 +12,24 @@ uses
 
 type
   TScanningFrame = class(TFrame)
-    TorchImage: TImage;
-    OverlayLayout: TLayout;
+    HintLabel: TLabel;
     OverlayBottomLayout: TLayout;
     InfoLabel: TLabel;
+    TorchButton: TCircle;
+    TorchIcon: TPath;
+    ViewfinderLayout: TLayout;
     FrameRectangle: TRectangle;
-    procedure TorchImageClick(Sender: TObject);
+    procedure ViewfinderLayoutResize(Sender: TObject);
+    procedure TorchButtonClick(Sender: TObject);
+    procedure PressableMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Single);
+    procedure PressableMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Single);
+    procedure PressableMouseLeave(Sender: TObject);
   private
     { Private declarations }
 //    [FrameInfo] FI: TFrameInfo<TScanningFrame>;
+    procedure UpdateTorch(const AOn: Boolean);
     procedure DrawScanPoint(const APosition: TPointF; const AColor: TAlphaColor;
       const ASize: Integer = 6; const AOpacity: Double = 0.8;
       const AFadeTime: Integer = 500);
@@ -36,7 +45,7 @@ implementation
 
 uses
   System.Messaging, System.Threading, Math
-, Data.Main
+, Data.Main, UI.Theme
 ;
 
 { TScanningFrame }
@@ -60,28 +69,30 @@ begin
     begin
 {$IFNDEF IOS}
       LValue := (M as TScanPointMessage).Value;
-      DrawScanPoint(LValue, TAlphaColorRec.Lightblue);
+      DrawScanPoint(LValue, COLOR_ACCENT);
 {$ENDIF IOS}
     end
   );
 
   TMessageManager.DefaultManager.SubscribeToMessage(TCameraBufferMessage
   , procedure(const Sender: TObject; const M: TMessage)
-    var
-      LValue: TBitmap;
     begin
-      LValue := (M as TCameraBufferMessage).Value;
-
+      var LValue := (M as TCameraBufferMessage).Value;
       FrameRectangle.Fill.Bitmap.Bitmap.Assign(LValue);
+    end
+  );
+
+  TMessageManager.DefaultManager.SubscribeToMessage(TTorchModeMessage
+  , procedure(const Sender: TObject; const M: TMessage)
+    begin
+      UpdateTorch((M as TTorchModeMessage).Value);
     end
   );
 
   TMessageManager.DefaultManager.SubscribeToMessage(TScanSettingMessage
   , procedure(const Sender: TObject; const M: TMessage)
-    var
-      LValue: TVideoCaptureSetting;
     begin
-      LValue := (M as TScanSettingMessage).Value;
+      var LValue := (M as TScanSettingMessage).Value;
 
       InfoLabel.Text := LValue.Width.ToString + ' x ' + LValue.Height.ToString
         + ' ' + LValue.FrameRate.ToString(TFloatFormat.ffFixed, 15, 1) + ' FPS';
@@ -95,6 +106,9 @@ procedure TScanningFrame.DrawScanPoint(const APosition: TPointF;
 var
   LRect: TRectangle;
 begin
+  if FrameRectangle.Fill.Bitmap.Bitmap.IsEmpty then
+    Exit;
+
   LRect := TRectangle.Create(nil);
 
   LRect.Opacity := AOpacity;
@@ -123,11 +137,50 @@ end;
 procedure TScanningFrame.PrepareToShow;
 begin
   FrameRectangle.Fill.Bitmap.Bitmap := nil;
+  UpdateTorch(False); // a new camera starts with the torch off
 end;
 
-procedure TScanningFrame.TorchImageClick(Sender: TObject);
+procedure TScanningFrame.PressableMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+begin
+  SetPressed(Sender, True);
+end;
+
+procedure TScanningFrame.PressableMouseLeave(Sender: TObject);
+begin
+  SetPressed(Sender, False);
+end;
+
+procedure TScanningFrame.PressableMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Single);
+begin
+  SetPressed(Sender, False);
+end;
+
+procedure TScanningFrame.TorchButtonClick(Sender: TObject);
 begin
   MainDM.ToggleTorch;
+end;
+
+procedure TScanningFrame.ViewfinderLayoutResize(Sender: TObject);
+begin
+  // square viewfinder, as large as the available space allows
+  var LSide := Max(0, Min(ViewfinderLayout.Width, ViewfinderLayout.Height) - 16);
+  FrameRectangle.Size.Size := TSizeF.Create(LSide, LSide);
+end;
+
+procedure TScanningFrame.UpdateTorch(const AOn: Boolean);
+begin
+  if AOn then
+  begin
+    TorchButton.Fill.Color := COLOR_ACCENT;
+    TorchIcon.Fill.Color := COLOR_ON_ACCENT;
+  end
+  else
+  begin
+    TorchButton.Fill.Color := COLOR_SURFACE_2;
+    TorchIcon.Fill.Color := COLOR_TEXT;
+  end;
 end;
 
 end.

@@ -10,24 +10,43 @@ uses
 , System.Threading, System.Diagnostics, System.Messaging,  System.Permissions
 , ZXing.ScanManager, ZXing.BarcodeFormat, ZXing.ReadResult, ZXing.ResultPoint
 , FrameStand, SubjectStand
-, Frames.Scanning, Frames.Data, Frames.Info, FMX.Platform
+, Frames.Scanning, Frames.Data, Frames.Info, FMX.Platform, FMX.MediaLibrary,
+  FMX.ApplicationEvents
 ;
 
 type
   TMainForm = class(TForm)
-    CameraButton: TButton;
     ActionList1: TActionList;
     ToggleCameraAction: TAction;
     TakePhotoFromLibraryAction: TTakePhotoFromLibraryAction;
-    LibraryButton: TButton;
     FrameStand1: TFrameStand;
     Stands: TStyleBook;
-    ContentLayout: TLayout;
-    TopToolBar: TToolBar;
     LoadFromFileAction: TAction;
-    OpenButton: TButton;
     OpenDialog1: TOpenDialog;
-    InfoButton: TButton;
+    ApplicationEvents1: TApplicationEvents;
+    RootLayout: TLayout;
+    HeaderLayout: TLayout;
+    TitleLabel: TLabel;
+    InfoButton: TRectangle;
+    InfoIcon: TPath;
+    ContentLayout: TLayout;
+    EmptyLayout: TLayout;
+    EmptyCircle: TCircle;
+    EmptyIcon: TPath;
+    EmptyTitleLabel: TLabel;
+    EmptyHintLabel: TLabel;
+    BottomBar: TRectangle;
+    LibraryButton: TRectangle;
+    LibraryIcon: TPath;
+    LibraryLabel: TLabel;
+    OpenButton: TRectangle;
+    OpenIcon: TPath;
+    OpenLabel: TLabel;
+    CenterLayout: TLayout;
+    CameraButton: TRectangle;
+    CameraContentLayout: TLayout;
+    CameraIcon: TPath;
+    CameraLabel: TLabel;
     procedure ToggleCameraActionExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure TakePhotoFromLibraryActionDidFinishTaking(Image: TBitmap);
@@ -35,8 +54,17 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
     procedure InfoButtonClick(Sender: TObject);
-    function AppEventHandler(AAppEvent: TApplicationEvent; AContext: TObject): Boolean;
-    procedure FormDestroy(Sender: TObject);
+    function ApplicationEvents1StateChanged(Sender: TObject;
+      const AAppEvent: TApplicationEvent; const AContext: TObject): Boolean;
+    procedure FormSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
+    procedure CameraButtonClick(Sender: TObject);
+    procedure LibraryButtonClick(Sender: TObject);
+    procedure OpenButtonClick(Sender: TObject);
+    procedure PressableMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Single);
+    procedure PressableMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Single);
+    procedure PressableMouseLeave(Sender: TObject);
   private
     { Private declarations }
     FScanningFrameFI: TFrameInfo<TScanningFrame>;
@@ -45,15 +73,19 @@ type
 
 //    FDataString: string;
     procedure UpdateGUI;
+    procedure StartCamera;
     function GetScanningFrameFI: TFrameInfo<TScanningFrame>;
     function GetDataFrameFI: TFrameInfo<TDataFrame>;
     function GetInfoFrameFI: TFrameInfo<TInfoFrame>;
     property ScanningFrameFI: TFrameInfo<TScanningFrame> read GetScanningFrameFI;
     property DataFrameFI: TFrameInfo<TDataFrame> read GetDataFrameFI;
     property InfoFrameFI: TFrameInfo<TInfoFrame> read GetInfoFrameFI;
+{$IFDEF ANDROID}
   private
-    procedure PermissionRequestResult(Sender: TObject; const APermissions: TArray<string>; const AGrantResults: TArray<TPermissionStatus>);
-    procedure DisplayRationale(Sender: TObject; const APermissions: TArray<string>; const APostRationaleProc: TProc);
+    procedure PermissionRequestResult(Sender: TObject; const APermissions: TClassicStringDynArray;
+      const AGrantResults: TClassicPermissionStatusDynArray);
+    procedure DisplayRationale(Sender: TObject; const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
+{$ENDIF}
   public
   end;
 
@@ -65,69 +97,60 @@ implementation
 {$R *.fmx}
 
 uses
-  DateUtils, Rtti, TypInfo, IOUtils, Math
+  DateUtils, Rtti, TypInfo, IOUtils, Math, Data.DB
 {$IFDEF ANDROID}
 , Androidapi.JNI.Media, Androidapi.Helpers, Androidapi.JNI.JavaTypes
 , FMX.Platform.Android, Androidapi.JNI.GraphicsContentViewText, Androidapi.JNI.Os
 , Androidapi.JNI.Net
 {$ENDIF}
 , FMX.Ani, FMX.DialogService
-, Data.Main
+, Data.Main, UI.Theme
 ;
 
 
-procedure TMainForm.PermissionRequestResult(Sender: TObject;
-  const APermissions: TArray<string>;
-  const AGrantResults: TArray<TPermissionStatus>);
-var
-  LAllGranted: Boolean;
-  LPermission: string;
-  LIndex: Integer;
-  LResult: TPermissionStatus;
+{$IFDEF ANDROID}
+procedure TMainForm.PermissionRequestResult(Sender: TObject; const APermissions: TClassicStringDynArray;
+    const AGrantResults: TClassicPermissionStatusDynArray);
 begin
-  // 1 permission involved: CAMERA
-  LAllGranted := Length(APermissions) > 0;
-  for LIndex := 0 to Length(APermissions) -1 do
-  begin
-    LPermission := APermissions[LIndex];
-    LResult := AGrantResults[LIndex];
-
-    if LResult <> TPermissionStatus.Granted then
+  var LAllGranted := Length(AGrantResults) > 0;
+  for var LStatus in AGrantResults do
+    if LStatus <> TPermissionStatus.Granted then
       LAllGranted := False;
-  end;
 
-  if not LAllGranted then
-    TDialogService.ShowMessage('Not all required permissions have been granted');
+  if LAllGranted then
+    StartCamera
+  else
+    TDialogService.ShowMessage('Camera permission is required to scan codes');
 end;
+{$ENDIF}
 
-function TMainForm.AppEventHandler(AAppEvent: TApplicationEvent;
-  AContext: TObject): Boolean;
+function TMainForm.ApplicationEvents1StateChanged(Sender: TObject;
+  const AAppEvent: TApplicationEvent; const AContext: TObject): Boolean;
 begin
-  Result := False;
-
-  if AAppEvent in [TApplicationEvent.WillBecomeInactive, TApplicationEvent.EnteredBackground, TApplicationEvent.WillTerminate]
+  if AAppEvent
+     in [TApplicationEvent.WillBecomeInactive, TApplicationEvent.EnteredBackground, TApplicationEvent.WillTerminate]
   then
     if MainDM.Scanning then
       MainDM.StopScanning;
+  Result := False;
 end;
 
-procedure TMainForm.DisplayRationale(Sender: TObject;
-  const APermissions: TArray<string>; const APostRationaleProc: TProc);
+{$IFDEF ANDROID}
+procedure TMainForm.DisplayRationale(Sender: TObject; const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
 begin
   // Show an explanation to the user *asynchronously* - don't block this thread waiting for the user's response!
   // After the user sees the explanation, invoke the post-rationale routine to request the permissions
-  TDialogService.ShowMessage('The app needs to access the camera and external storage in order to work',
-    procedure(const AResult: TModalResult)
+  TDialogService.ShowMessage(
+    'The app needs to access the camera in order to scan codes'
+  , procedure(const AResult: TModalResult)
     begin
       APostRationaleProc;
-    end)
+    end
+  );
 end;
+{$ENDIF}
 
 procedure TMainForm.FormCreate(Sender: TObject);
-var
-  LAppEventService: IFMXApplicationEventService;
-  LPermission, LPermissionCamera, LExternalStorageR, LExternalStorageW: string;
-  LPermissions: TArray<string>;
 begin
 {$IFDEF MSWINDOWS}
   ReportMemoryLeaksOnShutdown := True;
@@ -135,81 +158,37 @@ begin
   FScanningFrameFI := nil;
   FInfoFrameFI := nil;
 
-  if TPlatformServices.Current.SupportsPlatformService(IFMXApplicationEventService, LAppEventService) then
-    LAppEventService.SetApplicationEventHandler(AppEventHandler);
+  // Permissions: CAMERA is requested when the camera is first toggled on (see StartCamera).
+  // READ/WRITE_EXTERNAL_STORAGE are not needed (and always denied with targetSdk >= 33):
+  // TTakePhotoFromLibraryAction relies on the system photo picker.
 
-  LPermissionCamera := JStringToString(TJManifest_permission.JavaClass.CAMERA);
-  LExternalStorageR := JStringToString(TJManifest_permission.JavaClass.READ_EXTERNAL_STORAGE);
-  LExternalStorageW := JStringToString(TJManifest_permission.JavaClass.WRITE_EXTERNAL_STORAGE);
+{$IFDEF ANDROID}
+  UseLightSystemBarIcons;
+{$ENDIF}
+{$IF Defined(ANDROID) or Defined(IOS)}
+  OpenButton.Visible := False; // LoadFromFileAction is not supported on mobile
+{$ELSE}
+  LibraryButton.Visible := False; // no photo library on desktop
+{$ENDIF}
 
-  LPermissions := [LPermissionCamera, LExternalStorageR, LExternalStorageW];
-  for LPermission in LPermissions do
-    if not PermissionsService.IsPermissionGranted(LPermission) then
-      PermissionsService.RequestPermissions([LPermission], PermissionRequestResult, DisplayRationale);
-
-
-{  // WIP
-  MainActivity.registerIntentAction(TJIntent.JavaClass.ACTION_SEND);
-
-  TMessageManager.DefaultManager.SubscribeToMessage(TMessageReceivedNotification
-  , procedure(const Sender: TObject; const M: TMessage)
-    const IMAGES_MEDIA_DATA = 4;
-    var
-      LIntent: JIntent;
-      LType, LDataString: string;
-      LExtras: JBundle;
-      LParcelable: JParcelable;
-      LUri: Jnet_Uri;
-      LContentResolver: JContentResolver;
-      LCursor: JCursor;
-      LIndex: Integer;
-      LText: string;
-    begin
-      if M is TMessageReceivedNotification then
-      begin
-        FDataString := '';
-        LIntent := TMessageReceivedNotification(M).Value;
-        LType := JStringToString(LIntent.getType);
-        LExtras := LIntent.getExtras;
-        if LExtras.containsKey(TJIntent.JavaClass.EXTRA_STREAM) then
-        begin
-          LParcelable := LExtras.getParcelable(TJIntent.JavaClass.EXTRA_STREAM);
-          LUri := TJnet_Uri.Wrap(LParcelable);
-          if JStringToString(LURI.getScheme) = 'content' then
-          begin
-            LContentResolver := MainActivity.getContentResolver;
-            LCursor := LContentResolver.query(LUri, nil, nil, nil, nil);
-            LCursor.moveToFirst;
-            LDataString := JStringToString(LCursor.getString(IMAGES_MEDIA_DATA));
-            if (not LDataString.IsEmpty) and TFile.Exists(LDataString) then
-            begin
-              FDataString := '001:' + sLineBreak + LDataString;
-              MainDM.Scan(LDataString);
-            end
-            else
-            begin
-              LText := '';
-              for LIndex := 0 to LCursor.getColumnCount-1 do
-                LText := string.Join(sLineBreak, [LText, JStringToString(LCursor.getString(LIndex))]);
-              FDataString := 'File not found ' + LCursor.getColumnCount.ToString + LText + sLineBreak
-               + 'URI: ' + JURIToStr(LUri);
-            end;
-          end;
-        end
-        else
-          ShowMessage('Unsupported format: ' + LType);
-      end;
-    end
-  );
-}
-  TMessageManager.DefaultManager.SubscribeToMessage(TScanningMessage
+  TMessageManager.DefaultManager.SubscribeToMessage(
+    TDataChangedMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
       UpdateGUI;
     end
   );
 
-  TMessageManager.DefaultManager.SubscribeToMessage(TScanResultMessage
+  TMessageManager.DefaultManager.SubscribeToMessage(
+    TScanningMessage
+  , procedure(const Sender: TObject; const M: TMessage)
+    begin
+      UpdateGUI;
+    end
+  );
+
+  TMessageManager.DefaultManager.SubscribeToMessage(
+    TScanResultMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
       if not DataFrameFI.IsVisible then
@@ -220,9 +199,43 @@ begin
   UpdateGUI;
 end;
 
-procedure TMainForm.FormDestroy(Sender: TObject);
+procedure TMainForm.CameraButtonClick(Sender: TObject);
 begin
-  FrameStand1.FrameInfos.Clear;
+  ToggleCameraAction.Execute;
+end;
+
+procedure TMainForm.LibraryButtonClick(Sender: TObject);
+begin
+  TakePhotoFromLibraryAction.Execute;
+end;
+
+procedure TMainForm.OpenButtonClick(Sender: TObject);
+begin
+  LoadFromFileAction.Execute;
+end;
+
+procedure TMainForm.PressableMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Single);
+begin
+  SetPressed(Sender, True);
+end;
+
+procedure TMainForm.PressableMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Single);
+begin
+  SetPressed(Sender, False);
+end;
+
+procedure TMainForm.PressableMouseLeave(Sender: TObject);
+begin
+  SetPressed(Sender, False);
+end;
+
+procedure TMainForm.FormSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
+begin
+  // Android 15+ (targetSdk >= 35) forces edge-to-edge: the form covers the status bar
+  // and the navigation bar. Keep the content within the safe area.
+  Padding.Rect := AInsets;
 end;
 
 procedure TMainForm.FormKeyDown(Sender: TObject; var Key: Word;
@@ -238,14 +251,17 @@ end;
 function TMainForm.GetDataFrameFI: TFrameInfo<TDataFrame>;
 begin
   if not Assigned(FDataFrameFI) then
+  begin
     FDataFrameFI := FrameStand1.New<TDataFrame>(ContentLayout, 'simple');
+    FDataFrameFI.Frame.OverlayParent := RootLayout;
+  end;
   Result := FDataFrameFI;
 end;
 
 function TMainForm.GetInfoFrameFI: TFrameInfo<TInfoFrame>;
 begin
   if not Assigned(FInfoFrameFI) then
-    FInfoFrameFI := FrameStand1.New<TInfoFrame>(nil, 'lightbox');
+    FInfoFrameFI := FrameStand1.New<TInfoFrame>(RootLayout, 'lightbox');
   Result := FInfoFrameFI;
 end;
 
@@ -265,12 +281,10 @@ begin
 end;
 
 procedure TMainForm.LoadFromFileActionExecute(Sender: TObject);
-var
-  LBitmap: TBitmap;
 begin
   if OpenDialog1.Execute then
   begin
-    LBitmap := TBitmap.CreateFromFile(OpenDialog1.FileName);
+    var LBitmap := TBitmap.CreateFromFile(OpenDialog1.FileName);
     try
       MainDM.Scan(LBitmap, False);
     finally
@@ -289,17 +303,43 @@ begin
   if MainDM.Scanning then
     MainDM.StopScanning
   else
-  begin
-    MainDM.StartScanning;
-    ScanningFrameFI.Frame.PrepareToShow;
-    ScanningFrameFI.Show()
-  end;
+    StartCamera;
 
+  UpdateGUI;
+end;
+
+procedure TMainForm.StartCamera;
+begin
+{$IFDEF ANDROID}
+  const LPermissionCamera = JStringToString(TJManifest_permission.JavaClass.CAMERA);
+  if not PermissionsService.IsPermissionGranted(LPermissionCamera) then
+  begin
+    // StartCamera is called again by PermissionRequestResult once granted
+    PermissionsService.RequestPermissions([LPermissionCamera], PermissionRequestResult, DisplayRationale);
+    Exit;
+  end;
+{$ENDIF}
+
+  MainDM.StartScanning;
+  ScanningFrameFI.Frame.PrepareToShow;
   UpdateGUI;
 end;
 
 procedure TMainForm.UpdateGUI;
 begin
+  EmptyLayout.Visible := MainDM.DataTable.IsEmpty and not MainDM.Scanning;
+
+  if MainDM.Scanning then
+  begin
+    CameraLabel.Text := 'Stop';
+    CameraIcon.Data.Data := ICON_STOP;
+  end
+  else
+  begin
+    CameraLabel.Text := 'Scan';
+    CameraIcon.Data.Data := ICON_QR;
+  end;
+
   if MainDM.Scanning then
   begin
     if not ScanningFrameFI.IsVisible then
