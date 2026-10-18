@@ -8,67 +8,304 @@ object MainForm: TMainForm
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
+  OnSafeAreaChanged = FormSafeAreaChanged
+  Fill.Color = xFF101216
+  Fill.Kind = Solid
   DesignerMasterStyle = 3
-  object ContentLayout: TLayout
+  object RootLayout: TLayout
     Align = Client
     Size.Width = 361.000000000000000000
-    Size.Height = 446.000000000000000000
+    Size.Height = 494.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 8
-  end
-  object TopToolBar: TToolBar
-    Align = Bottom
-    Position.Y = 446.000000000000000000
-    Size.Width = 361.000000000000000000
-    Size.Height = 48.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 9
-    object CameraButton: TButton
-      Action = ToggleCameraAction
-      Align = Right
-      Enabled = True
-      ImageIndex = -1
-      Position.X = 313.000000000000000000
-      Size.Width = 48.000000000000000000
-      Size.Height = 48.000000000000000000
+    TabOrder = 0
+    object HeaderLayout: TLayout
+      Align = Top
+      Padding.Left = 20.000000000000000000
+      Padding.Right = 8.000000000000000000
+      Size.Width = 361.000000000000000000
+      Size.Height = 60.000000000000000000
       Size.PlatformDefault = False
-      StyleLookup = 'cameratoolbutton'
       TabOrder = 0
+      object TitleLabel: TLabel
+        Align = Client
+        StyledSettings = [Family]
+        HitTest = False
+        Size.Width = 285.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 22.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = xFFF2F4F7
+        TextSettings.HorzAlign = Leading
+        TextSettings.WordWrap = False
+        Text = 'ScannerMApp'
+      end
+      object InfoButton: TRectangle
+        Align = Right
+        Cursor = crHandPoint
+        Fill.Kind = None
+        Margins.Top = 6.000000000000000000
+        Margins.Bottom = 6.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 24.000000000000000000
+        YRadius = 24.000000000000000000
+        OnClick = InfoButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object InfoIcon: TPath
+          Align = Center
+          Data.Data = 
+            'M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 ' +
+            '10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-' +
+            '8 8-8 8 3.59 8 8-3.59 8-8 8z'
+          Fill.Color = xFF9AA3AF
+          HitTest = False
+          Size.Width = 24.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+      end
     end
-    object LibraryButton: TButton
-      Action = TakePhotoFromLibraryAction
-      Align = Right
-      Enabled = True
-      ImageIndex = -1
-      Position.X = 265.000000000000000000
-      Size.Width = 48.000000000000000000
-      Size.Height = 48.000000000000000000
+    object ContentLayout: TLayout
+      Align = Client
+      Size.Width = 361.000000000000000000
+      Size.Height = 346.000000000000000000
       Size.PlatformDefault = False
-      StyleLookup = 'additembutton'
       TabOrder = 1
+      object EmptyLayout: TLayout
+        Align = Center
+        HitTest = False
+        Size.Width = 300.000000000000000000
+        Size.Height = 220.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object EmptyCircle: TCircle
+          Align = Top
+          Fill.Color = xFF16362C
+          HitTest = False
+          Margins.Left = 106.000000000000000000
+          Margins.Right = 106.000000000000000000
+          Size.Width = 88.000000000000000000
+          Size.Height = 88.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          object EmptyIcon: TPath
+            Align = Center
+            Data.Data = 
+              'M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v' +
+              '6h6v-6zm6.5-6.5v3h-3v-3h3M19 5h-6v6h6V5zm-6 8h1.5v1.5H13V13z' +
+              'm1.5 1.5H16V16h-1.5v-1.5zM16 13h1.5v1.5H16V13zm-3 3h1.5v1.5H' +
+              '13V16zm1.5 1.5H16V19h-1.5v-1.5zM16 16h1.5v1.5H16V16zm1.5-1.5' +
+              'H19V16h-1.5v-1.5zm0 3H19V19h-1.5v-1.5zM22 7h-2V4h-3V2h5v5zm0' +
+              ' 15v-5h-2v3h-3v2h5zM2 22h5v-2H4v-3H2v5zM2 2v5h2V4h3V2H2z'
+            Fill.Color = xFF2EE6A6
+            HitTest = False
+            Size.Width = 44.000000000000000000
+            Size.Height = 44.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Kind = None
+            WrapMode = Fit
+          end
+        end
+        object EmptyTitleLabel: TLabel
+          Align = Top
+          Margins.Top = 20.000000000000000000
+          StyledSettings = [Family]
+          HitTest = False
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 20.000000000000000000
+          TextSettings.Font.StyleExt = {00060000000000000004000000}
+          TextSettings.FontColor = xFFF2F4F7
+          TextSettings.HorzAlign = Center
+          TextSettings.WordWrap = False
+          Text = 'No scans yet'
+        end
+        object EmptyHintLabel: TLabel
+          Align = Top
+          Margins.Top = 6.000000000000000000
+          StyledSettings = [Family]
+          HitTest = False
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.FontColor = xFF9AA3AF
+          TextSettings.HorzAlign = Center
+          TextSettings.VertAlign = Leading
+          Text = 'Tap Scan to read a QR code or a barcode'
+        end
+      end
     end
-    object OpenButton: TButton
-      Action = LoadFromFileAction
-      Align = Right
-      Enabled = True
-      ImageIndex = -1
-      Position.X = 192.000000000000000000
-      Size.Width = 73.000000000000000000
-      Size.Height = 48.000000000000000000
+    object BottomBar: TRectangle
+      Align = Bottom
+      Corners = [TopLeft, TopRight]
+      Fill.Color = xFF1A1D23
+      Padding.Left = 16.000000000000000000
+      Padding.Right = 16.000000000000000000
+      Size.Width = 361.000000000000000000
+      Size.Height = 88.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 2
-    end
-    object InfoButton: TButton
-      Align = Left
-      Size.Width = 48.000000000000000000
-      Size.Height = 48.000000000000000000
-      Size.PlatformDefault = False
-      StyleLookup = 'infotoolbutton'
-      TabOrder = 3
-      Text = 'InfoButton'
-      OnClick = InfoButtonClick
+      Stroke.Kind = None
+      XRadius = 24.000000000000000000
+      YRadius = 24.000000000000000000
+      object LibraryButton: TRectangle
+        Align = Left
+        Cursor = crHandPoint
+        Fill.Color = xFF1A1D23
+        Fill.Kind = None
+        Margins.Top = 12.000000000000000000
+        Margins.Bottom = 12.000000000000000000
+        Size.Width = 68.000000000000000000
+        Size.Height = 64.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 16.000000000000000000
+        YRadius = 16.000000000000000000
+        OnClick = LibraryButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object LibraryIcon: TPath
+          Align = Top
+          Margins.Top = 8.000000000000000000
+          Data.Data = 
+            'M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h1' +
+            '2c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 ' +
+            '1.1.9 2 2 2h14v-2H4V6H2z'
+          Fill.Color = xFF9AA3AF
+          HitTest = False
+          Size.Width = 24.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+        object LibraryLabel: TLabel
+          Align = Top
+          Margins.Top = 4.000000000000000000
+          StyledSettings = [Family]
+          HitTest = False
+          Size.Height = 18.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 12.000000000000000000
+          TextSettings.Font.StyleExt = {00050000000000000004000000}
+          TextSettings.FontColor = xFF9AA3AF
+          TextSettings.HorzAlign = Center
+          TextSettings.WordWrap = False
+          Text = 'Gallery'
+        end
+      end
+      object OpenButton: TRectangle
+        Align = Right
+        Cursor = crHandPoint
+        Fill.Color = xFF1A1D23
+        Fill.Kind = None
+        Margins.Top = 12.000000000000000000
+        Margins.Bottom = 12.000000000000000000
+        Size.Width = 68.000000000000000000
+        Size.Height = 64.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 16.000000000000000000
+        YRadius = 16.000000000000000000
+        OnClick = OpenButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object OpenIcon: TPath
+          Align = Top
+          Margins.Top = 8.000000000000000000
+          Data.Data = 
+            'M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1' +
+            '.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z'
+          Fill.Color = xFF9AA3AF
+          HitTest = False
+          Size.Width = 24.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+        object OpenLabel: TLabel
+          Align = Top
+          Margins.Top = 4.000000000000000000
+          StyledSettings = [Family]
+          HitTest = False
+          Size.Height = 18.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 12.000000000000000000
+          TextSettings.Font.StyleExt = {00050000000000000004000000}
+          TextSettings.FontColor = xFF9AA3AF
+          TextSettings.HorzAlign = Center
+          TextSettings.WordWrap = False
+          Text = 'Open'
+        end
+      end
+      object CenterLayout: TLayout
+        Align = Contents
+        Size.Width = 361.000000000000000000
+        Size.Height = 88.000000000000000000
+        Size.PlatformDefault = False
+        object CameraButton: TRectangle
+          Align = Center
+          Cursor = crHandPoint
+          Fill.Color = xFF2EE6A6
+          Size.Width = 156.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          XRadius = 28.000000000000000000
+          YRadius = 28.000000000000000000
+          OnClick = CameraButtonClick
+          OnMouseDown = PressableMouseDown
+          OnMouseUp = PressableMouseUp
+          OnMouseLeave = PressableMouseLeave
+          object CameraContentLayout: TLayout
+            Align = Center
+            HitTest = False
+            Size.Width = 96.000000000000000000
+            Size.Height = 56.000000000000000000
+            Size.PlatformDefault = False
+            object CameraIcon: TPath
+              Align = Left
+              Data.Data = 
+                'M9.5 6.5v3h-3v-3h3M11 5H5v6h6V5zm-1.5 9.5v3h-3v-3h3M11 13H5v' +
+                '6h6v-6zm6.5-6.5v3h-3v-3h3M19 5h-6v6h6V5zm-6 8h1.5v1.5H13V13z' +
+                'm1.5 1.5H16V16h-1.5v-1.5zM16 13h1.5v1.5H16V13zm-3 3h1.5v1.5H' +
+                '13V16zm1.5 1.5H16V19h-1.5v-1.5zM16 16h1.5v1.5H16V16zm1.5-1.5' +
+                'H19V16h-1.5v-1.5zm0 3H19V19h-1.5v-1.5zM22 7h-2V4h-3V2h5v5zm0' +
+                ' 15v-5h-2v3h-3v2h5zM2 22h5v-2H4v-3H2v5zM2 2v5h2V4h3V2H2z'
+              Fill.Color = xFF062016
+              HitTest = False
+              Size.Width = 24.000000000000000000
+              Size.Height = 24.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              WrapMode = Fit
+            end
+            object CameraLabel: TLabel
+              Align = Client
+              Margins.Left = 8.000000000000000000
+              StyledSettings = [Family]
+              HitTest = False
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 18.000000000000000000
+              TextSettings.Font.StyleExt = {00070000000000000004000000}
+              TextSettings.FontColor = xFF062016
+              TextSettings.HorzAlign = Center
+              TextSettings.WordWrap = False
+              Text = 'Scan'
+            end
+          end
+        end
+      end
     end
   end
   object Stands: TStyleBook
@@ -148,5 +385,10 @@ object MainForm: TMainForm
     StandBook = Stands
     Left = 48
     Top = 104
+  end
+  object ApplicationEvents1: TApplicationEvents
+    OnStateChanged = ApplicationEvents1StateChanged
+    Left = 184
+    Top = 248
   end
 end

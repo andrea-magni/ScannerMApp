@@ -1,5 +1,4 @@
 object MainDM: TMainDM
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 275
   Width = 307

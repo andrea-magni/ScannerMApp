@@ -8,7 +8,8 @@ uses
   Frames.Scanning in 'Frames.Scanning.pas' {ScanningFrame: TFrame},
   Frames.Data in 'Frames.Data.pas' {DataFrame: TFrame},
   Frames.ScanResult in 'Frames.ScanResult.pas' {ScanResultFrame: TFrame},
-  Frames.Info in 'Frames.Info.pas' {InfoFrame: TFrame};
+  Frames.Info in 'Frames.Info.pas' {InfoFrame: TFrame},
+  UI.Theme in 'UI.Theme.pas';
 
 {$R *.res}
 

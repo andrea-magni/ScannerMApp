@@ -13,61 +13,74 @@ object DataFrame: TDataFrame
     Size.Height = 490.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    ItemAppearance.ItemHeight = 120
+    Transparent = True
+    ShowSelection = False
+    ItemAppearance.ItemHeight = 84
     ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
       item
         AppearanceObjectName = 'Value'
         AppearanceClassName = 'TTextObjectAppearance'
+        Appearance.Font.Size = 16.000000000000000000
         Appearance.TextAlign = Leading
+        Appearance.TextVertAlign = Leading
+        Appearance.TextColor = xFFF2F4F7
         Appearance.Trimming = Character
-        Appearance.Width = 350.000000000000000000
-        Appearance.Height = 90.000000000000000000
-        Appearance.PlaceOffset.X = 85.000000000000000000
-        Appearance.PlaceOffset.Y = 3.000000000000000000
+        Appearance.WordWrap = False
+        Appearance.Width = 210.000000000000000000
+        Appearance.Height = 24.000000000000000000
+        Appearance.PlaceOffset.X = 92.000000000000000000
+        Appearance.PlaceOffset.Y = 12.000000000000000000
       end
       item
         AppearanceObjectName = 'Thumb'
         AppearanceClassName = 'TImageObjectAppearance'
-        Appearance.Width = 80.000000000000000000
+        Appearance.ScalingMode = StretchWithAspect
+        Appearance.Width = 60.000000000000000000
+        Appearance.Height = 60.000000000000000000
+        Appearance.VertAlign = Center
+        Appearance.PlaceOffset.X = 16.000000000000000000
       end
       item
         AppearanceObjectName = 'Kind'
         AppearanceClassName = 'TTextObjectAppearance'
-        Appearance.Font.Size = 10.000000000000000000
+        Appearance.Font.Size = 12.000000000000000000
         Appearance.TextAlign = Leading
-        Appearance.TextVertAlign = Trailing
-        Appearance.TextColor = claGray
+        Appearance.TextVertAlign = Leading
+        Appearance.TextColor = xFF2EE6A6
         Appearance.Trimming = Character
-        Appearance.Width = 125.000000000000000000
-        Appearance.Height = 25.000000000000000000
-        Appearance.VertAlign = Trailing
-        Appearance.PlaceOffset.X = 85.000000000000000000
-        Appearance.PlaceOffset.Y = -5.000000000000000000
+        Appearance.WordWrap = False
+        Appearance.Width = 160.000000000000000000
+        Appearance.Height = 18.000000000000000000
+        Appearance.PlaceOffset.X = 92.000000000000000000
+        Appearance.PlaceOffset.Y = 39.000000000000000000
       end
       item
         AppearanceObjectName = 'ScannedAt'
         AppearanceClassName = 'TTextObjectAppearance'
-        Appearance.Font.Size = 10.000000000000000000
+        Appearance.Font.Size = 12.000000000000000000
         Appearance.TextAlign = Leading
-        Appearance.TextVertAlign = Trailing
-        Appearance.TextColor = claGray
+        Appearance.TextVertAlign = Leading
+        Appearance.TextColor = xFF9AA3AF
         Appearance.Trimming = Character
+        Appearance.WordWrap = False
         Appearance.Width = 200.000000000000000000
-        Appearance.Height = 25.000000000000000000
-        Appearance.VertAlign = Trailing
-        Appearance.PlaceOffset.X = 215.000000000000000000
-        Appearance.PlaceOffset.Y = -5.000000000000000000
+        Appearance.Height = 18.000000000000000000
+        Appearance.PlaceOffset.X = 92.000000000000000000
+        Appearance.PlaceOffset.Y = 57.000000000000000000
       end
       item
         AppearanceObjectName = 'ScanCount'
         AppearanceClassName = 'TTextObjectAppearance'
+        Appearance.Font.Size = 14.000000000000000000
         Appearance.TextAlign = Trailing
-        Appearance.TextVertAlign = Leading
-        Appearance.TextColor = claSteelblue
-        Appearance.Width = 100.000000000000000000
-        Appearance.Height = 25.000000000000000000
+        Appearance.TextVertAlign = Center
+        Appearance.TextColor = xFF2EE6A6
+        Appearance.WordWrap = False
+        Appearance.Width = 44.000000000000000000
+        Appearance.Height = 24.000000000000000000
         Appearance.Align = Trailing
-        Appearance.PlaceOffset.Y = 3.000000000000000000
+        Appearance.VertAlign = Center
+        Appearance.PlaceOffset.X = -8.000000000000000000
       end>
     ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
       item

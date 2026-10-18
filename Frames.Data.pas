@@ -14,6 +14,12 @@ uses
 ;
 
 type
+  // Interposer: dark item colors, regardless of the platform style
+  TListView = class(FMX.ListView.TListView)
+  protected
+    procedure ApplyStyle; override;
+  end;
+
   TDataFrame = class(TFrame)
     DataListView: TListView;
     BindSourceDB1: TBindSourceDB;
@@ -26,10 +32,13 @@ type
   protected
     [FrameStandAttribute] FS: TFrameStand;
     FScanResultFI: TFrameInfo<TScanResultFrame>;
+    FOverlayParent: TFmxObject;
   public
     { Public declarations }
     procedure AfterConstruction; override;
     procedure Refresh;
+    /// <summary>Where the scan result is shown (within the safe area of the form)</summary>
+    property OverlayParent: TFmxObject read FOverlayParent write FOverlayParent;
   end;
 
 implementation
@@ -38,7 +47,28 @@ implementation
 
 uses
   System.Messaging
+, UI.Theme
 ;
+
+{ TListView }
+
+procedure TListView.ApplyStyle;
+
+  procedure SetStyleColor(const AName: string; const AColor: TAlphaColor);
+  begin
+    var LObject := FindStyleResource(AName);
+    if LObject is TColorObject then
+      TColorObject(LObject).Color := AColor;
+  end;
+
+begin
+  // TListViewBase.ApplyStyle reads these colors from the style resource
+  SetStyleColor('background', COLOR_BACKGROUND);
+  SetStyleColor('itembackground', COLOR_BACKGROUND);
+  SetStyleColor('alternatingitembackground', COLOR_BACKGROUND);
+  SetStyleColor('frame', COLOR_SURFACE_2);
+  inherited;
+end;
 
 { TDataFrame }
 
@@ -58,7 +88,7 @@ procedure TDataFrame.DataListViewItemClick(const Sender: TObject;
   const AItem: TListViewItem);
 begin
   if not Assigned(FScanResultFI) then
-   FScanResultFI := FS.New<TScanResultFrame>(nil, 'lightbox');
+   FScanResultFI := FS.New<TScanResultFrame>(FOverlayParent, 'lightbox');
 
   FScanResultFI.Show();
 end;
