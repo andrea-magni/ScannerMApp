@@ -82,6 +82,7 @@ type
     function HandleBack: Boolean;
     procedure StartCamera;
     procedure ScanImageFile(const AFileName: string);
+    procedure ScanSharedImages(const AImages: TArray<TBitmap>; const AReceived: Integer);
     function GetScanningFrameFI: TFrameInfo<TScanningFrame>;
     function GetDataFrameFI: TFrameInfo<TDataFrame>;
     function GetInfoFrameFI: TFrameInfo<TInfoFrame>;
@@ -113,7 +114,7 @@ uses
 , Androidapi.JNI.Net
 {$ENDIF}
 , FMX.Ani, FMX.DialogService
-, UI.Theme
+, UI.Theme, Utils.SharedImages
 ;
 
 const
@@ -164,6 +165,7 @@ end;
 
 procedure TMainForm.BeforeDestruction;
 begin
+  StopListeningForSharedImages;
   FSubscriptions.Clear;
   inherited;
 end;
@@ -225,6 +227,9 @@ begin
         ScanImageFile(ParamStr(1));
       end);
 {$ENDIF}
+
+  // Android: images shared with the app or opened with it
+  ListenForSharedImages(ScanSharedImages);
 end;
 
 procedure TMainForm.CameraButtonClick(Sender: TObject);
@@ -347,6 +352,28 @@ procedure TMainForm.LoadFromFileActionExecute(Sender: TObject);
 begin
   if OpenDialog1.Execute then
     ScanImageFile(OpenDialog1.FileName);
+end;
+
+procedure TMainForm.ScanSharedImages(const AImages: TArray<TBitmap>; const AReceived: Integer);
+begin
+  if Length(AImages) = 0 then
+  begin
+    if AReceived > 0 then
+      TDialogService.ShowMessage('The shared image could not be read');
+    Exit;
+  end;
+  if MainDM.Scanning then
+    MainDM.StopScanning; // the results of the images go to the list
+  var LCount := 0;
+  for var LImage in AImages do
+    Inc(LCount, MainDM.Scan(LImage, False));
+  if LCount = 0 then
+  begin
+    if Length(AImages) = 1 then
+      TDialogService.ShowMessage(NO_CODE_FOUND)
+    else
+      TDialogService.ShowMessage('No code found in these images');
+  end;
 end;
 
 procedure TMainForm.ScanImageFile(const AFileName: string);
