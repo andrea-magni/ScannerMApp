@@ -382,6 +382,8 @@
         </DCCReference>
         <DCCReference Include="UI.Theme.pas"/>
         <DCCReference Include="Data.Settings.pas"/>
+        <DCCReference Include="Utils.ContentActions.pas"/>
+        <DCCReference Include="Utils.SharedImages.pas"/>
         <DCCReference Include="Frames.Settings.pas">
             <Form>SettingsFrame</Form>
             <FormType>fmx</FormType>

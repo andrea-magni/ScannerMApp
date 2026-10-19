@@ -11,7 +11,9 @@ uses
   Frames.Info in 'Frames.Info.pas' {InfoFrame: TFrame},
   UI.Theme in 'UI.Theme.pas',
   Data.Settings in 'Data.Settings.pas',
-  Frames.Settings in 'Frames.Settings.pas' {SettingsFrame: TFrame};
+  Frames.Settings in 'Frames.Settings.pas' {SettingsFrame: TFrame},
+  Utils.ContentActions in 'Utils.ContentActions.pas',
+  Utils.SharedImages in 'Utils.SharedImages.pas';
 
 {$R *.res}
 

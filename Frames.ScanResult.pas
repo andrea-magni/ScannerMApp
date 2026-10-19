@@ -10,6 +10,7 @@ uses
   Fmx.Bind.Editors, Data.Bind.Components, Data.Bind.DBScope
 , FrameStand, SubjectStand, System.Actions, FMX.ActnList, FMX.StdActns,
   FMX.MediaLibrary.Actions, Fmx.Bind.Navigator
+, Utils.ContentActions
 ;
 
 type
@@ -41,6 +42,9 @@ type
     ShareContentLayout: TLayout;
     ShareIcon: TPath;
     ShareLabel: TLabel;
+    SmallShareButton: TRectangle;
+    SmallShareIcon: TPath;
+    SmallShareLabel: TLabel;
     MetaRow: TLayout;
     ScanCountLabel: TLabel;
     ScansCaptionLabel: TLabel;
@@ -56,6 +60,7 @@ type
     procedure CloseButtonClick(Sender: TObject);
     procedure CopyButtonClick(Sender: TObject);
     procedure ShareButtonClick(Sender: TObject);
+    procedure SmallShareButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
     procedure PressableMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
@@ -90,11 +95,18 @@ type
     procedure ZoomAt(const APoint: TPointF; const AZoom: Single);
     procedure ApplyZoom;
     procedure UpdateValueHeight;
+  private
+    // what the content of the code can be opened with (a link, a number...)
+    FAction: TContentAction;
+    FShareIconData: string;
   protected
   public
     { Public declarations }
     procedure AfterConstruction; override;
     [BeforeShow] procedure ResetZoom;
+    /// <summary>The main button: Open/Call/Email... when the content can be opened
+    /// (Share moves to the small button), else Share</summary>
+    [BeforeShow] procedure UpdateMainAction;
   end;
 
 implementation
@@ -102,7 +114,7 @@ implementation
 {$R *.fmx}
 
 uses
-  System.Messaging, System.Math, FMX.Platform, FMX.Clipboard, FMX.TextLayout
+  System.Messaging, System.Math, FMX.Platform, FMX.Clipboard, FMX.TextLayout, FMX.DialogService
 , Data.Main, UI.Theme
 ;
 
@@ -358,7 +370,54 @@ end;
 
 procedure TScanResultFrame.ShareButtonClick(Sender: TObject);
 begin
+  if not FAction.IsAvailable then
+    ShareAction.Execute
+  else if not OpenContent(FAction) then
+    TDialogService.ShowMessage('No app can open this content');
+end;
+
+procedure TScanResultFrame.SmallShareButtonClick(Sender: TObject);
+begin
   ShareAction.Execute;
+end;
+
+procedure TScanResultFrame.UpdateMainAction;
+const
+  SHARE_LABEL_SIZE = 17;
+begin
+  if FShareIconData = '' then
+    FShareIconData := ShareIcon.Data.Data; // the Share icon of the form
+  FAction := ContentAction(MainDM.DataTable.FieldByName('Value').AsString);
+  SmallShareButton.Visible := FAction.IsAvailable;
+  if FAction.IsAvailable then
+  begin
+    // beside Copy, Share and Delete the button is narrow: icon above the caption,
+    // as in the small buttons
+    ShareIcon.Data.Data := FAction.Icon;
+    ShareLabel.Text := FAction.Caption;
+    ShareContentLayout.Align := TAlignLayout.Client;
+    ShareIcon.Align := TAlignLayout.Top;
+    ShareIcon.Margins.Top := CopyIcon.Margins.Top;
+    ShareIcon.Height := CopyIcon.Height;
+    ShareLabel.Align := TAlignLayout.Top;
+    ShareLabel.Margins.Rect := CopyLabel.Margins.Rect;
+    ShareLabel.Height := CopyLabel.Height;
+    ShareLabel.TextSettings.Font.Size := CopyLabel.TextSettings.Font.Size;
+  end
+  else
+  begin
+    // the wide button: icon beside the caption
+    ShareIcon.Data.Data := FShareIconData;
+    ShareLabel.Text := 'Share';
+    ShareContentLayout.Align := TAlignLayout.Center;
+    ShareContentLayout.Width := 96;
+    ShareIcon.Align := TAlignLayout.Left;
+    ShareIcon.Margins.Top := 0;
+    ShareIcon.Width := 22;
+    ShareLabel.Align := TAlignLayout.Client;
+    ShareLabel.Margins.Rect := RectF(8, 0, 0, 0);
+    ShareLabel.TextSettings.Font.Size := SHARE_LABEL_SIZE;
+  end;
 end;
 
 end.

@@ -18,6 +18,8 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 - **Formats to read**: fewer formats make scanning faster and save battery. The choice is kept.
 - A list of the scans, kept between runs: the same code scanned again increments its counter.
 - A result card with the scanned frame (pinch, double tap or mouse wheel to zoom, drag to pan) and **Copy**, **Share** and **Delete**.
+- **Open** what a code contains: a link in the browser, a phone number in the dialer, an e-mail or SMS ready to send (also `MATMSG`, `SMSTO`), a location in the maps app (`geo:`), a contact (vCard, `MECARD`) or an event (iCalendar) in the app that adds it. Only these kinds of content are offered; anything else can be copied or shared.
+- Android: images **shared with** ScannerMApp (one or more, from Gallery, Photos, a chat…) or opened with it are scanned right away, also while the app is running.
 - Android: only the camera permission, adaptive launcher icon (also themed), the **Back** key closes what is open and then leaves the app, edge-to-edge (Android 15+) with the content clear of the system bars.
 
 ## Requirements
@@ -62,7 +64,9 @@ For Android:
 | `Data.Settings` | App data folder; the formats to read (`TScanSettings`, saved as JSON) |
 | `Frames.Scanning` | Camera preview, viewfinder, torch |
 | `Frames.Data` | List of the scans |
-| `Frames.ScanResult` | Result card: zoomable frame, value, Copy / Share / Delete |
+| `Frames.ScanResult` | Result card: zoomable frame, value, Copy / Share / Open / Delete |
+| `Utils.ContentActions` | What a scanned value contains (link, phone, e-mail, SMS, location, contact, event) and how to open it on each platform |
+| `Utils.SharedImages` | Android: images received with an intent (`SEND`, `SEND_MULTIPLE`, `VIEW`) |
 | `Frames.Settings` | Formats to read |
 | `Frames.Info` | About |
 | `UI.Theme` | Palette, icons (Material Icons paths), pressed feedback |
