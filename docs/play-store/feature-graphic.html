@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- Google Play feature graphic: 1024x500. Render: headless browser, window 1024,500 -->
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { width: 1024px; height: 500px; overflow: hidden; background: #111418;
+         font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+  .canvas { position: relative; width: 1024px; height: 500px; overflow: hidden; }
+  .glow { position: absolute; inset: 0;
+          background: radial-gradient(ellipse 600px 380px at 80% 45%, rgba(46,230,166,0.22) 0%, rgba(17,20,24,0) 100%),
+                      radial-gradient(ellipse 500px 320px at 0% 110%, rgba(46,230,166,0.12) 0%, rgba(17,20,24,0) 100%); }
+  .phone { position: absolute; width: 220px; border-radius: 30px; padding: 9px; background: #050607;
+           box-shadow: 0 26px 60px rgba(0,0,0,.6), 0 0 0 2px #2a2f36; }
+  .phone img { display: block; width: 100%; border-radius: 22px; }
+  .p1 { left: 600px; top: 52px; transform: rotate(-6deg); opacity: .9; }
+  .p2 { left: 780px; top: 30px; transform: rotate(4deg); }
+  .text { position: absolute; left: 56px; top: 64px; width: 540px; }
+  .logo { display: flex; align-items: center; gap: 16px; }
+  .logo img { width: 72px; height: 72px; border-radius: 16px; }
+  .name { color: #ffffff; font-size: 44px; font-weight: 700; }
+  .title { color: #ffffff; font-size: 50px; font-weight: 700; line-height: 1.06; margin-top: 30px; }
+  .title .acc { color: #2ee6a6; }
+  .subtitle { color: #cfd5dc; font-size: 24px; line-height: 1.35; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="glow"></div>
+  <div class="phone p1"><img src="../screenshots/list.png"></div>
+  <div class="phone p2"><img src="../screenshots/result.png"></div>
+  <div class="text">
+    <div class="logo"><img src="../../Icons/Android/ic_launcher_192.png"><div class="name">ScannerMApp</div></div>
+    <div class="title">QR codes &amp; barcodes,<br><span class="acc">every format</span></div>
+    <div class="subtitle">from the camera or your photos.<br>No ads, no tracking, open source.</div>
+  </div>
+</div>
+</body>
+</html>

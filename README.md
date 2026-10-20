@@ -72,6 +72,14 @@ For Android:
 | `UI.Theme` | Palette, icons (Material Icons paths), pressed feedback |
 | `Icons\Android` | Launcher icon: adaptive layers (vector) and legacy PNGs |
 
+## Privacy
+
+ScannerMApp collects nothing: no account, no ads, no analytics, and the Android release build has no internet permission. See the [privacy policy](PRIVACY.md).
+
+## Google Play Store
+
+The **Release** configuration of **Android 64-bit** builds the App Bundle (`.aab`) for Google Play. The store listing (English and Italian), the graphics, the answers to the Play Console forms and the signing steps are in [docs/play-store](docs/play-store/README.md).
+
 ## License
 
 [Apache License 2.0](LICENSE).
