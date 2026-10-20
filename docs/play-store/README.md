@@ -2,7 +2,7 @@
 
 What is needed to publish ScannerMApp on Google Play: the store listing (in English and Italian), the graphics, the answers to the Play Console forms and how to build the bundle.
 
-Package: `eu.andreamagni.ScannerMapp` (it cannot change after the first release).
+Package: `eu.andreamagni.scannermapp2` (it cannot change after the first release). The app published until 2020 as `eu.andreamagni.ScannerMapp` was removed by Google Play and is signed with a key that is not enrolled in Play App Signing, so ScannerMApp is published again as a new app.
 
 ## Store listing
 
@@ -132,7 +132,7 @@ The **Release** configuration of **Android 64-bit** is an **Application Store** 
    keytool -genkeypair -v -keystore scannermapp-upload.keystore -alias upload -keyalg RSA -keysize 2048 -validity 10000
    ```
 
-2. In RAD Studio, **Project ▸ Options ▸ Application ▸ Provisioning**, target **All configurations - Android 64-bit platform**, build type **Android 64-bit - Application Store**: the keystore file, its password, the alias and its password. They are saved encrypted in the user settings of the IDE, not in the repository.
+2. In RAD Studio, **Tools ▸ Options ▸ Deployment ▸ Provisioning**, build type **Android 64-bit - Application Store**: the keystore file, its password, the alias and its password. They are saved in the settings of the IDE, not in the project. Do not use **Project ▸ Options ▸ Application ▸ Provisioning**: it saves them (encrypted) in the `.dproj`, which is in the repository.
 3. **Project ▸ Options ▸ Application ▸ Version Info**: increment `versionCode` for every upload (and `versionName` when it makes sense).
 4. Select **Release**, **Android 64-bit**, then **Project ▸ Deploy**.
 5. In the Play Console, accept **Play App Signing** (Google keeps the app signing key, you keep the upload key) and upload the `.aab` to a testing track first (internal testing), then to production.

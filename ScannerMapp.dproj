@@ -142,7 +142,7 @@
         <DCC_ExeOutput>C:\$(Platform)\$(Config)\ScannerMapp</DCC_ExeOutput>
         <DCC_DcuOutput>C:\$(Platform)\$(Config)\ScannerMapp</DCC_DcuOutput>
         <DCC_UsePackage>DBXSqliteDriver;DBXInterBaseDriver;DataSnapFireDAC;tethering;bindcompfmx;FmxTeeUI;fmx;RadiantShapesFmx;FireDACDBXDriver;dbexpress;IndyCore;dsnap;DataSnapCommon;iot;bindengine;DataSnapClient;bindcompdbx;IndyIPCommon;IndyIPServer;IndySystem;fmxFireDAC;ibmonitor;FMXTee;DbxCommonDriver;ibxpress;xmlrtl;DataSnapNativeClient;ibxbindings;rtl;FireDACDSDriver;DbxClientDriver;CustomIPTransport;dcliot;bindcomp;IndyIPClient;dbxcds;dsnapxml;DataSnapProviderClient;dbrtl;IndyProtocols;$(DCC_UsePackage)</DCC_UsePackage>
-        <VerInfo_Keys>package=eu.andreamagni.$(MSBuildProjectName);label=ScannerMApp;versionCode=8;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=;minSdkVersion=24;targetSdkVersion=36</VerInfo_Keys>
+        <VerInfo_Keys>package=eu.andreamagni.scannermapp2;label=ScannerMApp;versionCode=1;versionName=2.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=;minSdkVersion=24;targetSdkVersion=36</VerInfo_Keys>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <Android_LauncherIcon36>Icons\Android\ic_launcher_36.png</Android_LauncherIcon36>
@@ -161,7 +161,7 @@
         <AUP_READ_CALENDAR>false</AUP_READ_CALENDAR>
         <AUP_READ_PHONE_STATE>false</AUP_READ_PHONE_STATE>
         <AUP_WRITE_CALENDAR>false</AUP_WRITE_CALENDAR>
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Build>1</VerInfo_Build>
         <Android_NotificationIcon24>$(BDS)\bin\Artwork\Android\FM_NotificationIcon_24x24.png</Android_NotificationIcon24>
         <Android_NotificationIcon36>$(BDS)\bin\Artwork\Android\FM_NotificationIcon_36x36.png</Android_NotificationIcon36>
         <Android_NotificationIcon48>$(BDS)\bin\Artwork\Android\FM_NotificationIcon_48x48.png</Android_NotificationIcon48>
@@ -174,7 +174,7 @@
         <Android_AdaptiveIconMonochrome>Icons\Android\ic_launcher_monochrome.xml</Android_AdaptiveIconMonochrome>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android64)'!=''">
-        <VerInfo_Keys>package=eu.andreamagni.$(MSBuildProjectName);label=ScannerMApp;versionCode=8;versionName=1.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=;minSdkVersion=24;targetSdkVersion=36</VerInfo_Keys>
+        <VerInfo_Keys>package=eu.andreamagni.scannermapp2;label=ScannerMApp;versionCode=1;versionName=2.0.0;persistent=False;restoreAnyVersion=False;installLocation=auto;largeHeap=False;theme=TitleBar;hardwareAccelerated=true;apiKey=;minSdkVersion=24;targetSdkVersion=36</VerInfo_Keys>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <EL_SecureFileSharing>true</EL_SecureFileSharing>
@@ -200,7 +200,7 @@
         <AUP_READ_CALENDAR>false</AUP_READ_CALENDAR>
         <AUP_READ_PHONE_STATE>false</AUP_READ_PHONE_STATE>
         <AUP_WRITE_CALENDAR>false</AUP_WRITE_CALENDAR>
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Build>1</VerInfo_Build>
         <Android_LauncherIcon192>Icons\Android\ic_launcher_192.png</Android_LauncherIcon192>
         <IncludeAndroid_AdaptiveIcon>true</IncludeAndroid_AdaptiveIcon>
         <Android_AdaptiveIconForeground>Icons\Android\ic_launcher_foreground.xml</Android_AdaptiveIconForeground>
@@ -301,14 +301,14 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Android)'!=''">
         <Debugger_DebugSourcePath>Z:\Documents\RAD Studio\Projects\Barcode Scanner\ZXing\Lib\Classes\1D Barcodes\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Build>1</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Android64)'!=''">
         <Cfg_1_Android>true</Cfg_1_Android>
         <CfgParent>Cfg_1</CfgParent>
         <Cfg_1>true</Cfg_1>
         <Debugger_DebugSourcePath>Z:\Documents\RAD Studio\Projects\Barcode Scanner\ZXing\Lib\Classes\1D Barcodes\;$(Debugger_DebugSourcePath);$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Build>1</VerInfo_Build>
         <Android_BackgroundColor>#FFFFFF</Android_BackgroundColor>
         <Android_DarkBackgroundColor>#000000</Android_DarkBackgroundColor>
         <Android_NotificationAccentColor>#000000</Android_NotificationAccentColor>
@@ -331,13 +331,13 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Android)'!=''">
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Build>1</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Android64)'!=''">
         <Cfg_2_Android>true</Cfg_2_Android>
         <CfgParent>Cfg_2</CfgParent>
         <Cfg_2>true</Cfg_2>
-        <VerInfo_Build>8</VerInfo_Build>
+        <VerInfo_Build>1</VerInfo_Build>
         <BT_BuildType>AppStore</BT_BuildType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
