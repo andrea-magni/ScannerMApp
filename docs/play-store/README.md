@@ -108,7 +108,7 @@ ScannerMApp è open source (licenza Apache 2.0), sviluppata con Delphi e FireMon
 |---|---|---|
 | App icon | 512×512 PNG | `Icons/Android/ic_launcher_512.png` |
 | Feature graphic | 1024×500 PNG | `docs/play-store/feature-graphic.png` (from `feature-graphic.html`) |
-| Phone screenshots | 2 to 8, from the Android build | to be taken on a phone (the ones in `docs/screenshots` come from Windows) |
+| Phone screenshots | 1080×1920 PNG, 5 per language | `docs/play-store/screenshots/en-1.png` … `en-5.png` and `it-1.png` … `it-5.png` (from the `.html` next to them, with the captures of a phone in `screenshots/phone`) |
 
 ## Play Console forms
 
