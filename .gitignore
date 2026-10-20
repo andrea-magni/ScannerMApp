@@ -68,3 +68,9 @@ ScannerMapp.res
 
 # Windows Explorer thumbnail cache
 Thumbs.db
+
+# Google Play signing: keystores, keys, PEPK (never commit)
+GooglePlayStore/
+*.keystore
+*.jks
+*.pem
