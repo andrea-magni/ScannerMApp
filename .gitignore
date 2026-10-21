@@ -74,3 +74,9 @@ GooglePlayStore/
 *.keystore
 *.jks
 *.pem
+
+# Build output of the Apple platforms
+iOSDevice64/
+iOSSimARM64/
+OSX64/
+OSXARM64/
