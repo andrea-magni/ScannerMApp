@@ -95,6 +95,10 @@ type
       const AGrantResults: TClassicPermissionStatusDynArray);
     procedure DisplayRationale(Sender: TObject; const APermissions: TClassicStringDynArray; const APostRationaleProc: TProc);
 {$ENDIF}
+{$IF Defined(IOS) or Defined(MACOS)}
+  private
+    procedure CameraAccessResult(granted: Boolean);
+{$ENDIF}
   public
     procedure BeforeDestruction; override;
   end;
@@ -112,6 +116,11 @@ uses
 , Androidapi.JNI.Media, Androidapi.Helpers, Androidapi.JNI.JavaTypes
 , FMX.Platform.Android, Androidapi.JNI.GraphicsContentViewText, Androidapi.JNI.Os
 , Androidapi.JNI.Net
+{$ENDIF}
+{$IF Defined(IOS)}
+, iOSapi.AVFoundation
+{$ELSEIF Defined(MACOS)}
+, Macapi.AVFoundation
 {$ENDIF}
 , FMX.Ani, FMX.DialogService
 , UI.Theme, Utils.SharedImages
@@ -160,6 +169,21 @@ begin
       APostRationaleProc;
     end
   );
+end;
+{$ENDIF}
+
+{$IF Defined(IOS) or Defined(MACOS)}
+procedure TMainForm.CameraAccessResult(granted: Boolean);
+begin
+  // any thread: back to the main one, after the system dialog is gone
+  TThread.Queue(nil,
+    procedure
+    begin
+      if granted then
+        StartCamera
+      else
+        TDialogService.ShowMessage('Camera permission is required to scan codes');
+    end);
 end;
 {$ENDIF}
 
@@ -411,6 +435,24 @@ begin
   begin
     // StartCamera is called again by PermissionRequestResult once granted
     PermissionsService.RequestPermissions([LPermissionCamera], PermissionRequestResult, DisplayRationale);
+    Exit;
+  end;
+{$ENDIF}
+
+{$IF Defined(IOS) or Defined(MACOS)}
+  // Asked before the camera exists. While the system dialog is up the app is inactive and
+  // ApplicationEvents1StateChanged stops scanning: a TCameraComponent freed meanwhile would
+  // be used by its own (FMX) permission request once the user answers, crashing the app.
+  case TAVCaptureDevice.OCClass.authorizationStatusForMediaType(AVMediaTypeVideo) of
+    AVAuthorizationStatusAuthorized: ;
+    AVAuthorizationStatusNotDetermined:
+    begin
+      // StartCamera is called again by CameraAccessResult once granted
+      TAVCaptureDevice.OCClass.requestAccessForMediaType(AVMediaTypeVideo, CameraAccessResult);
+      Exit;
+    end;
+  else
+    TDialogService.ShowMessage('Camera access is off for ScannerMApp: allow it in Settings, Privacy, Camera');
     Exit;
   end;
 {$ENDIF}

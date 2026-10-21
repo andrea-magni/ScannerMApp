@@ -6,7 +6,7 @@
         <MainSource>ScannerMapp.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Android64</Platform>
+        <Platform Condition="'$(Platform)'==''">iOSDevice64</Platform>
         <TargetedPlatforms>693267</TargetedPlatforms>
         <AppType>Application</AppType>
     </PropertyGroup>
@@ -213,51 +213,55 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_BundleId>$(MSBuildProjectName)</VerInfo_BundleId>
-        <iOS_AppStore1024>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png</iOS_AppStore1024>
-        <iPhone_AppIcon120>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png</iPhone_AppIcon120>
-        <iPhone_AppIcon180>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png</iPhone_AppIcon180>
-        <iPhone_Launch2x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2x.png</iPhone_Launch2x>
-        <iPhone_LaunchDark2x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_2x.png</iPhone_LaunchDark2x>
-        <iPhone_Launch3x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_3x.png</iPhone_Launch3x>
-        <iPhone_LaunchDark3x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png</iPhone_LaunchDark3x>
-        <iPhone_Spotlight80>$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png</iPhone_Spotlight80>
-        <iPhone_Spotlight120>$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_120x120.png</iPhone_Spotlight120>
-        <iPhone_Setting58>$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_58x58.png</iPhone_Setting58>
-        <iPhone_Setting87>$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_87x87.png</iPhone_Setting87>
-        <iPhone_Notification40>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png</iPhone_Notification40>
-        <iPhone_Notification60>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_60x60.png</iPhone_Notification60>
-        <iPad_AppIcon152>$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png</iPad_AppIcon152>
-        <iPad_AppIcon167>$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png</iPad_AppIcon167>
-        <iPad_Launch2x>$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImage_2x.png</iPad_Launch2x>
-        <iPad_LaunchDark2x>$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImageDark_2x.png</iPad_LaunchDark2x>
-        <iPad_SpotLight80>$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png</iPad_SpotLight80>
-        <iPad_Setting58>$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png</iPad_Setting58>
-        <iPad_Notification40>$(BDS)\bin\Artwork\iOS\iPad\FM_NotificationIcon_40x40.png</iPad_Notification40>
+        <iOS_AppStore1024>Icons\iOS\icon_1024.png</iOS_AppStore1024>
+        <iPhone_AppIcon120>Icons\iOS\icon_120.png</iPhone_AppIcon120>
+        <iPhone_AppIcon180>Icons\iOS\icon_180.png</iPhone_AppIcon180>
+        <iPhone_Launch2x>Icons\iOS\launch_iphone_2x.png</iPhone_Launch2x>
+        <iPhone_LaunchDark2x>Icons\iOS\launch_iphone_2x.png</iPhone_LaunchDark2x>
+        <iPhone_Launch3x>Icons\iOS\launch_iphone_3x.png</iPhone_Launch3x>
+        <iPhone_LaunchDark3x>Icons\iOS\launch_iphone_3x.png</iPhone_LaunchDark3x>
+        <iPhone_Spotlight80>Icons\iOS\icon_80.png</iPhone_Spotlight80>
+        <iPhone_Spotlight120>Icons\iOS\icon_120.png</iPhone_Spotlight120>
+        <iPhone_Setting58>Icons\iOS\icon_58.png</iPhone_Setting58>
+        <iPhone_Setting87>Icons\iOS\icon_87.png</iPhone_Setting87>
+        <iPhone_Notification40>Icons\iOS\icon_40.png</iPhone_Notification40>
+        <iPhone_Notification60>Icons\iOS\icon_60.png</iPhone_Notification60>
+        <iPad_AppIcon152>Icons\iOS\icon_152.png</iPad_AppIcon152>
+        <iPad_AppIcon167>Icons\iOS\icon_167.png</iPad_AppIcon167>
+        <iPad_Launch2x>Icons\iOS\launch_ipad_2x.png</iPad_Launch2x>
+        <iPad_LaunchDark2x>Icons\iOS\launch_ipad_2x.png</iPad_LaunchDark2x>
+        <iPad_SpotLight80>Icons\iOS\icon_80.png</iPad_SpotLight80>
+        <iPad_Setting58>Icons\iOS\icon_58.png</iPad_Setting58>
+        <iPad_Notification40>Icons\iOS\icon_40.png</iPad_Notification40>
+    <iOS_BackgroundColor>FF1A1D23</iOS_BackgroundColor>
+        <iOS_DarkBackgroundColor>FF1A1D23</iOS_DarkBackgroundColor>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_iOSSimARM64)'!=''">
         <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDevelopmentRegion=en;CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleInfoDictionaryVersion=7.1;CFBundleVersion=1.0.0;CFBundleShortVersionString=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;LSRequiresIPhoneOS=true;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);UIDeviceFamily=iPhone &amp; iPad;UIBackgroundModes=;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes;NSPhotoLibraryUsageDescription=ScannerMApp reads the QR codes and barcodes in the photos you pick</VerInfo_Keys>
         <VerInfo_UIDeviceFamily>iPhoneAndiPad</VerInfo_UIDeviceFamily>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <iOS_AppStore1024>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png</iOS_AppStore1024>
-        <iPhone_AppIcon120>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png</iPhone_AppIcon120>
-        <iPhone_AppIcon180>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png</iPhone_AppIcon180>
-        <iPhone_Launch2x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2x.png</iPhone_Launch2x>
-        <iPhone_LaunchDark2x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_2x.png</iPhone_LaunchDark2x>
-        <iPhone_Launch3x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_3x.png</iPhone_Launch3x>
-        <iPhone_LaunchDark3x>$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png</iPhone_LaunchDark3x>
-        <iPhone_Spotlight80>$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png</iPhone_Spotlight80>
-        <iPhone_Spotlight120>$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_120x120.png</iPhone_Spotlight120>
-        <iPhone_Setting58>$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_58x58.png</iPhone_Setting58>
-        <iPhone_Setting87>$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_87x87.png</iPhone_Setting87>
-        <iPhone_Notification40>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png</iPhone_Notification40>
-        <iPhone_Notification60>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_60x60.png</iPhone_Notification60>
-        <iPad_AppIcon152>$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png</iPad_AppIcon152>
-        <iPad_AppIcon167>$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png</iPad_AppIcon167>
-        <iPad_Launch2x>$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImage_2x.png</iPad_Launch2x>
-        <iPad_LaunchDark2x>$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImageDark_2x.png</iPad_LaunchDark2x>
-        <iPad_SpotLight80>$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png</iPad_SpotLight80>
-        <iPad_Setting58>$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png</iPad_Setting58>
-        <iPad_Notification40>$(BDS)\bin\Artwork\iOS\iPad\FM_NotificationIcon_40x40.png</iPad_Notification40>
+        <iOS_AppStore1024>Icons\iOS\icon_1024.png</iOS_AppStore1024>
+        <iPhone_AppIcon120>Icons\iOS\icon_120.png</iPhone_AppIcon120>
+        <iPhone_AppIcon180>Icons\iOS\icon_180.png</iPhone_AppIcon180>
+        <iPhone_Launch2x>Icons\iOS\launch_iphone_2x.png</iPhone_Launch2x>
+        <iPhone_LaunchDark2x>Icons\iOS\launch_iphone_2x.png</iPhone_LaunchDark2x>
+        <iPhone_Launch3x>Icons\iOS\launch_iphone_3x.png</iPhone_Launch3x>
+        <iPhone_LaunchDark3x>Icons\iOS\launch_iphone_3x.png</iPhone_LaunchDark3x>
+        <iPhone_Spotlight80>Icons\iOS\icon_80.png</iPhone_Spotlight80>
+        <iPhone_Spotlight120>Icons\iOS\icon_120.png</iPhone_Spotlight120>
+        <iPhone_Setting58>Icons\iOS\icon_58.png</iPhone_Setting58>
+        <iPhone_Setting87>Icons\iOS\icon_87.png</iPhone_Setting87>
+        <iPhone_Notification40>Icons\iOS\icon_40.png</iPhone_Notification40>
+        <iPhone_Notification60>Icons\iOS\icon_60.png</iPhone_Notification60>
+        <iPad_AppIcon152>Icons\iOS\icon_152.png</iPad_AppIcon152>
+        <iPad_AppIcon167>Icons\iOS\icon_167.png</iPad_AppIcon167>
+        <iPad_Launch2x>Icons\iOS\launch_ipad_2x.png</iPad_Launch2x>
+        <iPad_LaunchDark2x>Icons\iOS\launch_ipad_2x.png</iPad_LaunchDark2x>
+        <iPad_SpotLight80>Icons\iOS\icon_80.png</iPad_SpotLight80>
+        <iPad_Setting58>Icons\iOS\icon_58.png</iPad_Setting58>
+        <iPad_Notification40>Icons\iOS\icon_40.png</iPad_Notification40>
+    <iOS_BackgroundColor>FF1A1D23</iOS_BackgroundColor>
+        <iOS_DarkBackgroundColor>FF1A1D23</iOS_DarkBackgroundColor>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_OSX64)'!=''">
         <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleVersion=1.0.0;CFBundleShortVersionString=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);NSHighResolutionCapable=true;LSApplicationCategoryType=public.app-category.utilities;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes</VerInfo_Keys>
@@ -471,25 +475,25 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\Android\FM_SplashImage_960x720.png" Configuration="Release" Class="Android_SplashImage960"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_144x144.png" Configuration="Debug" Class="iPad_AppIcon144"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_144x144.png" Configuration="Release" Class="iPad_AppIcon144"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png" Configuration="Debug" Class="iPad_AppIcon152"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png" Configuration="Debug" Class="iPad_AppIcon152">
+                <DeployFile LocalName="Icons\iOS\icon_144.png" Configuration="Debug" Class="iPad_AppIcon144"/>
+                <DeployFile LocalName="Icons\iOS\icon_144.png" Configuration="Release" Class="iPad_AppIcon144"/>
+                <DeployFile LocalName="Icons\iOS\icon_152.png" Configuration="Debug" Class="iPad_AppIcon152"/>
+                <DeployFile LocalName="Icons\iOS\icon_152.png" Configuration="Debug" Class="iPad_AppIcon152">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png" Configuration="Release" Class="iPad_AppIcon152"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_167x167.png" Configuration="Debug" Class="iPad_AppIcon167">
+                <DeployFile LocalName="Icons\iOS\icon_152.png" Configuration="Release" Class="iPad_AppIcon152"/>
+                <DeployFile LocalName="Icons\iOS\icon_167.png" Configuration="Debug" Class="iPad_AppIcon167">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_72x72.png" Configuration="Debug" Class="iPad_AppIcon72"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_72x72.png" Configuration="Release" Class="iPad_AppIcon72"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_76x76.png" Configuration="Debug" Class="iPad_AppIcon76"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_76x76.png" Configuration="Release" Class="iPad_AppIcon76"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImageDark_2x.png" Configuration="Debug" Class="iPad_LaunchDark2x">
+                <DeployFile LocalName="Icons\iOS\icon_72.png" Configuration="Debug" Class="iPad_AppIcon72"/>
+                <DeployFile LocalName="Icons\iOS\icon_72.png" Configuration="Release" Class="iPad_AppIcon72"/>
+                <DeployFile LocalName="Icons\iOS\icon_76.png" Configuration="Debug" Class="iPad_AppIcon76"/>
+                <DeployFile LocalName="Icons\iOS\icon_76.png" Configuration="Release" Class="iPad_AppIcon76"/>
+                <DeployFile LocalName="Icons\iOS\launch_ipad_2x.png" Configuration="Debug" Class="iPad_LaunchDark2x">
                     <Platform Name="iOSDevice64">
                         <RemoteName>FM_LaunchScreenImage_iPadDark@2x.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -511,73 +515,73 @@
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImagePortrait_768x1004.png" Configuration="Release" Class="iPad_Launch768"/>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImagePortrait_768x1024.png" Configuration="Debug" Class="iPad_Launch768x1024"/>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImagePortrait_768x1024.png" Configuration="Release" Class="iPad_Launch768x1024"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_LaunchImage_2x.png" Configuration="Debug" Class="iPad_Launch2x">
+                <DeployFile LocalName="Icons\iOS\launch_ipad_2x.png" Configuration="Debug" Class="iPad_Launch2x">
                     <Platform Name="iOSDevice64">
                         <RemoteName>FM_LaunchScreenImage_iPad@2x.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_NotificationIcon_40x40.png" Configuration="Debug" Class="iPad_Notification40">
+                <DeployFile LocalName="Icons\iOS\icon_40.png" Configuration="Debug" Class="iPad_Notification40">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_29x29.png" Configuration="Debug" Class="iPad_Setting29"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_29x29.png" Configuration="Release" Class="iPad_Setting29"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png" Configuration="Debug" Class="iPad_Setting58"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png" Configuration="Debug" Class="iPad_Setting58">
+                <DeployFile LocalName="Icons\iOS\icon_29.png" Configuration="Debug" Class="iPad_Setting29"/>
+                <DeployFile LocalName="Icons\iOS\icon_29.png" Configuration="Release" Class="iPad_Setting29"/>
+                <DeployFile LocalName="Icons\iOS\icon_58.png" Configuration="Debug" Class="iPad_Setting58"/>
+                <DeployFile LocalName="Icons\iOS\icon_58.png" Configuration="Debug" Class="iPad_Setting58">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SettingIcon_58x58.png" Configuration="Release" Class="iPad_Setting58"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_100x100.png" Configuration="Debug" Class="iPad_SpotLight100"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_100x100.png" Configuration="Release" Class="iPad_SpotLight100"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_40x40.png" Configuration="Debug" Class="iPad_SpotLight40"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_40x40.png" Configuration="Release" Class="iPad_SpotLight40"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_50x50.png" Configuration="Debug" Class="iPad_SpotLight50"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_50x50.png" Configuration="Release" Class="iPad_SpotLight50"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png" Configuration="Debug" Class="iPad_SpotLight80"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png" Configuration="Debug" Class="iPad_SpotLight80">
+                <DeployFile LocalName="Icons\iOS\icon_58.png" Configuration="Release" Class="iPad_Setting58"/>
+                <DeployFile LocalName="Icons\iOS\icon_100.png" Configuration="Debug" Class="iPad_SpotLight100"/>
+                <DeployFile LocalName="Icons\iOS\icon_100.png" Configuration="Release" Class="iPad_SpotLight100"/>
+                <DeployFile LocalName="Icons\iOS\icon_40.png" Configuration="Debug" Class="iPad_SpotLight40"/>
+                <DeployFile LocalName="Icons\iOS\icon_40.png" Configuration="Release" Class="iPad_SpotLight40"/>
+                <DeployFile LocalName="Icons\iOS\icon_50.png" Configuration="Debug" Class="iPad_SpotLight50"/>
+                <DeployFile LocalName="Icons\iOS\icon_50.png" Configuration="Release" Class="iPad_SpotLight50"/>
+                <DeployFile LocalName="Icons\iOS\icon_80.png" Configuration="Debug" Class="iPad_SpotLight80"/>
+                <DeployFile LocalName="Icons\iOS\icon_80.png" Configuration="Debug" Class="iPad_SpotLight80">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png" Configuration="Release" Class="iPad_SpotLight80"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png" Configuration="Debug" Class="iOS_AppStore1024">
+                <DeployFile LocalName="Icons\iOS\icon_80.png" Configuration="Release" Class="iPad_SpotLight80"/>
+                <DeployFile LocalName="Icons\iOS\icon_1024.png" Configuration="Debug" Class="iOS_AppStore1024">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_114x114.png" Configuration="Debug" Class="iPhone_AppIcon114"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_114x114.png" Configuration="Release" Class="iPhone_AppIcon114"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png" Configuration="Debug" Class="iPhone_AppIcon120"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png" Configuration="Debug" Class="iPhone_AppIcon120">
+                <DeployFile LocalName="Icons\iOS\icon_114.png" Configuration="Debug" Class="iPhone_AppIcon114"/>
+                <DeployFile LocalName="Icons\iOS\icon_114.png" Configuration="Release" Class="iPhone_AppIcon114"/>
+                <DeployFile LocalName="Icons\iOS\icon_120.png" Configuration="Debug" Class="iPhone_AppIcon120"/>
+                <DeployFile LocalName="Icons\iOS\icon_120.png" Configuration="Debug" Class="iPhone_AppIcon120">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png" Configuration="Release" Class="iPhone_AppIcon120"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Configuration="Debug" Class="iPhone_AppIcon180"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Configuration="Debug" Class="iPhone_AppIcon180">
+                <DeployFile LocalName="Icons\iOS\icon_120.png" Configuration="Release" Class="iPhone_AppIcon120"/>
+                <DeployFile LocalName="Icons\iOS\icon_180.png" Configuration="Debug" Class="iPhone_AppIcon180"/>
+                <DeployFile LocalName="Icons\iOS\icon_180.png" Configuration="Debug" Class="iPhone_AppIcon180">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_180x180.png" Configuration="Release" Class="iPhone_AppIcon180"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_57x57.png" Configuration="Debug" Class="iPhone_AppIcon57"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_57x57.png" Configuration="Release" Class="iPhone_AppIcon57"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_60x60.png" Configuration="Debug" Class="iPhone_AppIcon60"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_60x60.png" Configuration="Release" Class="iPhone_AppIcon60"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_87x87.png" Configuration="Debug" Class="iPhone_AppIcon87"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_87x87.png" Configuration="Release" Class="iPhone_AppIcon87"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_2x.png" Configuration="Debug" Class="iPhone_LaunchDark2x">
+                <DeployFile LocalName="Icons\iOS\icon_180.png" Configuration="Release" Class="iPhone_AppIcon180"/>
+                <DeployFile LocalName="Icons\iOS\icon_57.png" Configuration="Debug" Class="iPhone_AppIcon57"/>
+                <DeployFile LocalName="Icons\iOS\icon_57.png" Configuration="Release" Class="iPhone_AppIcon57"/>
+                <DeployFile LocalName="Icons\iOS\icon_60.png" Configuration="Debug" Class="iPhone_AppIcon60"/>
+                <DeployFile LocalName="Icons\iOS\icon_60.png" Configuration="Release" Class="iPhone_AppIcon60"/>
+                <DeployFile LocalName="Icons\iOS\icon_87.png" Configuration="Debug" Class="iPhone_AppIcon87"/>
+                <DeployFile LocalName="Icons\iOS\icon_87.png" Configuration="Release" Class="iPhone_AppIcon87"/>
+                <DeployFile LocalName="Icons\iOS\launch_iphone_2x.png" Configuration="Debug" Class="iPhone_LaunchDark2x">
                     <Platform Name="iOSDevice64">
                         <RemoteName>FM_LaunchScreenImage_iPhoneDark@2x.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImageDark_3x.png" Configuration="Debug" Class="iPhone_LaunchDark3x">
+                <DeployFile LocalName="Icons\iOS\launch_iphone_3x.png" Configuration="Debug" Class="iPhone_LaunchDark3x">
                     <Platform Name="iOSDevice64">
                         <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -587,7 +591,7 @@
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_1242x2208.png" Configuration="Release" Class="iPhone_Launch1242"/>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2208x1242.png" Configuration="Debug" Class="iPhone_Launch2208"/>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2208x1242.png" Configuration="Release" Class="iPhone_Launch2208"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_2x.png" Configuration="Debug" Class="iPhone_Launch2x">
+                <DeployFile LocalName="Icons\iOS\launch_iphone_2x.png" Configuration="Debug" Class="iPhone_Launch2x">
                     <Platform Name="iOSDevice64">
                         <RemoteName>FM_LaunchScreenImage_iPhone@2x.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -595,7 +599,7 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_320x480.png" Configuration="Debug" Class="iPhone_Launch320"/>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_320x480.png" Configuration="Release" Class="iPhone_Launch320"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_3x.png" Configuration="Debug" Class="iPhone_Launch3x">
+                <DeployFile LocalName="Icons\iOS\launch_iphone_3x.png" Configuration="Debug" Class="iPhone_Launch3x">
                     <Platform Name="iOSDevice64">
                         <RemoteName>FM_LaunchScreenImage_iPhone@3x.png</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -607,44 +611,44 @@
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_640x960.png" Configuration="Release" Class="iPhone_Launch640"/>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_750x1334.png" Configuration="Debug" Class="iPhone_Launch750"/>
                 <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_LaunchImage_750x1334.png" Configuration="Release" Class="iPhone_Launch750"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png" Configuration="Debug" Class="iPhone_Notification40">
+                <DeployFile LocalName="Icons\iOS\icon_40.png" Configuration="Debug" Class="iPhone_Notification40">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_60x60.png" Configuration="Debug" Class="iPhone_Notification60">
+                <DeployFile LocalName="Icons\iOS\icon_60.png" Configuration="Debug" Class="iPhone_Notification60">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_58x58.png" Configuration="Debug" Class="iPhone_Setting58">
+                <DeployFile LocalName="Icons\iOS\icon_58.png" Configuration="Debug" Class="iPhone_Setting58">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SettingIcon_87x87.png" Configuration="Debug" Class="iPhone_Setting87">
+                <DeployFile LocalName="Icons\iOS\icon_87.png" Configuration="Debug" Class="iPhone_Setting87">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_120x120.png" Configuration="Debug" Class="iPhone_Spotlight120">
+                <DeployFile LocalName="Icons\iOS\icon_120.png" Configuration="Debug" Class="iPhone_Spotlight120">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_29x29.png" Configuration="Debug" Class="iPhone_Spotlight29"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_29x29.png" Configuration="Release" Class="iPhone_Spotlight29"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_40x40.png" Configuration="Debug" Class="iPhone_Spotlight40"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_40x40.png" Configuration="Release" Class="iPhone_Spotlight40"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_58x58.png" Configuration="Debug" Class="iPhone_Spotlight58"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_58x58.png" Configuration="Release" Class="iPhone_Spotlight58"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png" Configuration="Debug" Class="iPhone_Spotlight80"/>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png" Configuration="Debug" Class="iPhone_Spotlight80">
+                <DeployFile LocalName="Icons\iOS\icon_29.png" Configuration="Debug" Class="iPhone_Spotlight29"/>
+                <DeployFile LocalName="Icons\iOS\icon_29.png" Configuration="Release" Class="iPhone_Spotlight29"/>
+                <DeployFile LocalName="Icons\iOS\icon_40.png" Configuration="Debug" Class="iPhone_Spotlight40"/>
+                <DeployFile LocalName="Icons\iOS\icon_40.png" Configuration="Release" Class="iPhone_Spotlight40"/>
+                <DeployFile LocalName="Icons\iOS\icon_58.png" Configuration="Debug" Class="iPhone_Spotlight58"/>
+                <DeployFile LocalName="Icons\iOS\icon_58.png" Configuration="Release" Class="iPhone_Spotlight58"/>
+                <DeployFile LocalName="Icons\iOS\icon_80.png" Configuration="Debug" Class="iPhone_Spotlight80"/>
+                <DeployFile LocalName="Icons\iOS\icon_80.png" Configuration="Debug" Class="iPhone_Spotlight80">
                     <Platform Name="iOSDevice64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png" Configuration="Release" Class="iPhone_Spotlight80"/>
+                <DeployFile LocalName="Icons\iOS\icon_80.png" Configuration="Release" Class="iPhone_Spotlight80"/>
                 <DeployFile LocalName="$(BDS)\lib\android\debug\armeabi-v7a\libnative-activity.so" Configuration="Debug" Class="AndroidLibnativeArmeabiv7aFile">
                     <Platform Name="Android64">
                         <RemoteName>libScannerMapp.so</RemoteName>
