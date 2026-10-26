@@ -208,7 +208,7 @@
         <Android_AdaptiveIconMonochrome>Icons\Android\ic_launcher_monochrome.xml</Android_AdaptiveIconMonochrome>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_iOSDevice64)'!=''">
-        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDevelopmentRegion=en;CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleInfoDictionaryVersion=7.1;CFBundleVersion=1.0.0;CFBundleShortVersionString=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;LSRequiresIPhoneOS=true;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);UIDeviceFamily=iPhone &amp; iPad;UIBackgroundModes=;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes;NSPhotoLibraryUsageDescription=ScannerMApp reads the QR codes and barcodes in the photos you pick</VerInfo_Keys>
+        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDevelopmentRegion=en;CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleInfoDictionaryVersion=7.1;CFBundleVersion=1;CFBundleShortVersionString=2.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;LSRequiresIPhoneOS=true;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);UIDeviceFamily=iPhone &amp; iPad;UIBackgroundModes=;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes;NSPhotoLibraryUsageDescription=ScannerMApp reads the QR codes and barcodes in the photos you pick</VerInfo_Keys>
         <VerInfo_UIDeviceFamily>iPhoneAndiPad</VerInfo_UIDeviceFamily>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <BT_BuildType>Debug</BT_BuildType>
@@ -237,7 +237,7 @@
         <iOS_DarkBackgroundColor>FF1A1D23</iOS_DarkBackgroundColor>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_iOSSimARM64)'!=''">
-        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDevelopmentRegion=en;CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleInfoDictionaryVersion=7.1;CFBundleVersion=1.0.0;CFBundleShortVersionString=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;LSRequiresIPhoneOS=true;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);UIDeviceFamily=iPhone &amp; iPad;UIBackgroundModes=;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes;NSPhotoLibraryUsageDescription=ScannerMApp reads the QR codes and barcodes in the photos you pick</VerInfo_Keys>
+        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDevelopmentRegion=en;CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleInfoDictionaryVersion=7.1;CFBundleVersion=1;CFBundleShortVersionString=2.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;LSRequiresIPhoneOS=true;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);UIDeviceFamily=iPhone &amp; iPad;UIBackgroundModes=;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes;NSPhotoLibraryUsageDescription=ScannerMApp reads the QR codes and barcodes in the photos you pick</VerInfo_Keys>
         <VerInfo_UIDeviceFamily>iPhoneAndiPad</VerInfo_UIDeviceFamily>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <iOS_AppStore1024>Icons\iOS\icon_1024.png</iOS_AppStore1024>
@@ -264,12 +264,12 @@
         <iOS_DarkBackgroundColor>FF1A1D23</iOS_DarkBackgroundColor>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_OSX64)'!=''">
-        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleVersion=1.0.0;CFBundleShortVersionString=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);NSHighResolutionCapable=true;LSApplicationCategoryType=public.app-category.utilities;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes</VerInfo_Keys>
+        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleVersion=1;CFBundleShortVersionString=2.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);NSHighResolutionCapable=true;LSApplicationCategoryType=public.app-category.utilities;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes</VerInfo_Keys>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_OSXARM64)'!=''">
-        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleVersion=1.0.0;CFBundleShortVersionString=1.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);NSHighResolutionCapable=true;LSApplicationCategoryType=public.app-category.utilities;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes</VerInfo_Keys>
+        <VerInfo_Keys>CFBundleName=$(MSBuildProjectName);CFBundleDisplayName=$(MSBuildProjectName);CFBundleIdentifier=eu.andreamagni.$(MSBuildProjectName);CFBundleVersion=1;CFBundleShortVersionString=2.0.0;CFBundlePackageType=APPL;CFBundleSignature=????;CFBundleAllowMixedLocalizations=YES;CFBundleExecutable=$(MSBuildProjectName);NSHighResolutionCapable=true;LSApplicationCategoryType=public.app-category.utilities;ITSAppUsesNonExemptEncryption=false;NSCameraUsageDescription=ScannerMApp uses the camera to read QR codes and barcodes</VerInfo_Keys>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
     </PropertyGroup>
@@ -855,6 +855,20 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Win32\Debug\ScannerMapp.exe" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName="PrivacyInfo.xcprivacy" Configuration="Debug" Class="File">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>.\</RemoteDir>
+                        <RemoteName>PrivacyInfo.xcprivacy</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="PrivacyInfo.xcprivacy" Configuration="Release" Class="File">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>.\</RemoteDir>
+                        <RemoteName>PrivacyInfo.xcprivacy</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="beep.mp3" Configuration="Release" Class="File">
                     <Platform Name="Android">
                         <RemoteName>beep.mp3</RemoteName>

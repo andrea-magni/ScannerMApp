@@ -17,7 +17,7 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 | Platform | State |
 |---|---|
 | Android 64-bit | Tried on a phone (Android 17): camera, photo picker, shared images, **Open**. Published on **[Google Play](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2)** (October 2026) as `eu.andreamagni.scannermapp2`, version 2.0.0. |
-| iOS (iPhone) | Tried on an iPhone: camera scanning, the camera permission, app icon and launch screen. Not on the App Store yet; **Open** for contacts and events not tried yet. |
+| iOS (iPhone, iPad) | Tried on an iPhone and an iPad: camera scanning, the camera permission, app icon and launch screen. Being prepared for the **App Store** (version 2.0.0, see [docs/app-store](docs/app-store/README.md)). |
 | macOS (ARM, Intel) | Compiles and links; not tried on a Mac yet. |
 | Windows (32 and 64-bit) | Scanning from a file, and "Open with"; the camera has not been tested. |
 
@@ -40,6 +40,10 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 - **iOS and macOS**: the iOS device, macOS ARM and macOS Intel targets compile and link from Windows (with the SDKs imported in RAD Studio); running them needs a Mac with PAServer. On iOS the app asks for the camera permission before it creates the camera (`Forms.Main.StartCamera`).
 - **[ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4.0** or later, included as a git submodule in `ThirdParty\ZXing.Delphi` (branch `4.0`). Version 3.x does not build: the app uses `IScanManager` and `ScanAsync`.
 - **[TFrameStand](https://github.com/andrea-magni/TFrameStand) [v.2.4](https://github.com/andrea-magni/TFrameStand/releases/tag/v.2.4)** or later, installed in the IDE (see below). It is not part of this repository: the project finds it through the IDE library path.
+
+## Sample codes
+
+[docs/samples](docs/samples/README.md) has a code for every kind of content the app opens (link, phone, SMS, e-mail, place, contact, event) and for several formats (EAN-13, Code 128, Data Matrix, Aztec, PDF 417, Micro QR), to scan from another screen or to pick with **Gallery**.
 
 ## Building
 
@@ -91,6 +95,10 @@ ScannerMApp collects nothing: no account, no ads, no analytics, and the Android 
 ## Google Play Store
 
 ScannerMApp is [on Google Play](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2) as `eu.andreamagni.scannermapp2` (the app published until 2020 as `eu.andreamagni.ScannerMapp` was removed and cannot be updated). The **Release** configuration of **Android 64-bit** builds the App Bundle (`.aab`) for Google Play. The store listing (English and Italian), the graphics, the answers to the Play Console forms and the signing steps are in [docs/play-store](docs/play-store/README.md).
+
+## Apple App Store
+
+The **Release** configuration of **iOS Device 64-bit**, as an **Application Store** build, makes the `.ipa` for the App Store. The listing (English and Italian), the answers to the App Store Connect forms and the steps to build and upload are in [docs/app-store](docs/app-store/README.md); `PrivacyInfo.xcprivacy` is the privacy manifest deployed in the app.
 
 ## License
 
