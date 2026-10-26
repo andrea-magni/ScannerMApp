@@ -2,6 +2,8 @@
 
 What is needed to publish ScannerMApp on Google Play: the store listing (in English and Italian), the graphics, the answers to the Play Console forms and how to build the bundle.
 
+**Published**: [https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2) (version 2.0.0, versionCode 1; the next upload needs versionCode 2 or higher).
+
 Package: `eu.andreamagni.scannermapp2` (it cannot change after the first release). The app published until 2020 as `eu.andreamagni.ScannerMapp` was removed by Google Play and is signed with a key that is not enrolled in Play App Signing, so ScannerMApp is published again as a new app.
 
 ## Store listing
