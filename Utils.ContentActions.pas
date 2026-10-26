@@ -8,7 +8,7 @@ unit Utils.ContentActions;
 interface
 
 uses
-  System.SysUtils;
+  System.SysUtils, FMX.Controls;
 
 type
   TContentKind = (None, Link, Email, Phone, Sms, Geo, Contact, Event);
@@ -24,8 +24,9 @@ type
 /// <summary>The action for the text of a code (Kind = None: nothing to open)</summary>
 function ContentAction(const AText: string): TContentAction;
 /// <summary>Opens the content with the app of the system (browser, dialer, mail,
-/// maps, contacts, calendar); False when nothing can handle it</summary>
-function OpenContent(const AAction: TContentAction): Boolean;
+/// maps, contacts, calendar); False when nothing can handle it. AControl: where the
+/// share sheet of iOS points to on iPad (contacts and events)</summary>
+function OpenContent(const AAction: TContentAction; const AControl: TControl = nil): Boolean;
 
 implementation
 
@@ -39,7 +40,7 @@ uses
 , Winapi.Windows, Winapi.ShellAPI
 {$ENDIF}
 {$IFDEF IOS}
-, iOSapi.Foundation, iOSapi.Helpers, Macapi.Helpers
+, iOSapi.Foundation, iOSapi.Helpers, Macapi.Helpers, FMX.Platform, FMX.MediaLibrary
 {$ELSEIF Defined(MACOS)}
 , Macapi.AppKit, Macapi.Foundation, Macapi.Helpers
 {$ENDIF}
@@ -252,14 +253,34 @@ end;
 {$ENDIF}
 
 {$IF Defined(IOS) or Defined(MACOS)}
-function OpenContentApple(const AAction: TContentAction): Boolean;
+function OpenContentApple(const AAction: TContentAction; const AControl: TControl): Boolean;
 var
   LTarget: string;
 begin
   Result := False;
   case AAction.Kind of
     TContentKind.Contact, TContentKind.Event:
-      Exit; // not supported here: Copy and Share are available
+    begin
+      // no URL opens them: a .vcf / .ics file, for the app the user picks
+      if AAction.Kind = TContentKind.Contact then
+        LTarget := SaveToTempFile(AAction.Target, '.vcf')
+      else
+        LTarget := SaveToTempFile(AAction.Target, '.ics');
+{$IFDEF IOS}
+      // the share sheet: Contacts, Calendar, Files, Mail...
+      var LShare: IFMXShareSheetActionsService;
+      if TPlatformServices.Current.SupportsPlatformService(IFMXShareSheetActionsService, LShare) then
+      begin
+        LShare.Share(AControl, '', [LTarget]);
+        Result := True;
+      end;
+{$ELSE}
+      // macOS: the default app of the file (Contacts, Calendar)
+      Result := TNSWorkspace.Wrap(TNSWorkspace.OCClass.sharedWorkspace).openURL(
+        TNSURL.Wrap(TNSURL.OCClass.fileURLWithPath(StrToNSStr(LTarget))));
+{$ENDIF}
+      Exit;
+    end;
     TContentKind.Geo:
       LTarget := 'https://maps.apple.com/?ll=' + Copy(AAction.Target, Length('geo:') + 1, MaxInt).Split(['?', ';'])[0];
   else
@@ -269,7 +290,8 @@ begin
   if LURL = nil then
     Exit;
 {$IFDEF IOS}
-  TiOSHelper.SharedApplication.openURL(LURL);
+  // openURL(url) without options does nothing since iOS 18
+  TiOSHelper.SharedApplication.openURL(LURL, nil, nil);
   Result := True;
 {$ELSE}
   Result := TNSWorkspace.Wrap(TNSWorkspace.OCClass.sharedWorkspace).openURL(LURL);
@@ -277,7 +299,7 @@ begin
 end;
 {$ENDIF}
 
-function OpenContent(const AAction: TContentAction): Boolean;
+function OpenContent(const AAction: TContentAction; const AControl: TControl): Boolean;
 begin
   Result := False;
   if not AAction.IsAvailable then
@@ -288,7 +310,7 @@ begin
 {$ELSEIF Defined(MSWINDOWS)}
     Result := OpenContentWindows(AAction);
 {$ELSEIF Defined(IOS) or Defined(MACOS)}
-    Result := OpenContentApple(AAction);
+    Result := OpenContentApple(AAction, AControl);
 {$ENDIF}
   except
     Result := False;
