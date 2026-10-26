@@ -41,6 +41,10 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 - **[ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) 4.0** or later, included as a git submodule in `ThirdParty\ZXing.Delphi` (branch `4.0`). Version 3.x does not build: the app uses `IScanManager` and `ScanAsync`.
 - **[TFrameStand](https://github.com/andrea-magni/TFrameStand) [v.2.4](https://github.com/andrea-magni/TFrameStand/releases/tag/v.2.4)** or later, installed in the IDE (see below). It is not part of this repository: the project finds it through the IDE library path.
 
+## Sample codes
+
+[docs/samples](docs/samples/README.md) has a code for every kind of content the app opens (link, phone, SMS, e-mail, place, contact, event) and for several formats (EAN-13, Code 128, Data Matrix, Aztec, PDF 417, Micro QR), to scan from another screen or to pick with **Gallery**.
+
 ## Building
 
 Clone with the submodules, so that ZXing.Delphi lands in `ThirdParty\ZXing.Delphi`:
