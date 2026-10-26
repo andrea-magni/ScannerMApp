@@ -2,6 +2,8 @@
 
 A QR code and barcode scanner app built with Delphi and FireMonkey, using [ZXing.Delphi](https://github.com/Spelt/ZXing.Delphi) for decoding and [TFrameStand](https://github.com/andrea-magni/TFrameStand) for the views.
 
+<a href="https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="80"></a>
+
 It started in 2017 as a sample for TFrameStand ([blog post](https://blog.andreamagni.eu/2017/06/scannermapp-a-qrbarcode-scanner-app-with-delphi-zxing-and-tframestand/)). It now builds with RAD Studio 13 and runs on recent Android versions and on the iPhone, with a dark UI. What changed, nine years later: [ScannerMApp, nine years later: ZXing.Delphi 4, TFrameStand and Android intents](https://blog.andreamagni.eu/2026/10/scannermapp-nine-years-later-zxing-delphi-4-tframestand-and-android-intents/).
 
 | Scans | Scan result | Formats | About |
@@ -14,7 +16,7 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 
 | Platform | State |
 |---|---|
-| Android 64-bit | Tried on a phone (Android 17): camera, photo picker, shared images, **Open**. Submitted to **Google Play** in October 2026 as `eu.andreamagni.scannermapp2`, version 2.0.0: in review. |
+| Android 64-bit | Tried on a phone (Android 17): camera, photo picker, shared images, **Open**. Published on **[Google Play](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2)** (October 2026) as `eu.andreamagni.scannermapp2`, version 2.0.0. |
 | iOS (iPhone) | Tried on an iPhone: camera scanning, the camera permission, app icon and launch screen. Not on the App Store yet; **Open** for contacts and events not tried yet. |
 | macOS (ARM, Intel) | Compiles and links; not tried on a Mac yet. |
 | Windows (32 and 64-bit) | Scanning from a file, and "Open with"; the camera has not been tested. |
@@ -88,7 +90,7 @@ ScannerMApp collects nothing: no account, no ads, no analytics, and the Android 
 
 ## Google Play Store
 
-ScannerMApp is published as `eu.andreamagni.scannermapp2` (the app published until 2020 as `eu.andreamagni.ScannerMapp` was removed and cannot be updated). The **Release** configuration of **Android 64-bit** builds the App Bundle (`.aab`) for Google Play. The store listing (English and Italian), the graphics, the answers to the Play Console forms and the signing steps are in [docs/play-store](docs/play-store/README.md).
+ScannerMApp is [on Google Play](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2) as `eu.andreamagni.scannermapp2` (the app published until 2020 as `eu.andreamagni.ScannerMapp` was removed and cannot be updated). The **Release** configuration of **Android 64-bit** builds the App Bundle (`.aab`) for Google Play. The store listing (English and Italian), the graphics, the answers to the Play Console forms and the signing steps are in [docs/play-store](docs/play-store/README.md).
 
 ## License
 
