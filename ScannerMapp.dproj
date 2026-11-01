@@ -126,6 +126,7 @@
         <AUP_ACCESS_FINE_LOCATION>false</AUP_ACCESS_FINE_LOCATION>
         <AUP_CALL_PHONE>false</AUP_CALL_PHONE>
         <AUP_CAMERA>true</AUP_CAMERA>
+        <AUP_VIBRATE>true</AUP_VIBRATE>
         <AUP_INTERNET>false</AUP_INTERNET>
         <AUP_READ_CALENDAR>false</AUP_READ_CALENDAR>
         <AUP_READ_EXTERNAL_STORAGE>false</AUP_READ_EXTERNAL_STORAGE>
@@ -394,6 +395,7 @@
         </DCCReference>
         <DCCReference Include="Utils.ContentActions.pas"/>
         <DCCReference Include="Utils.SharedImages.pas"/>
+        <DCCReference Include="Utils.Feedback.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -855,6 +857,30 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Win32\Debug\ScannerMapp.exe" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName="Sounds\scan.wav" Configuration="Debug" Class="File">
+                    <Platform Name="Android64">
+                        <RemoteDir>assets\internal\</RemoteDir>
+                        <RemoteName>scan.wav</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>StartUp\Documents\</RemoteDir>
+                        <RemoteName>scan.wav</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Sounds\scan.wav" Configuration="Release" Class="File">
+                    <Platform Name="Android64">
+                        <RemoteDir>assets\internal\</RemoteDir>
+                        <RemoteName>scan.wav</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>StartUp\Documents\</RemoteDir>
+                        <RemoteName>scan.wav</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="beep.mp3" Configuration="Release" Class="File">
                     <Platform Name="Android">
                         <RemoteName>beep.mp3</RemoteName>

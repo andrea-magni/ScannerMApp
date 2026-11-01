@@ -41,6 +41,38 @@ object MainForm: TMainForm
         TextSettings.WordWrap = False
         Text = 'ScannerMApp'
       end
+      object DeleteAllButton: TRectangle
+        Align = Right
+        Cursor = crHandPoint
+        Fill.Kind = None
+        Margins.Top = 6.000000000000000000
+        Margins.Bottom = 6.000000000000000000
+        Position.X = 160.000000000000000000
+        Size.Width = 48.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        Visible = False
+        XRadius = 24.000000000000000000
+        YRadius = 24.000000000000000000
+        OnClick = DeleteAllButtonClick
+        OnMouseDown = PressableMouseDown
+        OnMouseUp = PressableMouseUp
+        OnMouseLeave = PressableMouseLeave
+        object DeleteAllIcon: TPath
+          Align = Center
+          Data.Data = 
+            'M15 16h4v2h-4zm0-8h7v2h-7zm0 4h6v2h-6zM3 18c0 1.1.9 2 2 2h6c1.1 ' +
+            '0 2-.9 2-2V8H3v10zM14 5h-3l-1-1H6L5 5H2v2h12z'
+          Fill.Color = xFF9AA3AF
+          HitTest = False
+          Size.Width = 24.000000000000000000
+          Size.Height = 24.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Kind = None
+          WrapMode = Fit
+        end
+      end
       object InfoButton: TRectangle
         Align = Right
         Cursor = crHandPoint

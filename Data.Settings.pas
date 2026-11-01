@@ -1,7 +1,7 @@
 unit Data.Settings;
 
-// Where the app keeps its data, and the scan settings (the formats to read),
-// saved as JSON next to the scans.
+// Where the app keeps its data, and the scan settings (the formats to read, the
+// feedback when a code is read), saved as JSON next to the scans.
 
 interface
 
@@ -21,6 +21,8 @@ type
   TScanSettings = class
   private
     FDisabledGroups: TList<string>;
+    FSound: Boolean;
+    FVibrate: Boolean;
     function GetFileName: string;
   public
     constructor Create;
@@ -40,6 +42,10 @@ type
     procedure Load;
     procedure Save;
     property FileName: string read GetFileName;
+    /// <summary>A sound when a code is read with the camera</summary>
+    property Sound: Boolean read FSound write FSound;
+    /// <summary>A vibration when a code is read with the camera (mobile)</summary>
+    property Vibrate: Boolean read FVibrate write FVibrate;
   end;
 
 const
@@ -89,6 +95,8 @@ constructor TScanSettings.Create;
 begin
   inherited Create;
   FDisabledGroups := TList<string>.Create;
+  FSound := True;
+  FVibrate := True;
 end;
 
 destructor TScanSettings.Destroy;
@@ -149,6 +157,8 @@ end;
 procedure TScanSettings.Load;
 begin
   FDisabledGroups.Clear;
+  FSound := True;
+  FVibrate := True;
   if not TFile.Exists(FileName) then
     Exit;
   try
@@ -158,6 +168,11 @@ begin
       if (LJSON is TJSONObject) and TJSONObject(LJSON).TryGetValue<TJSONArray>('disabledFormats', LDisabled) then
         for var LItem in LDisabled do
           FDisabledGroups.Add(LItem.Value);
+      if LJSON is TJSONObject then
+      begin
+        TJSONObject(LJSON).TryGetValue<Boolean>('sound', FSound);
+        TJSONObject(LJSON).TryGetValue<Boolean>('vibrate', FVibrate);
+      end;
     finally
       LJSON.Free;
     end;
@@ -174,6 +189,8 @@ begin
     LJSON.AddPair('disabledFormats', LDisabled);
     for var LKey in FDisabledGroups do
       LDisabled.Add(LKey);
+    LJSON.AddPair('sound', TJSONBool.Create(FSound));
+    LJSON.AddPair('vibrate', TJSONBool.Create(FVibrate));
     TFile.WriteAllText(FileName, LJSON.Format, TEncoding.UTF8);
   finally
     LJSON.Free;
