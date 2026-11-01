@@ -1,7 +1,8 @@
 unit Utils.Feedback;
 
 // The feedback when a code is read: a short sound and a vibration.
-// No sound in silent mode; on Android the beep follows the media volume.
+// Mobile: the sound is scan.wav (Sounds\make_scan_sound.py), deployed in the documents
+// folder of the app; no sound in silent mode, on Android it follows the media volume.
 
 interface
 
@@ -13,12 +14,12 @@ function CanVibrate: Boolean;
 implementation
 
 uses
-  System.SysUtils
+  System.SysUtils, System.IOUtils
 {$IF Defined(ANDROID)}
 , Androidapi.Helpers, Androidapi.JNI.JavaTypes, Androidapi.JNI.Media, Androidapi.JNI.Os
 , Androidapi.JNI.GraphicsContentViewText, Androidapi.JNIBridge
 {$ELSEIF Defined(IOS)}
-, iOSapi.AudioToolbox, iOSapi.UIKit
+, iOSapi.AudioToolbox, iOSapi.UIKit, iOSapi.Foundation, Macapi.CoreFoundation, Macapi.Helpers, Macapi.ObjectiveC
 {$ELSEIF Defined(MACOS)}
 , Macapi.Helpers
 {$ELSEIF Defined(MSWINDOWS)}
@@ -26,14 +27,18 @@ uses
 {$ENDIF}
 ;
 
+function SoundFile: string;
+begin
+  Result := TPath.Combine(TPath.GetDocumentsPath, 'scan.wav');
+end;
+
 {$IF Defined(ANDROID)}
 const
-  BEEP_MS = 150;
   VIBRATION_MS = 120;
   VIBRATION_AMPLITUDE = 255; // the strongest (1..255)
 
 var
-  GTone: JToneGenerator; // created once: creating it takes a while
+  GPlayer: JMediaPlayer; // prepared once, played again from the start
 
 procedure PlaySound;
 begin
@@ -41,9 +46,15 @@ begin
   var LAudio := TJAudioManager.Wrap(TAndroidHelper.Context.getSystemService(TJContext.JavaClass.AUDIO_SERVICE));
   if LAudio.getRingerMode <> TJAudioManager.JavaClass.RINGER_MODE_NORMAL then
     Exit;
-  if GTone = nil then
-    GTone := TJToneGenerator.JavaClass.init(TJAudioManager.JavaClass.STREAM_MUSIC, 100); // ToneGenerator.MAX_VOLUME
-  GTone.startTone(TJToneGenerator.JavaClass.TONE_PROP_BEEP, BEEP_MS);
+  if GPlayer = nil then
+  begin
+    GPlayer := TJMediaPlayer.JavaClass.init;
+    GPlayer.setAudioStreamType(TJAudioManager.JavaClass.STREAM_MUSIC);
+    GPlayer.setDataSource(StringToJString(SoundFile));
+    GPlayer.prepare;
+  end;
+  GPlayer.seekTo(0);
+  GPlayer.start;
 end;
 
 procedure Vibrate;
@@ -60,15 +71,17 @@ begin
 end;
 
 {$ELSEIF Defined(IOS)}
-const
-  SOUND_TINK = 1057; // a short system sound, silent with the ring/silent switch off
-
 var
   GHaptic: UINotificationFeedbackGenerator;
+  GSound: SystemSoundID; // 0: not created yet
 
 procedure PlaySound;
 begin
-  AudioServicesPlaySystemSound(SOUND_TINK);
+  // a system sound: silent with the ring/silent switch off
+  if GSound = 0 then
+    AudioServicesCreateSystemSoundID(
+      CFURLRef(NSObjectToID(TNSURL.OCClass.fileURLWithPath(StrToNSStr(SoundFile)))), @GSound);
+  AudioServicesPlaySystemSound(GSound);
 end;
 
 procedure Vibrate;

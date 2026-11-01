@@ -4,15 +4,33 @@
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
     <PropertyGroup>
-        <DeviceId Condition="'$(Platform)'=='Android'"/>
-        <DeviceId Condition="'$(Platform)'=='Android64'"/>
-        <DeviceId Condition="'$(Platform)'=='iOSDevice64'">00008030-001809141E40202E</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android'">192.168.68.135:45757</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android64'">192.168.68.135:45757</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='iOSDevice64'"/>
         <DeviceId Condition="'$(Platform)'=='iOSSimARM64'"/>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='WinARM64EC'"/>
     <ItemGroup Condition="'$(Platform)'=='OSX64'"/>
     <ItemGroup Condition="'$(Platform)'=='Win32'"/>
     <ItemGroup Condition="'$(Platform)'=='Android64'">
+        <DeployFile Include="Sounds\scan.wav" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp\assets\internal\</RemoteDir>
+            <RemoteName>scan.wav</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Sounds\scan.wav" Condition="'$(Config)'=='Release'">
+            <RemoteDir>ScannerMapp\assets\internal\</RemoteDir>
+            <RemoteName>scan.wav</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(BDS)\bin\Artwork\Android\FM_SplashImage_640x480.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp\res\drawable-large\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
@@ -326,6 +344,24 @@
     <ItemGroup Condition="'$(Platform)'=='OSXARM64'"/>
     <ItemGroup Condition="'$(Platform)'=='Win64'"/>
     <ItemGroup Condition="'$(Platform)'=='iOSDevice64'">
+        <DeployFile Include="Sounds\scan.wav" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp.app\StartUp\Documents\</RemoteDir>
+            <RemoteName>scan.wav</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="Sounds\scan.wav" Condition="'$(Config)'=='Release'">
+            <RemoteDir>ScannerMapp.app\StartUp\Documents\</RemoteDir>
+            <RemoteName>scan.wav</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="iOSDevice64\Debug\ScannerMapp.entitlements" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\..\</RemoteDir>
             <RemoteName>ScannerMapp.entitlements</RemoteName>
@@ -337,8 +373,8 @@
         </DeployFile>
         <DeployFile Include="Icons\iOS\launch_iphone_2x.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
-            <RemoteName>FM_LaunchScreenImage_iPhoneDark@2x.png</RemoteName>
-            <DeployClass>iPhone_LaunchDark2x</DeployClass>
+            <RemoteName>FM_LaunchScreenImage_iPhone@2x.png</RemoteName>
+            <DeployClass>iPhone_Launch2x</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -382,8 +418,8 @@
         </DeployFile>
         <DeployFile Include="Icons\iOS\launch_iphone_3x.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
-            <RemoteName>FM_LaunchScreenImage_iPhoneDark@3x.png</RemoteName>
-            <DeployClass>iPhone_LaunchDark3x</DeployClass>
+            <RemoteName>FM_LaunchScreenImage_iPhone@3x.png</RemoteName>
+            <DeployClass>iPhone_Launch3x</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -400,8 +436,8 @@
         </DeployFile>
         <DeployFile Include="Icons\iOS\launch_ipad_2x.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\LaunchScreenImage.imageset\</RemoteDir>
-            <RemoteName>FM_LaunchScreenImage_iPadDark@2x.png</RemoteName>
-            <DeployClass>iPad_LaunchDark2x</DeployClass>
+            <RemoteName>FM_LaunchScreenImage_iPad@2x.png</RemoteName>
+            <DeployClass>iPad_Launch2x</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -428,7 +464,7 @@
         <DeployFile Include="Icons\iOS\icon_40.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>icon_40.png</RemoteName>
-            <DeployClass>iPad_Notification40</DeployClass>
+            <DeployClass>iPhone_Notification40</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -455,7 +491,7 @@
         <DeployFile Include="Icons\iOS\icon_80.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>icon_80.png</RemoteName>
-            <DeployClass>iPad_SpotLight80</DeployClass>
+            <DeployClass>iPhone_Spotlight80</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -474,7 +510,7 @@
         <DeployFile Include="Icons\iOS\icon_58.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\..\$(PROJECTNAME).launchscreen\Assets\AppIcon.appiconset\</RemoteDir>
             <RemoteName>icon_58.png</RemoteName>
-            <DeployClass>iPad_Setting58</DeployClass>
+            <DeployClass>iPhone_Setting58</DeployClass>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
