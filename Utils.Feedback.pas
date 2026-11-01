@@ -1,7 +1,7 @@
 unit Utils.Feedback;
 
-// The feedback when a code is read: a short sound and a vibration (haptic feedback).
-// Both follow the system: no sound in silent mode, no vibration when the haptics are off.
+// The feedback when a code is read: a short sound and a vibration.
+// No sound in silent mode; on Android the beep follows the media volume.
 
 interface
 
@@ -15,7 +15,8 @@ implementation
 uses
   System.SysUtils
 {$IF Defined(ANDROID)}
-, Androidapi.Helpers, Androidapi.JNI.Media, FMX.Helpers.Android
+, Androidapi.Helpers, Androidapi.JNI.JavaTypes, Androidapi.JNI.Media, Androidapi.JNI.Os
+, Androidapi.JNI.GraphicsContentViewText, Androidapi.JNIBridge
 {$ELSEIF Defined(IOS)}
 , iOSapi.AudioToolbox, iOSapi.UIKit
 {$ELSEIF Defined(MACOS)}
@@ -27,27 +28,35 @@ uses
 
 {$IF Defined(ANDROID)}
 const
-  HAPTIC_LONG_PRESS = 0; // HapticFeedbackConstants.LONG_PRESS (not imported by the RTL)
+  BEEP_MS = 150;
+  VIBRATION_MS = 120;
+  VIBRATION_AMPLITUDE = 255; // the strongest (1..255)
 
 var
   GTone: JToneGenerator; // created once: creating it takes a while
 
 procedure PlaySound;
 begin
+  // the media stream (the volume keys while the app is open), but silent with the ringer off
+  var LAudio := TJAudioManager.Wrap(TAndroidHelper.Context.getSystemService(TJContext.JavaClass.AUDIO_SERVICE));
+  if LAudio.getRingerMode <> TJAudioManager.JavaClass.RINGER_MODE_NORMAL then
+    Exit;
   if GTone = nil then
-    // the notification stream: silent with the ringer off
-    GTone := TJToneGenerator.JavaClass.init(TJAudioManager.JavaClass.STREAM_NOTIFICATION, 80);
-  GTone.startTone(TJToneGenerator.JavaClass.TONE_PROP_BEEP, 120);
+    GTone := TJToneGenerator.JavaClass.init(TJAudioManager.JavaClass.STREAM_MUSIC, 100); // ToneGenerator.MAX_VOLUME
+  GTone.startTone(TJToneGenerator.JavaClass.TONE_PROP_BEEP, BEEP_MS);
 end;
 
 procedure Vibrate;
 begin
-  // a View method: the Android UI thread
-  CallInUIThread(
-    procedure
-    begin
-      TAndroidHelper.Activity.getWindow.getDecorView.performHapticFeedback(HAPTIC_LONG_PRESS);
-    end);
+  // the Vibrator (permission VIBRATE): stronger than the haptic feedback of a View,
+  // which follows the touch feedback intensity of the system
+  var LVibrator := TJVibrator.Wrap(TAndroidHelper.Context.getSystemService(TJContext.JavaClass.VIBRATOR_SERVICE));
+  if (LVibrator = nil) or not LVibrator.hasVibrator then
+    Exit;
+  if TOSVersion.Check(8) then // VibrationEffect: API 26
+    LVibrator.vibrate(TJVibrationEffect.JavaClass.createOneShot(VIBRATION_MS, VIBRATION_AMPLITUDE))
+  else
+    LVibrator.vibrate(VIBRATION_MS);
 end;
 
 {$ELSEIF Defined(IOS)}

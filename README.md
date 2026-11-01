@@ -27,12 +27,12 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 - Scanning from a picture in the photo library (Android, iOS) or from a file (Windows, macOS): every code in the image is read. On Windows an image can also be passed on the command line ("Open with").
 - Every format ZXing.Delphi 4 reads automatically: QR code, Micro QR, Data Matrix, Aztec, PDF 417, MaxiCode, Code 39/93/128, EAN, UPC, ITF, Codabar, GS1 DataBar… The result card outlines the code in the frame.
 - **Formats to read**: fewer formats make scanning faster and save battery. The choice is kept.
-- A **sound** and a **vibration** (mobile) when the camera reads a code, both following the system (silent mode, haptics off); each can be turned off in the settings.
+- A **sound** and a **vibration** (mobile) when the camera reads a code; no sound in silent mode, and on Android the beep follows the media volume. Each can be turned off in the settings.
 - A list of the scans, kept between runs: the same code scanned again increments its counter. **Delete all** (in the header, with a confirmation) empties it.
 - A result card with the scanned frame (pinch, double tap or mouse wheel to zoom, drag to pan) and **Copy**, **Share** and **Delete**.
 - **Open** what a code contains: a link in the browser, a phone number in the dialer, an e-mail or SMS ready to send (also `MATMSG`, `SMSTO`), a location in the maps app (`geo:`), a contact (vCard, `MECARD`) or an event (iCalendar) in the app that adds it. Only these kinds of content are offered; anything else can be copied or shared.
 - Android: images **shared with** ScannerMApp (one or more, from Gallery, Photos, a chat…) or opened with it are scanned right away, also while the app is running.
-- Android: only the camera permission, adaptive launcher icon (also themed), the **Back** key closes what is open and then leaves the app, edge-to-edge (Android 15+) with the content clear of the system bars.
+- Android: the camera is the only permission the user is asked for (VIBRATE, for the feedback, needs no consent), adaptive launcher icon (also themed), the **Back** key closes what is open and then leaves the app, edge-to-edge (Android 15+) with the content clear of the system bars.
 
 ## Requirements
 
