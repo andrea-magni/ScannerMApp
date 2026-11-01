@@ -127,7 +127,7 @@ uses
   System.Threading, DateUtils, Rtti, TypInfo, IOUtils, Variants
     , FMX.Ani, UITypes, Math
     , FireDAC.Stan.StorageBin
-    , UI.Theme;
+    , UI.Theme, Utils.Feedback;
 
 function BarcodeToString(const ABarcode: TBarcodeFormat): string;
 begin
@@ -566,7 +566,10 @@ begin
     procedure
     begin
       if AStopScanning then
+      begin
+        ScanFeedback(FSettings.Sound, FSettings.Vibrate); // the camera: a code read
         StopScanning;
+      end;
       TMessageManager.DefaultManager.SendMessage(Self,
         TScanResultMessage.Create(LScanResult));
     end);

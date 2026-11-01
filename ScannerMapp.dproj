@@ -394,6 +394,7 @@
         </DCCReference>
         <DCCReference Include="Utils.ContentActions.pas"/>
         <DCCReference Include="Utils.SharedImages.pas"/>
+        <DCCReference Include="Utils.Feedback.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

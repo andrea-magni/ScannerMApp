@@ -1,6 +1,7 @@
 unit Frames.Settings;
 
-// The formats to read: one row per format group of Data.Settings, built at runtime.
+// The settings: the formats to read (one row per format group of Data.Settings) and
+// the feedback when a code is read; the rows are built at runtime.
 
 interface
 
@@ -39,6 +40,8 @@ type
     [FrameInfo] FI: TFrameInfo<TSettingsFrame>;
     FChanged: Boolean;
     procedure BuildRows;
+    function AddRow(const AKey, AName: string; const AIndex: Integer): TRectangle;
+    function IsOn(const AKey: string): Boolean;
     procedure UpdateRow(const ARow: TRectangle);
     procedure UpdateRows;
     procedure RowClick(Sender: TObject);
@@ -54,11 +57,14 @@ implementation
 {$R *.fmx}
 
 uses
-  Data.Main, Data.Settings, UI.Theme
+  Data.Main, Data.Settings, UI.Theme, Utils.Feedback
 ;
 
 const
   ROW_HEIGHT = 48;
+  // the rows of the feedback (the others are the keys of FORMAT_GROUPS)
+  KEY_SOUND = '@sound';
+  KEY_VIBRATE = '@vibrate';
 
 { TSettingsFrame }
 
@@ -71,61 +77,89 @@ end;
 procedure TSettingsFrame.BuildRows;
 begin
   for var I := 0 to High(FORMAT_GROUPS) do
-  begin
-    var LGroup := FORMAT_GROUPS[I];
+    AddRow(FORMAT_GROUPS[I].Key, FORMAT_GROUPS[I].Name, I);
 
-    var LRow := TRectangle.Create(Self);
-    LRow.Parent := GroupsScrollBox;
-    LRow.Align := TAlignLayout.Top;
-    LRow.Position.Y := I * (ROW_HEIGHT + 6); // the order of the groups
-    LRow.Height := ROW_HEIGHT;
-    LRow.Margins.Bottom := 6;
-    LRow.Fill.Color := COLOR_SURFACE_2;
-    LRow.Stroke.Kind := TBrushKind.None;
-    LRow.XRadius := 12;
-    LRow.YRadius := 12;
-    LRow.Cursor := crHandPoint;
-    LRow.TagString := LGroup.Key;
-    LRow.OnClick := RowClick;
-    LRow.OnMouseDown := PressableMouseDown;
-    LRow.OnMouseUp := PressableMouseUp;
-    LRow.OnMouseLeave := PressableMouseLeave;
-
-    var LCheck := TCircle.Create(Self);
-    LCheck.Parent := LRow;
-    LCheck.Align := TAlignLayout.Right;
-    LCheck.Width := 24;
-    LCheck.Margins.Rect := RectF(0, 12, 14, 12);
-    LCheck.HitTest := False;
-    LCheck.Stroke.Thickness := 2;
-
-    var LCheckIcon := TPath.Create(Self);
-    LCheckIcon.Parent := LCheck;
-    LCheckIcon.Align := TAlignLayout.Center;
-    LCheckIcon.SetBounds(0, 0, 14, 14);
-    LCheckIcon.WrapMode := TPathWrapMode.Fit;
-    LCheckIcon.Data.Data := ICON_CHECK;
-    LCheckIcon.Fill.Color := COLOR_ON_ACCENT;
-    LCheckIcon.Stroke.Kind := TBrushKind.None;
-    LCheckIcon.HitTest := False;
-
-    var LLabel := TLabel.Create(Self);
-    LLabel.Parent := LRow;
-    LLabel.Align := TAlignLayout.Client;
-    LLabel.Margins.Left := 16;
-    LLabel.HitTest := False;
-    LLabel.StyledSettings := [TStyledSetting.Family];
-    LLabel.TextSettings.Font.Size := 16;
-    LLabel.TextSettings.FontColor := COLOR_TEXT;
-    LLabel.TextSettings.WordWrap := False;
-    LLabel.Text := LGroup.Name;
-  end;
+  var LIndex := Length(FORMAT_GROUPS);
+  var LSection := TLabel.Create(Self);
+  LSection.Parent := GroupsScrollBox;
+  LSection.Align := TAlignLayout.Top;
+  LSection.Position.Y := LIndex * (ROW_HEIGHT + 6);
+  LSection.Height := 36;
+  LSection.Margins.Rect := RectF(4, 12, 0, 4);
+  LSection.StyledSettings := [TStyledSetting.Family];
+  LSection.TextSettings.Font.Size := 14;
+  LSection.TextSettings.Font.Style := [TFontStyle.fsBold];
+  LSection.TextSettings.FontColor := COLOR_TEXT_2;
+  LSection.Text := 'When a code is read';
+  AddRow(KEY_SOUND, 'Sound', LIndex + 1);
+  if CanVibrate then
+    AddRow(KEY_VIBRATE, 'Vibration', LIndex + 2);
   UpdateRows;
+end;
+
+function TSettingsFrame.AddRow(const AKey, AName: string; const AIndex: Integer): TRectangle;
+begin
+  var LRow := TRectangle.Create(Self);
+  LRow.Parent := GroupsScrollBox;
+  LRow.Align := TAlignLayout.Top;
+  LRow.Position.Y := AIndex * (ROW_HEIGHT + 6); // the order of the rows
+  LRow.Height := ROW_HEIGHT;
+  LRow.Margins.Bottom := 6;
+  LRow.Fill.Color := COLOR_SURFACE_2;
+  LRow.Stroke.Kind := TBrushKind.None;
+  LRow.XRadius := 12;
+  LRow.YRadius := 12;
+  LRow.Cursor := crHandPoint;
+  LRow.TagString := AKey;
+  LRow.OnClick := RowClick;
+  LRow.OnMouseDown := PressableMouseDown;
+  LRow.OnMouseUp := PressableMouseUp;
+  LRow.OnMouseLeave := PressableMouseLeave;
+
+  var LCheck := TCircle.Create(Self);
+  LCheck.Parent := LRow;
+  LCheck.Align := TAlignLayout.Right;
+  LCheck.Width := 24;
+  LCheck.Margins.Rect := RectF(0, 12, 14, 12);
+  LCheck.HitTest := False;
+  LCheck.Stroke.Thickness := 2;
+
+  var LCheckIcon := TPath.Create(Self);
+  LCheckIcon.Parent := LCheck;
+  LCheckIcon.Align := TAlignLayout.Center;
+  LCheckIcon.SetBounds(0, 0, 14, 14);
+  LCheckIcon.WrapMode := TPathWrapMode.Fit;
+  LCheckIcon.Data.Data := ICON_CHECK;
+  LCheckIcon.Fill.Color := COLOR_ON_ACCENT;
+  LCheckIcon.Stroke.Kind := TBrushKind.None;
+  LCheckIcon.HitTest := False;
+
+  var LLabel := TLabel.Create(Self);
+  LLabel.Parent := LRow;
+  LLabel.Align := TAlignLayout.Client;
+  LLabel.Margins.Left := 16;
+  LLabel.HitTest := False;
+  LLabel.StyledSettings := [TStyledSetting.Family];
+  LLabel.TextSettings.Font.Size := 16;
+  LLabel.TextSettings.FontColor := COLOR_TEXT;
+  LLabel.TextSettings.WordWrap := False;
+  LLabel.Text := AName;
+  Result := LRow;
+end;
+
+function TSettingsFrame.IsOn(const AKey: string): Boolean;
+begin
+  if AKey = KEY_SOUND then
+    Result := MainDM.Settings.Sound
+  else if AKey = KEY_VIBRATE then
+    Result := MainDM.Settings.Vibrate
+  else
+    Result := MainDM.Settings.IsEnabled(AKey);
 end;
 
 procedure TSettingsFrame.UpdateRow(const ARow: TRectangle);
 begin
-  var LEnabled := MainDM.Settings.IsEnabled(ARow.TagString);
+  var LEnabled := IsOn(ARow.TagString);
   for var LChild in ARow.Children do
     if LChild is TCircle then
     begin
@@ -158,13 +192,24 @@ end;
 procedure TSettingsFrame.RowClick(Sender: TObject);
 begin
   var LRow := Sender as TRectangle;
-  var LEnabled := MainDM.Settings.IsEnabled(LRow.TagString);
-  // at least one group: nothing to read otherwise
-  if LEnabled and (MainDM.Settings.EnabledCount = 1) then
-    Exit;
-  MainDM.Settings.SetEnabled(LRow.TagString, not LEnabled);
+  var LKey := LRow.TagString;
+  var LEnabled := IsOn(LKey);
+  if LKey = KEY_SOUND then
+    MainDM.Settings.Sound := not LEnabled
+  else if LKey = KEY_VIBRATE then
+    MainDM.Settings.Vibrate := not LEnabled
+  else
+  begin
+    // at least one group: nothing to read otherwise
+    if LEnabled and (MainDM.Settings.EnabledCount = 1) then
+      Exit;
+    MainDM.Settings.SetEnabled(LKey, not LEnabled);
+  end;
   FChanged := True;
   UpdateRow(LRow);
+  // turned on: a sample of it
+  if not LEnabled then
+    ScanFeedback(LKey = KEY_SOUND, LKey = KEY_VIBRATE);
 end;
 
 procedure TSettingsFrame.AllButtonClick(Sender: TObject);

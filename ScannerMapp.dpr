@@ -13,7 +13,8 @@ uses
   Data.Settings in 'Data.Settings.pas',
   Frames.Settings in 'Frames.Settings.pas' {SettingsFrame: TFrame},
   Utils.ContentActions in 'Utils.ContentActions.pas',
-  Utils.SharedImages in 'Utils.SharedImages.pas';
+  Utils.SharedImages in 'Utils.SharedImages.pas',
+  Utils.Feedback in 'Utils.Feedback.pas';
 
 {$R *.res}
 
