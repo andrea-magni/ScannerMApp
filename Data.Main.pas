@@ -104,6 +104,8 @@ type
     function Scan(const AFileName: string): Integer; overload;
     /// <summary>Saves the settings and uses them for the next scans</summary>
     procedure ApplySettings;
+    /// <summary>Deletes every scan</summary>
+    procedure DeleteAll;
     procedure StartScanning;
     procedure StopScanning;
     procedure ToggleTorch;
@@ -371,6 +373,12 @@ begin
         end;
       end;
     end);
+end;
+
+procedure TMainDM.DeleteAll;
+begin
+  DataTable.EmptyDataSet;
+  DataTableChanged(DataTable); // EmptyDataSet does not fire AfterDelete
 end;
 
 procedure TMainDM.DataTableChanged(DataSet: TDataSet);
