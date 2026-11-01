@@ -70,7 +70,7 @@ object SettingsFrame: TSettingsFrame
         TextSettings.FontColor = xFFF2F4F7
         TextSettings.HorzAlign = Leading
         TextSettings.WordWrap = False
-        Text = 'Formats to read'
+        Text = 'Settings'
       end
     end
     object SubtitleLabel: TLabel
@@ -87,7 +87,7 @@ object SettingsFrame: TSettingsFrame
       TextSettings.FontColor = xFF9AA3AF
       TextSettings.HorzAlign = Leading
       TextSettings.VertAlign = Leading
-      Text = 'Fewer formats: faster scanning, less battery.'
+      Text = 'Formats to read: fewer formats, faster scanning and less battery.'
     end
     object FooterRow: TLayout
       Align = Bottom

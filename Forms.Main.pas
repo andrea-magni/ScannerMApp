@@ -29,6 +29,8 @@ type
     HeaderLayout: TLayout;
     TitleLabel: TLabel;
     InfoButton: TRectangle;
+    DeleteAllButton: TRectangle;
+    DeleteAllIcon: TPath;
     InfoIcon: TPath;
     SettingsButton: TRectangle;
     SettingsIcon: TPath;
@@ -58,6 +60,7 @@ type
       Shift: TShiftState);
     procedure InfoButtonClick(Sender: TObject);
     procedure SettingsButtonClick(Sender: TObject);
+    procedure DeleteAllButtonClick(Sender: TObject);
     function ApplicationEvents1StateChanged(Sender: TObject;
       const AAppEvent: TApplicationEvent; const AContext: TObject): Boolean;
     procedure FormSafeAreaChanged(Sender: TObject; const AInsets: TRectF);
@@ -462,9 +465,21 @@ begin
   UpdateGUI;
 end;
 
+procedure TMainForm.DeleteAllButtonClick(Sender: TObject);
+begin
+  TDialogService.MessageDialog('Delete all the scans?', TMsgDlgType.mtConfirmation,
+    [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], TMsgDlgBtn.mbNo, 0,
+    procedure(const AResult: TModalResult)
+    begin
+      if AResult = mrYes then
+        MainDM.DeleteAll;
+    end);
+end;
+
 procedure TMainForm.UpdateGUI;
 begin
   EmptyLayout.Visible := MainDM.DataTable.IsEmpty and not MainDM.Scanning;
+  DeleteAllButton.Visible := not MainDM.DataTable.IsEmpty;
   // the list, as soon as there are scans (also the ones saved by a previous run)
   if not MainDM.DataTable.IsEmpty and not DataFrameFI.IsVisible then
     DataFrameFI.Show();
