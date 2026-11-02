@@ -18,7 +18,7 @@ When you pick a picture from your photo library, share one or more pictures with
 
 ## Scans
 
-The scans (the content of the codes, their format, the date, how many times you scanned them and the frame in which they were read) and your settings (the formats to read) are saved in the private storage of the app on your device. They are not sent anywhere. You can delete a scan from the app at any time; uninstalling the app, or clearing its data, deletes all of them.
+The scans (the content of the codes, their format, the date, how many times you scanned them and the frame in which they were read) and your settings (the formats to read, the sound and the vibration) are saved in the private storage of the app on your device. They are not sent anywhere. You can delete a scan from the app at any time; uninstalling the app, or clearing its data, deletes all of them.
 
 ## Opening, copying and sharing
 
