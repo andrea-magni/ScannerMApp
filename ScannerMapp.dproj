@@ -396,6 +396,7 @@
         <DCCReference Include="Utils.ContentActions.pas"/>
         <DCCReference Include="Utils.SharedImages.pas"/>
         <DCCReference Include="Utils.Feedback.pas"/>
+        <DCCReference Include="Utils.CameraZoom.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
