@@ -20,7 +20,12 @@ type
     TorchIcon: TPath;
     ViewfinderLayout: TLayout;
     FrameRectangle: TRectangle;
+    ZoomButton: TCircle;
+    ZoomLabel: TLabel;
     procedure ViewfinderLayoutResize(Sender: TObject);
+    procedure ViewfinderLayoutGesture(Sender: TObject;
+      const EventInfo: TGestureEventInfo; var Handled: Boolean);
+    procedure ZoomButtonClick(Sender: TObject);
     procedure TorchButtonClick(Sender: TObject);
     procedure PressableMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Single);
@@ -33,7 +38,10 @@ type
     FSubscriptions: TSubscriptions;
     FDefaultHint: string;
     FHintTicket: Integer;
+    FPinchDistance: Integer; // at the start of the pinch (0: no pinch)
+    FPinchZoom: Single;
     procedure ShowHint(const AText: string);
+    procedure UpdateZoom(const AFactor: Single);
     procedure RestoreHint;
     procedure UpdateTorch(const AOn: Boolean);
     procedure DrawScanPoint(const APosition: TPointF; const AColor: TAlphaColor;
@@ -51,7 +59,7 @@ implementation
 {$R *.fmx}
 
 uses
-  System.Messaging, System.Threading, Math
+  System.Messaging, Math
 , UI.Theme
 ;
 
@@ -96,6 +104,13 @@ begin
     end
   );
 
+  FSubscriptions.Add(TZoomMessage
+  , procedure(const Sender: TObject; const M: TMessage)
+    begin
+      UpdateZoom((M as TZoomMessage).Value);
+    end
+  );
+
   FSubscriptions.Add(TScanSettingMessage
   , procedure(const Sender: TObject; const M: TMessage)
     begin
@@ -127,18 +142,14 @@ begin
 
   FrameRectangle.AddObject(LRect);
 
-  TTask.Run(
-    procedure
-    begin
-      Sleep(AFadeTime);
-      TThread.ForceQueue(nil
-      , procedure begin
-          FrameRectangle.RemoveObject(LRect);
-          LRect.Free;
-        end
-      );
+  // a delayed queue, no TTask: many tasks at once overflow the object cache of the
+  // thread pool, which on Android frees a pointer without its tag (abort)
+  TThread.ForceQueue(nil
+  , procedure begin
+      FrameRectangle.RemoveObject(LRect);
+      LRect.Free;
     end
-  );
+  , AFadeTime);
 end;
 
 procedure TScanningFrame.ShowHint(const AText: string);
@@ -203,6 +214,61 @@ begin
   // square viewfinder, as large as the available space allows
   var LSide := Max(0, Min(ViewfinderLayout.Width, ViewfinderLayout.Height) - 16);
   FrameRectangle.Size.Size := TSizeF.Create(LSide, LSide);
+end;
+
+procedure TScanningFrame.ViewfinderLayoutGesture(Sender: TObject;
+  const EventInfo: TGestureEventInfo; var Handled: Boolean);
+begin
+  if EventInfo.GestureID <> igiZoom then
+    Exit;
+  Handled := True;
+  if TInteractiveGestureFlag.gfBegin in EventInfo.Flags then
+  begin
+    FPinchDistance := EventInfo.Distance;
+    FPinchZoom := MainDM.Zoom;
+  end
+  else if FPinchDistance > 0 then
+  begin
+    var LZoom := FPinchZoom * EventInfo.Distance / FPinchDistance;
+    if Abs(LZoom - MainDM.Zoom) >= 0.05 then // fewer camera updates
+      MainDM.SetZoom(LZoom);
+  end;
+  if TInteractiveGestureFlag.gfEnd in EventInfo.Flags then
+    FPinchDistance := 0;
+end;
+
+procedure TScanningFrame.ZoomButtonClick(Sender: TObject);
+const
+  STEPS: array[0..2] of Single = (1, 2, 4);
+begin
+  // the next step (up to the highest zoom of the camera), then back to 1x
+  var LNext: Single := 1;
+  for var LStep in STEPS do
+    if Min(LStep, MainDM.MaxZoom) > MainDM.Zoom + 0.05 then
+    begin
+      LNext := Min(LStep, MainDM.MaxZoom);
+      Break;
+    end;
+  MainDM.SetZoom(LNext);
+end;
+
+procedure TScanningFrame.UpdateZoom(const AFactor: Single);
+begin
+  ZoomButton.Visible := MainDM.MaxZoom > 1;
+  if Frac(AFactor) < 0.05 then
+    ZoomLabel.Text := Round(AFactor).ToString + #215
+  else
+    ZoomLabel.Text := FormatFloat('0.0', AFactor) + #215;
+  if AFactor > 1 then
+  begin
+    ZoomButton.Fill.Color := COLOR_ACCENT;
+    ZoomLabel.TextSettings.FontColor := COLOR_ON_ACCENT;
+  end
+  else
+  begin
+    ZoomButton.Fill.Color := COLOR_SURFACE_2;
+    ZoomLabel.TextSettings.FontColor := COLOR_TEXT;
+  end;
 end;
 
 procedure TScanningFrame.UpdateTorch(const AOn: Boolean);

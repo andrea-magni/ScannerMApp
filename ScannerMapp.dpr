@@ -14,7 +14,8 @@ uses
   Frames.Settings in 'Frames.Settings.pas' {SettingsFrame: TFrame},
   Utils.ContentActions in 'Utils.ContentActions.pas',
   Utils.SharedImages in 'Utils.SharedImages.pas',
-  Utils.Feedback in 'Utils.Feedback.pas';
+  Utils.Feedback in 'Utils.Feedback.pas',
+  Utils.CameraZoom in 'Utils.CameraZoom.pas';
 
 {$R *.res}
 
