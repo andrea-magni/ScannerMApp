@@ -28,7 +28,7 @@ Scan QR codes and barcodes from the camera or your photos. No ads, no tracking.
 ScannerMApp reads QR codes and barcodes, from the camera or from your pictures, and keeps a list of what you scanned.
 
 SCAN
-• Live scanning from the camera, with a viewfinder and the torch. Decoding runs in the background, so the preview stays smooth.
+• Live scanning from the camera, with a viewfinder, the torch and the zoom (pinch, or 1×, 2×, 4×) for codes far away. Decoding runs in the background, so the preview stays smooth.
 • A soft sound and a vibration tell you a code was read (you can turn them off in the settings).
 • A code found but not readable yet? The app tells you: hold the phone still, or move closer.
 • Scan a picture from your gallery: every code in it is read.
@@ -77,7 +77,7 @@ Leggi QR code e codici a barre dalla fotocamera o dalle foto. Niente pubblicità
 ScannerMApp legge QR code e codici a barre, dalla fotocamera o dalle tue foto, e tiene l'elenco di quello che hai scansionato.
 
 SCANSIONA
-• Scansione dal vivo con la fotocamera, con mirino e torcia. La decodifica avviene in background, così l'anteprima resta fluida.
+• Scansione dal vivo con la fotocamera, con mirino, torcia e zoom (pizzica, oppure 1×, 2×, 4×) per i codici lontani. La decodifica avviene in background, così l'anteprima resta fluida.
 • Un suono leggero e una vibrazione ti dicono che il codice è stato letto (puoi disattivarli nelle impostazioni).
 • Un codice trovato ma non ancora leggibile? L'app te lo dice: tieni fermo il telefono, o avvicinati.
 • Scansiona una foto della galleria: vengono letti tutti i codici che contiene.
@@ -116,10 +116,12 @@ Paste them in the Play Console, **Release ▸ Release notes** (500 characters at
 <en-US>
 • A soft sound and a vibration when a code is read: turn them on or off in the settings
 • Delete all: clear the list of your scans at once, with a confirmation
+• Zoom: pinch the viewfinder, or tap 1×, 2×, 4×, to read codes far away
 </en-US>
 <it-IT>
 • Un suono leggero e una vibrazione quando un codice viene letto: attivali o disattivali nelle impostazioni
 • Elimina tutti: svuota l'elenco delle scansioni in un colpo, con una conferma
+• Zoom: pizzica il mirino, oppure tocca 1×, 2×, 4×, per leggere i codici lontani
 </it-IT>
 ```
 
