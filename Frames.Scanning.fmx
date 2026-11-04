@@ -67,6 +67,35 @@ object ScanningFrame: TScanningFrame
         WrapMode = Fit
       end
     end
+    object ZoomButton: TCircle
+      Align = Center
+      Cursor = crHandPoint
+      Fill.Color = xFF262A33
+      Margins.Left = 160.000000000000000000
+      Size.Width = 56.000000000000000000
+      Size.Height = 56.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+      Visible = False
+      OnClick = ZoomButtonClick
+      OnMouseDown = PressableMouseDown
+      OnMouseUp = PressableMouseUp
+      OnMouseLeave = PressableMouseLeave
+      object ZoomLabel: TLabel
+        Align = Client
+        StyledSettings = [Family]
+        HitTest = False
+        Size.Width = 56.000000000000000000
+        Size.Height = 56.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.Size = 15.000000000000000000
+        TextSettings.Font.StyleExt = {00050000000000000004000000}
+        TextSettings.FontColor = xFFF2F4F7
+        TextSettings.HorzAlign = Center
+        TextSettings.WordWrap = False
+        Text = '1'#215
+      end
+    end
   end
   object ViewfinderLayout: TLayout
     Align = Client
@@ -74,6 +103,9 @@ object ScanningFrame: TScanningFrame
     Size.Height = 211.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
+    HitTest = True
+    Touch.InteractiveGestures = [Zoom]
+    OnGesture = ViewfinderLayoutGesture
     OnResize = ViewfinderLayoutResize
     object FrameRectangle: TRectangle
       Align = Center

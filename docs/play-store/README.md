@@ -2,7 +2,7 @@
 
 What is needed to publish ScannerMApp on Google Play: the store listing (in English and Italian), the graphics, the answers to the Play Console forms and how to build the bundle.
 
-**Published**: [https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2) (version 2.0.0, versionCode 1; the next upload needs versionCode 2 or higher).
+**Published**: [https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2) (version 2.0.0, versionCode 1). Next release: version 2.1.0, versionCode 2 (see [Release notes](#release-notes)).
 
 Package: `eu.andreamagni.scannermapp2` (it cannot change after the first release). The app published until 2020 as `eu.andreamagni.ScannerMapp` was removed by Google Play and is signed with a key that is not enrolled in Play App Signing, so ScannerMApp is published again as a new app.
 
@@ -28,7 +28,8 @@ Scan QR codes and barcodes from the camera or your photos. No ads, no tracking.
 ScannerMApp reads QR codes and barcodes, from the camera or from your pictures, and keeps a list of what you scanned.
 
 SCAN
-• Live scanning from the camera, with a viewfinder and the torch. Decoding runs in the background, so the preview stays smooth.
+• Live scanning from the camera, with a viewfinder, the torch and the zoom (pinch, or 1×, 2×, 4×) for codes far away. Decoding runs in the background, so the preview stays smooth.
+• A soft sound and a vibration tell you a code was read (you can turn them off in the settings).
 • A code found but not readable yet? The app tells you: hold the phone still, or move closer.
 • Scan a picture from your gallery: every code in it is read.
 • Share pictures with ScannerMApp from Gallery, Photos or a chat, one or many, or open a picture with it: the codes are read right away.
@@ -47,7 +48,7 @@ Only these kinds of content can be opened, and only when you tap Open: a code ne
 YOUR SCANS
 • The list of your scans is kept on your device; scanning the same code again increments its counter.
 • Each scan keeps the frame in which it was read: zoom it with a pinch or a double tap.
-• Copy, share or delete a scan.
+• Copy, share or delete a scan, or delete them all.
 
 PRIVATE BY DESIGN
 No account, no ads, no analytics, no tracking. ScannerMApp does not even have the permission to access the internet: your scans stay on your device. The only permission it asks for is the camera, the first time you scan.
@@ -76,7 +77,8 @@ Leggi QR code e codici a barre dalla fotocamera o dalle foto. Niente pubblicità
 ScannerMApp legge QR code e codici a barre, dalla fotocamera o dalle tue foto, e tiene l'elenco di quello che hai scansionato.
 
 SCANSIONA
-• Scansione dal vivo con la fotocamera, con mirino e torcia. La decodifica avviene in background, così l'anteprima resta fluida.
+• Scansione dal vivo con la fotocamera, con mirino, torcia e zoom (pizzica, oppure 1×, 2×, 4×) per i codici lontani. La decodifica avviene in background, così l'anteprima resta fluida.
+• Un suono leggero e una vibrazione ti dicono che il codice è stato letto (puoi disattivarli nelle impostazioni).
 • Un codice trovato ma non ancora leggibile? L'app te lo dice: tieni fermo il telefono, o avvicinati.
 • Scansiona una foto della galleria: vengono letti tutti i codici che contiene.
 • Condividi con ScannerMApp una o più immagini da Galleria, Foto o da una chat, oppure apri un'immagine con ScannerMApp: i codici vengono letti subito.
@@ -95,13 +97,32 @@ Si possono aprire solo questi tipi di contenuto, e solo quando tocchi Apri: un c
 LE TUE SCANSIONI
 • L'elenco delle scansioni resta sul tuo dispositivo; se scansioni di nuovo lo stesso codice, aumenta il suo contatore.
 • Ogni scansione conserva l'immagine in cui il codice è stato letto: ingrandiscila con due dita o con un doppio tocco.
-• Copia, condividi o elimina una scansione.
+• Copia, condividi o elimina una scansione, oppure eliminale tutte.
 
 PRIVACY PRIMA DI TUTTO
 Nessun account, nessuna pubblicità, nessuna statistica, nessun tracciamento. ScannerMApp non ha nemmeno il permesso di accedere a internet: le tue scansioni restano sul tuo dispositivo. L'unico permesso che chiede è la fotocamera, la prima volta che scansioni.
 
 OPEN SOURCE
 ScannerMApp è open source (licenza Apache 2.0), sviluppata con Delphi e FireMonkey, ZXing.Delphi e TFrameStand: https://github.com/andrea-magni/ScannerMApp
+```
+
+## Release notes
+
+Paste them in the Play Console, **Release ▸ Release notes** (500 characters at most per language).
+
+### 2.1.0 (versionCode 2)
+
+```
+<en-US>
+• A soft sound and a vibration when a code is read: turn them on or off in the settings
+• Delete all: clear the list of your scans at once, with a confirmation
+• Zoom: pinch the viewfinder, or tap 1×, 2×, 4×, to read codes far away
+</en-US>
+<it-IT>
+• Un suono leggero e una vibrazione quando un codice viene letto: attivali o disattivali nelle impostazioni
+• Elimina tutti: svuota l'elenco delle scansioni in un colpo, con una conferma
+• Zoom: pizzica il mirino, oppure tocca 1×, 2×, 4×, per leggere i codici lontani
+</it-IT>
 ```
 
 ## Graphics

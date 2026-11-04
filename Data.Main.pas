@@ -14,6 +14,9 @@ uses
 
 const
   SCAN_EACH_MS: Integer = 133;
+  /// <summary>Longest short side of the camera frames: 1080 decodes in ~80 ms on a
+  /// Pixel 11 Pro (480: ~40 ms, 1920: ~100 ms and a less smooth preview)</summary>
+  SCAN_MAX_SIDE = 1080;
   /// <summary>Largest side of the frame kept with a scan</summary>
   STORED_FRAME_SIZE = 1024;
 
@@ -41,6 +44,8 @@ type
   TScanPointMessage = Class(TMessage<TPointF>);
   TScanSettingMessage = Class(TMessage<TVideoCaptureSetting>);
   TTorchModeMessage = Class(TMessage<Boolean>);
+  /// <summary>The zoom of the camera changed (the factor applied)</summary>
+  TZoomMessage = Class(TMessage<Single>);
   TCameraBufferMessage = Class(TMessage<TBitmap>);
   TDataChangedMessage = Class(TMessage);
   /// <summary>A hint for the user while scanning (e.g. a code found but not read)</summary>
@@ -81,6 +86,8 @@ type
     FScanFrame: TBitmap; // the frame being decoded by FCameraScanManager
     FSubscriptions: TSubscriptions;
     FSettings: TScanSettings;
+    FZoom: Single;
+    FMaxZoom: Single;
 
     function CropBitmap(const ABitmap: TBitmap): TBitmap;
     procedure ScanCameraFrame(const AFrame: TBitmap);
@@ -109,9 +116,14 @@ type
     procedure StartScanning;
     procedure StopScanning;
     procedure ToggleTorch;
+    /// <summary>Zooms the camera (1..MaxZoom); the factor applied comes as TZoomMessage</summary>
+    procedure SetZoom(const AFactor: Single);
 
     property Scanning: Boolean read FScanning;
     property TorchModeOn: Boolean read GetTorchModeOn;
+    /// <summary>The zoom of the camera while scanning, and its highest factor (1: no zoom)</summary>
+    property Zoom: Single read FZoom;
+    property MaxZoom: Single read FMaxZoom;
     property Settings: TScanSettings read FSettings;
   end;
 
@@ -129,7 +141,7 @@ uses
   System.Threading, DateUtils, Rtti, TypInfo, IOUtils, Variants
     , FMX.Ani, UITypes, Math
     , FireDAC.Stan.StorageBin
-    , UI.Theme, Utils.Feedback;
+    , UI.Theme, Utils.Feedback, Utils.CameraZoom;
 
 function BarcodeToString(const ABarcode: TBarcodeFormat): string;
 begin
@@ -585,17 +597,36 @@ end;
 
 procedure TMainDM.SetCameraSettings(ACameraComponent: TCameraComponent);
 var
-  LSetting: TVideoCaptureSetting;
+  LSetting, LBest: TVideoCaptureSetting;
+  LFound: Boolean;
 begin
+  // the frames are cropped to a square: the longest short side up to SCAN_MAX_SIDE wins,
+  // then the shortest long side (less to convert), then the highest frame rate
+  LFound := False;
   for LSetting in ACameraComponent.AvailableCaptureSettings do
   begin
-    if (LSetting.FrameRate >= 24) and (LSetting.Width <= 700) then
+    var LSide := Min(LSetting.Width, LSetting.Height);
+    if (LSetting.FrameRate < 24) or (LSide > SCAN_MAX_SIDE) then
+      Continue;
+    if LFound then
     begin
-      ACameraComponent.SetCaptureSetting(LSetting);
-      TMessageManager.DefaultManager.SendMessage(Self,
-        TScanSettingMessage.Create(LSetting));
-      Break;
+      var LBestSide := Min(LBest.Width, LBest.Height);
+      var LLong := Max(LSetting.Width, LSetting.Height);
+      var LBestLong := Max(LBest.Width, LBest.Height);
+      if (LSide < LBestSide)
+        or ((LSide = LBestSide) and (LLong > LBestLong))
+        or ((LSide = LBestSide) and (LLong = LBestLong) and (LSetting.FrameRate <= LBest.FrameRate))
+      then
+        Continue;
     end;
+    LBest := LSetting;
+    LFound := True;
+  end;
+  if LFound then
+  begin
+    ACameraComponent.SetCaptureSetting(LBest);
+    TMessageManager.DefaultManager.SendMessage(Self,
+      TScanSettingMessage.Create(LBest));
   end;
 
   ACameraComponent.FocusMode := TFocusMode.ContinuousAutoFocus;
@@ -617,6 +648,15 @@ begin
       FreeAndNil(FCameraComponent);
       raise;
     end;
+    // every scan starts at 1x (on iOS the device keeps the zoom of the previous one)
+    try
+      FMaxZoom := Utils.CameraZoom.MaxZoom(FCameraComponent);
+      FZoom := Utils.CameraZoom.SetZoom(FCameraComponent, 1);
+    except
+      FMaxZoom := 1; // no zoom, but scanning goes on
+      FZoom := 1;
+    end;
+    TMessageManager.DefaultManager.SendMessage(Self, TZoomMessage.Create(FZoom));
   end;
   FScanning := True;
   FWaitingResult := True;
@@ -654,6 +694,20 @@ begin
   end;
 
   TMessageManager.DefaultManager.SendMessage(Self, TTorchModeMessage.Create(TorchModeOn));
+end;
+
+procedure TMainDM.SetZoom(const AFactor: Single);
+begin
+  if not Assigned(FCameraComponent) or (FMaxZoom <= 1) then
+    Exit;
+  try
+    Utils.CameraZoom.SetZoom(FCameraComponent, AFactor); // the nearest step of the camera
+  except
+    Exit; // the zoom stays as it was
+  end;
+  FZoom := EnsureRange(AFactor, 1, FMaxZoom); // shown as chosen: 2x, not 1.9x
+
+  TMessageManager.DefaultManager.SendMessage(Self, TZoomMessage.Create(FZoom));
 end;
 
 { TSubscriptions }

@@ -23,7 +23,7 @@ The screenshots come from the Windows build; on Android the bottom bar has **Gal
 
 ## Features
 
-- Live scanning from the camera, with a square viewfinder, the points found by ZXing and a torch button. The frames are decoded in the background (`ScanAsync`), so the preview stays smooth. A code that is found but cannot be read yet shows a hint: hold the phone still, or move closer.
+- Live scanning from the camera, with a square viewfinder, the points found by ZXing, a torch button and the zoom (pinch, or a 1×/2×/4× button; back to 1× on every scan). The frames are decoded in the background (`ScanAsync`), so the preview stays smooth. A code that is found but cannot be read yet shows a hint: hold the phone still, or move closer.
 - Scanning from a picture in the photo library (Android, iOS) or from a file (Windows, macOS): every code in the image is read. On Windows an image can also be passed on the command line ("Open with").
 - Every format ZXing.Delphi 4 reads automatically: QR code, Micro QR, Data Matrix, Aztec, PDF 417, MaxiCode, Code 39/93/128, EAN, UPC, ITF, Codabar, GS1 DataBar… The result card outlines the code in the frame.
 - **Formats to read**: fewer formats make scanning faster and save battery. The choice is kept.
@@ -74,7 +74,7 @@ For Android:
 | `Forms.Main` | Main form: header, bottom bar, permissions, safe area, Back key |
 | `Data.Main` | Data module: camera, ZXing scanning, the table of the scans (saved in the app data folder) |
 | `Data.Settings` | App data folder; the formats to read and the feedback (`TScanSettings`, saved as JSON) |
-| `Frames.Scanning` | Camera preview, viewfinder, torch |
+| `Frames.Scanning` | Camera preview, viewfinder, torch, zoom |
 | `Frames.Data` | List of the scans |
 | `Frames.ScanResult` | Result card: zoomable frame, value, Copy / Share / Open / Delete |
 | `Utils.ContentActions` | What a scanned value contains (link, phone, e-mail, SMS, location, contact, event) and how to open it on each platform |
