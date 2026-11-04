@@ -2,7 +2,7 @@
 
 What is needed to publish ScannerMApp on Google Play: the store listing (in English and Italian), the graphics, the answers to the Play Console forms and how to build the bundle.
 
-**Published**: [https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2) (version 2.0.0, versionCode 1). Next release: version 2.1.0, versionCode 2 (see [Release notes](#release-notes)).
+**Published**: [https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2](https://play.google.com/store/apps/details?id=eu.andreamagni.scannermapp2) (version 2.1.0, versionCode 2). Next release: version 2.2.0, versionCode 3 (see [Release notes](#release-notes)).
 
 Package: `eu.andreamagni.scannermapp2` (it cannot change after the first release). The app published until 2020 as `eu.andreamagni.ScannerMapp` was removed by Google Play and is signed with a key that is not enrolled in Play App Signing, so ScannerMApp is published again as a new app.
 
@@ -110,18 +110,29 @@ ScannerMApp è open source (licenza Apache 2.0), sviluppata con Delphi e FireMon
 
 Paste them in the Play Console, **Release ▸ Release notes** (500 characters at most per language).
 
+### 2.2.0 (versionCode 3)
+
+```
+<en-US>
+• Zoom: pinch the viewfinder, or tap 1×, 2×, 4×, to read codes far away
+• Sharper scanning: the camera frames are read at a higher resolution
+</en-US>
+<it-IT>
+• Zoom: pizzica il mirino, oppure tocca 1×, 2×, 4×, per leggere i codici lontani
+• Scansione più precisa: le immagini della fotocamera sono lette a una risoluzione più alta
+</it-IT>
+```
+
 ### 2.1.0 (versionCode 2)
 
 ```
 <en-US>
 • A soft sound and a vibration when a code is read: turn them on or off in the settings
 • Delete all: clear the list of your scans at once, with a confirmation
-• Zoom: pinch the viewfinder, or tap 1×, 2×, 4×, to read codes far away
 </en-US>
 <it-IT>
 • Un suono leggero e una vibrazione quando un codice viene letto: attivali o disattivali nelle impostazioni
 • Elimina tutti: svuota l'elenco delle scansioni in un colpo, con una conferma
-• Zoom: pizzica il mirino, oppure tocca 1×, 2×, 4×, per leggere i codici lontani
 </it-IT>
 ```
 
