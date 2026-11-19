@@ -6,7 +6,7 @@ ScannerMApp is a QR code and barcode scanner. It is open source: everything desc
 
 ## In short
 
-ScannerMApp does not collect, send or share any data. It has no account, no advertising, no analytics and no tracking, and on Android it does not even have the permission to access the internet.
+ScannerMApp does not collect, send or share any data. It has no account, no advertising, no analytics and no tracking, and it does not connect to the internet (on Android it does not even have the permission to).
 
 ## Camera
 

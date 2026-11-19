@@ -372,7 +372,7 @@ procedure TScanResultFrame.ShareButtonClick(Sender: TObject);
 begin
   if not FAction.IsAvailable then
     ShareAction.Execute
-  else if not OpenContent(FAction) then
+  else if not OpenContent(FAction, ShareButton) then
     TDialogService.ShowMessage('No app can open this content');
 end;
 

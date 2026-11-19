@@ -552,9 +552,27 @@
     <ItemGroup Condition="'$(Platform)'=='OSXARM64'"/>
     <ItemGroup Condition="'$(Platform)'=='Win64'"/>
     <ItemGroup Condition="'$(Platform)'=='iOSDevice64'">
+        <DeployFile Include="PrivacyInfo.xcprivacy" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteName>PrivacyInfo.xcprivacy</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="Sounds\scan.wav" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ScannerMapp.app\StartUp\Documents\</RemoteDir>
             <RemoteName>scan.wav</RemoteName>
+            <DeployClass>File</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="PrivacyInfo.xcprivacy" Condition="'$(Config)'=='Release'">
+            <RemoteDir>ScannerMapp.app\</RemoteDir>
+            <RemoteName>PrivacyInfo.xcprivacy</RemoteName>
             <DeployClass>File</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
